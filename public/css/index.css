@@ -1,0 +1,147 @@
+.info{
+    height:100vh;
+}
+#main-section{
+    background: url('../img/blue-2705642_1920.jpg');
+}
+.logo-img{
+    width:40px;
+}
+.welcome{
+    width:100%;
+    height:100%;
+    background:black;
+    opacity: .6;
+}
+.info h1{
+    color: white;
+    font-weight: bold;
+}
+.text-box{
+    width: 80%;
+    text-align: center;
+    margin:12% 10%;
+    position: absolute;
+}
+.welcome-img{
+    max-width: 45%;
+    margin-left: 25%;
+}
+.welcome-message{
+    margin-top:2%;
+    font-size: 2vw;
+}
+body{
+    overflow-x: hidden;
+}
+#info-section{
+    overflow: hidden;
+    width:201vw;
+}
+.infobox{
+    width:99vw;
+    height: 100vh;
+    display: inline-block;
+    margin:0;
+}
+#infobox1{
+    background: blue;
+}
+#infobox2{
+    background: salmon;
+}
+#sec-3{
+    background: teal;
+}
+
+.link-section{
+    min-height:99vh;
+    background: whitesmoke;
+}
+
+.link-list{
+    background: white;
+    min-width: 80%;
+    display: inline-block;
+    min-height: 60vh;
+    box-shadow: 3px 4px 7px grey;
+    border: 3px solid white;
+    border-radius: 5px;
+    margin:10%;
+}
+.link-search{
+    border:2px solid whitesmoke;
+    border-radius: 3px;
+    padding:3px;
+    width:100%;
+    opacity: .9;
+}
+.link-search-active{
+    border-color: steelblue;
+}
+.board-section{
+    width:100%;
+    height:99vh;
+}
+.board{
+    background: white;
+    min-width: 80%;
+    display: inline-block;
+    min-height: 60vh;
+    box-shadow: 3px 4px 7px grey;
+    border: 3px solid white;
+    border-radius: 5px;
+    margin:10%;
+}
+.section-title{
+    font-size: 2vw;
+    font-weight: bold;
+    opacity: 0.8;
+    color: dodgerblue;
+    position: absolute;
+    margin: 2%;
+    letter-spacing: 2px;
+}
+.modal{
+    position: fixed;
+    width:100%;
+    height:100vh;
+    padding:10% 41%;
+    background: rgba(0,0,0,.6);
+    z-index: 60;
+    display:none;
+}
+#join-btn{
+    width: 100%;
+    padding: 2vh;
+}
+#link-section-move{
+    margin-top:2%;
+    border:2px solid white;
+    border-radius: 3px;
+    font-size:1.5vw;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color:white;
+    padding:1% 2%;
+}
+#navi a{
+    letter-spacing: 1px;
+}
+
+@media(max-width:1024px){
+    #join-modal-btn{
+        float:none;
+    }
+    #login-modal-btn{
+        float:none;
+    }
+    #navi-menu{
+        display: none;
+    }
+
+}
+@media(max-width:800px){
+
+}
