@@ -1,109 +1,297 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="{{mix('css/tailwind.css')}}">
-        <link rel="stylesheet" href="css/index.css">
-        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-        <script src="js/index.js"></script>
-        <title>@yield('title','EasyBro')</title>
 
-    <body>
-            <nav class="flex items-center justify-between flex-wrap bg-blue-600 p-6 sticky top-0 z-50" id="navi">
-                    <div class="flex items-center flex-shrink-0 text-white mr-6">
-                      <img class="logo-img" src="/img/logo-white.png">
-                      <h1 class="font-semibold text-xl tracking-tight cursor-pointer" id="home-move-btn">Easy Bro</h1>
-                    </div>
-                    <div class="block lg:hidden">
-                      <button class="flex items-center px-3 py-2 border rounded text-blue-300 border-blue-300 hover:text-white hover:border-white" id="menu-toggle-btn">
-                        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
-                      </button>
-                    </div>
-                    <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto" id="navi-menu">
-                      <div class="text-sm lg:flex-grow">
-                        <a  class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-4 cursor-pointer" id="info-section-move-btn">
-                          이용안내
-                        </a>
-                        <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-4 cursor-pointer" id="link-section-move-btn">
-                          즐겨찾기
-                        </a>
-                        <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-4 cursor-pointer" id="board-section-move-btn">
-                          공유게시판
-                        </a>
-                        <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white cursor-pointer mr-12 float-right" id="join-modal-btn">
-                            회원가입
-                        </a>
-                        <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white cursor-pointer mr-6 float-right" id="login-modal-btn">
-                            로그인
-                        </a>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <link rel="stylesheet" href="{{mix('css/tailwind.css')}}">
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet"> 
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css">
+  <link rel="stylesheet" href="css/index.css?ver=4">
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script src="js/index.js?ver=6"></script>
+  <title>@yield('title','EasyBro')</title>
+  <div class="modal" id="login-modal">
+    <div class="w-full max-w-xs">
+      <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="login-username">
+            아이디
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="login-username" type="text" placeholder="Username">
+        </div>
+        <div class="mb-6">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="login-password">
+            패스워드
+          </label>
+          <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="login-password" type="password" placeholder="******************">
+        </div>
 
-                      </div>
+        <div class="flex items-center justify-between">
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="button">
+            로그인
+          </button>
+          <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
+            비밀번호를 잊으셨나요?
+          </a>
+        </div>
+      </form>
+      <p class="text-center text-gray-500 text-xs">
+        &copy;2019 Acme Corp. All rights reserved.
+      </p>
+    </div>
+  </div>
+  @yield('login')
+  <div class="modal" id="join-modal">
+    <div class="w-full max-w-xs">
+      <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="join-username">
+            아이디
+          </label>
+          <input
+            class="shadow appearance-none border mb-2 border-red-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="join-username" type="text" placeholder="Username">
+            <p class="text-red-500 text-xs italic" id="join-username-info">아이디를 입력해주세요.</p>
+        </div>
+        <div class="mb-6">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="join-password">
+            패스워드
+          </label>
+          <input
+            class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+            id="join-password" type="password" placeholder="******************">
+          <p class="text-red-500 text-xs italic mb-2" id="join-password-info">패스워드를 입력해주세요.</p>
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="join-password-check">
+              패스워드 체크
+            </label>
+          <input
+          class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          id="join-password-check" type="password" placeholder="******************">
+        <p class="text-red-500 text-xs italic" id="join-password-check-info">패스워드가 같지 않습니다.</p>
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="join-email">
+            이메일
+          </label>
+        <input
+        class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+        id="join-email" type="email" placeholder="YourEmail@Example.com">
+      <p class="text-red-500 text-xs italic" id="join-email-info">비밀번호 찾기를 위해 정확히 입력해주세요.</p>
 
-                    </div>
-                  </nav>
-                  @yield('nav')
-                  <div class="modal" id="login-modal">
-                  <div class="w-full max-w-xs" >
-                        <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                          <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-                              Username
-                            </label>
-                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="login-username" type="text" placeholder="Username">
-                          </div>
-                          <div class="mb-6">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
-                              Password
-                            </label>
-                            <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="login-password" type="password" placeholder="******************">
-                            <p class="text-red-500 text-xs italic">Please choose a password.</p>
-                          </div>
-                          <div class="flex items-center justify-between">
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
-                              Sign In
-                            </button>
-                            <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
-                              Forgot Password?
-                            </a>
-                          </div>
-                        </form>
-                        <p class="text-center text-gray-500 text-xs">
-                          &copy;2019 Acme Corp. All rights reserved.
-                        </p>
-                      </div>
-                    </div>
-                  @yield('login')
-                  <div class="modal" id="join-modal">
-                  <div class="w-full max-w-xs" >
-                        <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                          <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-                              Username
-                            </label>
-                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="join-username" type="text" placeholder="Username">
-                          </div>
-                          <div class="mb-6">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
-                              Password
-                            </label>
-                            <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="join-password" type="password" placeholder="******************">
-                            <p class="text-red-500 text-xs italic">Please choose a password.</p>
-                          </div>
-                          <div class="flex items-center justify-between text-center">
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded focus:outline-none focus:shadow-outline" id="join-btn" type="button">
-                              회원가입
-                            </button>
-                          </div>
-                        </form>
-                        <p class="text-center text-gray-500 text-xs">
-                          &copy;2019 Acme Corp. All rights reserved.
-                        </p>
-                      </div>
-                    </div>
-                  @yield('join')
-                  @yield('list')
-                  @yield('board')
-                  
-    </body>
+      </div>
+        <div class="flex items-center justify-between text-center">
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded focus:outline-none focus:shadow-outline"
+            id="join-btn" type="button">
+            회원가입
+          </button>
+        </div>
+      </form>
+      <p class="text-center text-gray-500 text-xs">
+        &copy;2019 Acme Corp. All rights reserved.
+      </p>
+    </div>
+  </div>
+  @yield('join')
+  <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" id="danger-alert" role="alert">
+      <strong class="font-bold" id="danger-alert-title"></strong>
+      <span class="block sm:inline"  id="danger-alert-msg"></span>
+      <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+        <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" id="danger-alert-close"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+      </span>
+    </div>
+    @yield('danger-alert')
+    <div class="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3" id="success-alert" role="alert">
+        <p class="font-bold" id="success-alert-title"></p>
+        <p class="text-sm"  id="success-alert-msg"></p>
+      </div>
+      @yield('success-alert')
+<body>
+  <nav class="flex items-center justify-between flex-wrap bg-blue-600 p-6 sticky top-0 z-50" id="navi">
+    <div class="flex items-center flex-shrink-0 text-white mr-6">
+      <img class="logo-img" src="/img/logo-white.png">
+      <h1 class="font-semibold text-xl tracking-tight cursor-pointer" id="home-move-btn">Easy Bro</h1>
+    </div>
+    <div class="block lg:hidden">
+      <button
+        class="flex items-center px-3 py-2 border rounded text-blue-300 border-blue-300 hover:text-white hover:border-white"
+        id="menu-toggle-btn">
+        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <title>Menu</title>
+          <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+        </svg>
+      </button>
+    </div>
+    <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto" id="navi-menu">
+      <div class="text-sm lg:flex-grow">
+        <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200  mr-4 cursor-pointer"
+          id="info-section-move-btn">
+          이용안내
+        </a>
+        <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200  mr-4 cursor-pointer"
+          id="link-section-move-btn">
+          즐겨찾기
+        </a>
+        <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200  mr-4 cursor-pointer"
+          id="board-section-move-btn">
+          공유게시판
+        </a>
+        <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200  cursor-pointer mr-12 float-right"
+          id="join-modal-btn">
+          회원가입
+        </a>
+        <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 cursor-pointer mr-6 float-right"
+          id="login-modal-btn">
+          로그인
+        </a>
+        <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 cursor-pointer mr-6 float-right"
+          id="logout-btn">
+          로그아웃
+        </a>
+      </div>
+
+    </div>
+  </nav>
+  @yield('nav')
+
+  <section class="main-section" id="main-section">
+    <div class="welcome">
+      <div class="text-box">
+        <img class="welcome-img" src="/img/EASY BRO-logo-white.png">
+        <section class="welcome-section">
+          <h2 class="welcome-message">
+            <span>즐</span>
+            <span>겨</span>
+            <span>찾</span>
+            <span>기</span>
+            <span>를</span>
+            <span>쉽</span>
+            <span>게</span>
+            <span>저</span>
+            <span>장</span>
+            <span>하</span>
+            <span>고</span>
+            <span>언</span>
+            <span>제</span>
+            <span>어</span>
+            <span>디</span>
+            <span>서</span>
+            <span>나</span>
+            <span>사</span>
+            <span>용</span>
+            <span>하</span>
+            <span>세</span>
+            <span>요</span>
+          </h2>
+        </section>
+        <button id="link-section-move">start!</button>
+      </div>
+    </div>
+  </section>
+@yield('main')
+
+  <section class="info" id="info-section">
+      <h1 class="section-title" id="link-title"># 이용안내</h1>
+    <div class="infobackground">
+      <div class="container">
+        <div class="cards">
+          <div class="imgBx">
+            <div>
+              <img src="../img/logo.png">
+              <h2>즐겨찾기 추가</h2>
+            </div>
+          </div>
+          <div class="overlay"></div>
+          <div class="content">
+            <h2>즐겨찾기 추가</h2>
+            <p>
+              즐겨찾기 탭에서 자신만의 즐겨찾기 리스트를 만들 수 있습니다.<br><br>
+              즐겨찾기 탭에서는 리스트에 포함된 사이트를 이름으로 검색할 수 있고 <br><br>
+              리스트에 포함되어 있지 않더라도 웹에서 검색하기 버튼으로 찾고 쉽게 추가할 수 있습니다.<br><br>
+            </p>
+          </div>
+        </div>
+
+
+        <div class="cards">
+          <div class="imgBx">
+            <div>
+              <img src="../img/logo.png">
+              <h2>회원가입 및 이용</h2>
+            </div>
+          </div>
+          <div class="overlay"></div>
+          <div class="content">
+            <h2>회원가입 및 이용안내</h2>
+            <p>
+              아이디와 비밀번호를 찾기위한 최소한의 정보만 요구합니다.<br><br>
+              로그인 하시면 어느 장소에서나 즐겨찾기 정보가 제공됩니다.<br><br>
+              EASY BRO는 무료로 이용 가능합니다. <br><br>
+            </p>
+          </div>
+        </div>
+
+        <div class="cards">
+          <div class="imgBx">
+            <div>
+              <img src="../img/logo.png">
+              <h2>공유하기</h2>
+            </div>
+          </div>
+          <div class="overlay"></div>
+          <div class="content">
+            <h2>공유 게시판 이용안내</h2>
+            <p>
+              로그인하지 않아도 공유 게시판으로 언제 어디서나 자신만의 리스트를 공유할 수 있고<br><br>
+              자신만의 리스트에 담아서 사용할 수 있습니다.<br><br>
+              현재 리스트의 즐겨찾기 목록을 공유게시판에 올리고 <br><br>
+              다른 PC에 접속해서 담기 버튼 한번이면 사용 가능합니다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+  @yield('info')
+
+  <section class="link-section" id="link-section">
+    <h1 class="section-title" id="link-title">#저장한 즐겨찾기 리스트</h1>
+    <div class="link-list" id="link-use">
+      <input type="text" class="link-search" placeholder="내 리스트에서 검색하기">
+      <ul class="flex border-b">
+        <li class="-mb-px mr-1">
+          <a class="bg-white inline-block border-l border-t border-r rounded-t py-2 px-4 text-blue-700 font-semibold"
+            href="#">Active</a>
+        </li>
+        <li class="mr-1">
+          <a class="bg-white inline-block py-2 px-4 text-blue-500 hover:text-blue-800 font-semibold" href="#">Tab</a>
+        </li>
+        <li class="mr-1">
+          <a class="bg-white inline-block py-2 px-4 text-blue-500 hover:text-blue-800 font-semibold" href="#">Tab</a>
+        </li>
+        <li class="mr-1">
+          <a class="bg-white inline-block py-2 px-4 text-gray-400 font-semibold" href="#">Tab</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+  @yield('list')
+
+  <section class="board-section" id="board-section">
+    <h1 class="section-title">#즐겨찾기 공유 게시판</h1>
+    <div class="board"></div>
+  </section>
+  @yield('board')
+
+
+
+</body>
+
 </html>
