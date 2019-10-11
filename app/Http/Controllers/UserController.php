@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use App\User;
 
@@ -29,12 +30,16 @@ class UserController extends Controller
             ]);
 
             });
-            $userNo=DB::select('SELECT USER_NO FROM USERS WHERE USER_ID = ? ',[$request->input('id')]);
-            Redis::set('user',$userNo);
+            $id = $request->input('id');
+        
+            $userNo=DB::select('SELECT USER_NO FROM USERS WHERE USER_ID = ? ',[$id]);
+            Redis::set('userNo',$userNo[0]->USER_NO);
+            Redis::set('username',$id);
             if($userNo!=null){
                 return response()->json([
                     'result'=>true,
-                    'user'=>$userNo
+                    'userNo'=>$userNo[0]->USER_NO,
+                    'username'=>$id
                 ]);
             }else{
                 return response()->json([
@@ -46,9 +51,38 @@ class UserController extends Controller
         
     }
     public function sessionUser(){
-        return Redis::get('user');
+     
+        return response()->json([
+            'userNo'=>   Redis::get('userNo'),
+            'username'=> Redis::get('username')
+        ]);
     }
     public function sessionDestroy(){
-        Redis::del('user');
+        Redis::del('userNo');
+        Redis::del('username');
+    }
+
+    public function login(Request $request){
+ 
+        $pwCheck=DB::select('SELECT USER_PW FROM USERS WHERE USER_ID = ? ',[$request->input('id')]);
+        
+        if($pwCheck!=null){
+            Log::info($pwCheck[0]->USER_PW);
+            if($request->input('pw')==$pwCheck[0]->USER_PW){
+                $userNo=DB::select('SELECT USER_NO FROM USERS WHERE USER_ID = ? ',[$request->input('id')]);
+                Redis::set('userNo',$userNo[0]->USER_NO);
+                Redis::set('username',$request->input('id'));
+                return $this->sessionUser();
+            }else{
+                return response()->json([
+                    'msg'=>'비밀번호가 틀렸습니다.'
+                ]);
+            }
+        }else{
+            return response()->json([
+                'msg'=>'존재하지 않는 아이디 입니다.'
+            ]);
+        }
+        
     }
 }

@@ -8,9 +8,9 @@ $(document).ready(function () {
         type:'get',
         url:'session/user',
         success:function(data){
-            console.log(data.user);
-            console.log(data);
-            if (data) {
+            console.log(data.userNo);
+            console.log(data.username);
+            if (data.userNo!=null) {
                 loginNav();
             } else {
                 logOutNav();
@@ -124,12 +124,16 @@ $(document).ready(function () {
 
         }
     });
+
     $('#logout-btn').click(function () {
         $.ajax({
             type:'post',
             url:'session/destroy',
             success:function(){
                 logOutNav();
+                alert('success','로그아웃','로그아웃이 완료되었습니다.');
+                userNo=null;
+                username=null;
             },error:function(e){
                 console.log(e);
             }
@@ -147,8 +151,9 @@ $(document).ready(function () {
                 data: { 'id': id, 'pw': pw, 'email': email },
                 success: function (data) {
                     if (data.result) {
-                        user = data.user;
-                        alert('success', '회원가입 성공', '회원가입이 완료되었습니다.');
+                        userNo = data.userNo;
+                        username = data.username;
+                        alert('success', '회원가입', '회원가입이 완료되었습니다.');
                         $('.modal input').val('');
                         $('.modal').hide();
                         modalInputInit();
@@ -169,6 +174,33 @@ $(document).ready(function () {
         $('#danger-alert').fadeOut();
 
     });
+
+    $('#login-btn').click(function(){
+        const id = $('#login-username').val();
+        const pw = $('#login-password').val();
+
+        $.ajax({
+            type: 'post',
+            url: '/users/login',
+            data: { 'id':id, 'pw':pw},
+            success:function(data){
+                if(data.userNo){
+                    userNo = data.userNo;
+                    username= data.username;
+                    alert('success', '로그인', '반갑습니다. '+username+'님');
+                    loginNav();
+                    $('.modal').hide();
+                    modalInputInit();
+                }else{
+                    alert('danger','로그인',data.msg);
+                }
+          
+            },error:function(e){
+                alert('danger', '로그인', '로그인에 오류가 있습니다. 관리자에게 문의해주세요! ');
+                console.log(e);
+            }
+        })
+    });
 });
 /* 섹션 스크롤 애니메이션 */
 function sectionScrollTop(id) {
@@ -178,7 +210,12 @@ function sectionScrollTop(id) {
 /* 회원가입 로그인 모달 초기화 */
 function modalInputInit() {
     $('.modal p').hide();
-    $('.modal input').css({ 'border-color': 'red' });
+    $('#join-modal input').css({ 'border-color': 'red' });
+    $('.modal input').val('');
+    $('#join-username-info').text('아이디를 입력해주세요.');
+    $('#join-password-info').text('패스워드를 입력해주세요.');
+    $('#join-password-check-info').text('패스워드가 같지 않습니다.');
+    $('#join-email-info').text('비밀번호 찾기를 위해 정확히 입력해주세요.');
     joinPassCheck, joinPass, joinIdCheckVal, joinEmail = false;
 }
 /* 이메일 유효성 검사 */
@@ -258,15 +295,18 @@ function dangerInfo(id, msg) {
 }
 function alert(id, title, msg) {
     $('#' + id + '-alert-title').text(title);
-    $('#' + id + '-alert-msg').text(msg + ' [이 알림창은 곧 자동으로 닫힙니다.]');
+    $('#' + id + '-alert-msg').text(msg + ' [알림창은 자동으로 닫힙니다.]');
     $('#' + id + '-alert').fadeIn();
     if (id === 'danger') {
-        dangerAlertCloseTimer = setTimeout(function () { $('#danger-alert').fadeOut(); }, 5000);
-    } else {
-        successAlertCloseTimer = setTimeout(function () { $('#success-alert').fadeOut(); }, 3000);
+        dangerAlertCloseTimer = setTimeout(function () { clearTimeout(dangerAlertCloseTimer); $('#danger-alert').fadeOut(); }, 5000);
+    } 
+    if(id === 'success') {
+        successAlertCloseTimer = setTimeout(function () { clearTimeout(successAlertCloseTimer); $('#success-alert').fadeOut(); }, 3000);
     }
 
 }
+
+/* 로그인 여부에 따른 css 변화 메소드 */
 function loginNav() {
     $('#login-modal-btn').hide();
     $('#join-modal-btn').hide();
@@ -277,10 +317,16 @@ function logOutNav() {
     $('#join-modal-btn').show();
     $('#logout-btn').hide();
 }
+
+/* 회원가입 유효성 체크 변수 */
 let joinPassCheck = false;
 let joinPass = false;
 let joinIdCheckVal = false;
 let joinEmail = false;
+/* 알렛 타이머 변수 */
 let dangerAlertCloseTimer;
 let successAlertCloseTimer;
-let user = null;
+
+/* 회원 아이디 및 번호 */
+let userNo = null;
+let username = null;

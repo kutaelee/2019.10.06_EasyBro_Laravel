@@ -291,6 +291,15 @@ body{
     z-index: 60;
     display:none;
 }
+.modal input{
+    letter-spacing: 1px;
+}
+#join-box{
+    width: 100vw;
+}
+#login-box{
+    width: 100vw;
+}
 #join-btn{
     width: 100%;
     padding: 2vh;
@@ -367,5 +376,24 @@ body{
     #link-section-move{
         font-size: 25px;
         margin-top: 7%;
+    }
+    #join-box{
+        margin-left:-10vw;
+    }
+    #login-box{
+        margin-left:-10vw;
+    }
+
+}
+@media(max-width:500px){
+    #join-box{
+        max-width: 100vw;
+        margin-left:-41vw;
+        margin-top: 15vh;
+    }
+    #login-box{
+        max-width: 100vw;
+        margin-left:-41vw;
+        margin-top: 15vh;
     }
 }

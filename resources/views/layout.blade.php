@@ -10,32 +10,32 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css">
   <link rel="stylesheet" href="css/index.css?ver=4">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <script src="js/index.js?ver=6"></script>
+  <script src="js/index.js?ver=9"></script>
   <title>@yield('title','EasyBro')</title>
   <div class="modal" id="login-modal">
-    <div class="w-full max-w-xs">
+    <div class="w-full max-w-xs" id="login-box">
       <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="login-username">
             아이디
           </label>
           <input
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="login-username" type="text" placeholder="Username">
+            class="shadow appearance-none border w-full rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="login-username" type="text" placeholder="ID" maxlength="20">
         </div>
         <div class="mb-6">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="login-password">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="login-password" maxlength="50">
             패스워드
           </label>
           <input
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="login-password" type="password" placeholder="******************">
+          id="login-password" type="password" placeholder="****">
         </div>
 
         <div class="flex items-center justify-between">
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="button">
+            type="button" id="login-btn">
             로그인
           </button>
           <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
@@ -50,7 +50,7 @@
   </div>
   @yield('login')
   <div class="modal" id="join-modal">
-    <div class="w-full max-w-xs">
+    <div class="max-w-xs" id="join-box">
       <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="join-username">
@@ -58,7 +58,7 @@
           </label>
           <input
             class="shadow appearance-none border mb-2 border-red-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="join-username" type="text" placeholder="Username">
+            id="join-username" type="text" placeholder="ID"  maxlength="20">
             <p class="text-red-500 text-xs italic" id="join-username-info">아이디를 입력해주세요.</p>
         </div>
         <div class="mb-6">
@@ -67,21 +67,21 @@
           </label>
           <input
             class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-            id="join-password" type="password" placeholder="******************">
+            id="join-password" type="password" placeholder="****" maxlength="50">
           <p class="text-red-500 text-xs italic mb-2" id="join-password-info">패스워드를 입력해주세요.</p>
           <label class="block text-gray-700 text-sm font-bold mb-2" for="join-password-check">
               패스워드 체크
             </label>
           <input
           class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-          id="join-password-check" type="password" placeholder="******************">
-        <p class="text-red-500 text-xs italic" id="join-password-check-info">패스워드가 같지 않습니다.</p>
+          id="join-password-check" type="password" placeholder="****" maxlength="50">
+        <p class="text-red-500 text-xs italic mb-3" id="join-password-check-info">패스워드가 같지 않습니다.</p>
         <label class="block text-gray-700 text-sm font-bold mb-2" for="join-email">
             이메일
           </label>
         <input
         class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-        id="join-email" type="email" placeholder="YourEmail@Example.com">
+        id="join-email" type="email" placeholder="YourEmail@Example.com" maxlength="50">
       <p class="text-red-500 text-xs italic" id="join-email-info">비밀번호 찾기를 위해 정확히 입력해주세요.</p>
 
       </div>
