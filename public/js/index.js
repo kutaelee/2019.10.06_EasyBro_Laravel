@@ -181,7 +181,7 @@ $(document).ready(function () {
                     loginNav();
                     $('.modal').hide();
                     linkListBind(data).then(linkBind);
-                    modalInputInit();         
+                    modalInputInit();
                 } else {
                     alert('danger', '로그인', data.msg);
                 }
@@ -367,24 +367,22 @@ function linkListBind(userData) {
 /* 리스트에 맞는 링크 바인딩 */
 function linkBind(listData) {
     if (listData) {
-        for (item of listData) {
-            $.ajax({
-                type: 'get',
-                url: '/links',
-                data: { 'listNo': item.LIST_NO },
-                success: function (linkData) {
-                    for (item of linkData) {
+        $.ajax({
+            type: 'get',
+            url: '/links',
+            data: { 'list': listData },
+            success: function (linkData) {
+                for (link of linkData) {
+                    for (item of link) {
                         $('#list-' + item.LIST_NO).append('<ul class="link-item-ul"><li class="link-item" id=link-"' + item.LINK_NO + '"><a href="' + item.LINK_URL + '" target="_blank">'
                             + item.LINK_NAME + '(' + item.LINK_URL + ')</a></li></ul>');
                     }
-                }, error: function (e) {
-                    console.log(e);
                 }
-            });
-        }
-
+            }, error: function (e) {
+                console.log(e);
+            }
+        });
     }
-
 }
 /* 회원가입 유효성 체크 변수 */
 let joinPassCheck = false;

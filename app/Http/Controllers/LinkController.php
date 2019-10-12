@@ -9,8 +9,13 @@ use Illuminate\Support\Facades\Log;
 class LinkController extends Controller
 {
     public function index(Request $request){
-        $links=DB::select('SELECT LINK_NO,LINK_NAME,LINK_URL,LIST_NO FROM LINKS  WHERE LIST_NO = ? ', [$request->input('listNo')]);
-        Log::info($links);
+        $links=array();
+        for($i=0;$i<count($request->input('list'));$i++){
+            $link=DB::select('SELECT LINK_NO,LINK_NAME,LINK_URL,LIST_NO FROM LINKS  WHERE LIST_NO = ? ', [$request->input('list')[$i]['LIST_NO']]);
+            if(empty(!$link)){
+                $links[]=$link;
+            }      
+        }
         return $links;
     }
 }
