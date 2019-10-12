@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
 use App\User;
 
 class UserController extends Controller
@@ -25,10 +27,10 @@ class UserController extends Controller
             DB::transaction(function () use($request) {
             DB::table('USERS')->insert([
                 'USER_ID'=>$request->input('id'),
-                'USER_PW'=>$request->input('pw'),
-                'USER_EMAIL'=>$request->input('email')
+                'USER_PW'=> Hash::make($request->input('pw')),
+                'USER_EMAIL'=>Crypt::encryptString($request->input('email'))
             ]);
-
+           
             });
             $id = $request->input('id');
         
@@ -68,7 +70,8 @@ class UserController extends Controller
         
         if($pwCheck!=null){
             Log::info($pwCheck[0]->USER_PW);
-            if($request->input('pw')==$pwCheck[0]->USER_PW){
+            
+            if(Hash::check($request->input('pw'), $pwCheck[0]->USER_PW)){
                 $userNo=DB::select('SELECT USER_NO FROM USERS WHERE USER_ID = ? ',[$request->input('id')]);
                 Redis::set('userNo',$userNo[0]->USER_NO);
                 Redis::set('username',$request->input('id'));
