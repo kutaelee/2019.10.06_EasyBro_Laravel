@@ -1,4 +1,4 @@
-a,p,label,div,section,li{
+a,p,label,div,section,li,button{
     font-family: 'Nanum Gothic', sans-serif;
 }
 h1,h2{
@@ -285,10 +285,10 @@ body{
     position: fixed;
     width:100%;
     height:100vh;
-    padding:10% 41%;
     background: rgba(0,0,0,.6);
     z-index: 60;
     display:none;
+    padding:10% 41%;
 }
 .modal input{
     letter-spacing: 1px;
@@ -421,7 +421,70 @@ body{
 #join-modal-btn{
     display: none;
 }
-
+.list-add{
+    text-align: center;
+}
+.list-add span{
+    border: 1px solid white;
+    border-radius: 50%;
+    padding: 1px 7px;
+    font-weight: bold;
+    font-size: 25px;
+    color: #03a9f4;
+}
+#list-modal{
+    padding: 15% 35%;
+}
+#list-modal h1{
+    text-align: center;
+    font-size: 25px;
+    font-weight: 600;
+    margin-bottom: 5%;
+    color: cornflowerblue;
+}
+#list-modal label{
+    margin:0 5%;
+    font-weight: 600;
+    font-size: 16px;
+    color: gray;
+    letter-spacing: 1px;
+}
+#list-modal input{
+    border: 3px solid #589bd1;
+    width: 90%;
+    padding: 1%;
+    margin: 2% 5%;
+    border-radius: 10px;
+}
+#list-modal button{
+    padding: 3% 0;
+    color: white;
+    letter-spacing: 4px;
+    border: 1px solid #4299e1;
+    border-radius: 10px;
+    background: #4299e1;
+    box-shadow: 2px 2px 3px grey;
+    font-size: 18px;
+    font-weight: 600;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 2%;
+}
+#list-modal button:hover{
+    border: 1px solid #2b6cb0;
+    background: #2b6cb0;
+    text-align: center;
+}
+.list-add-box{
+    padding: 5%;
+    width: 30vw;
+    min-height: 60vh;
+    background: white;
+    border: 1px solid white;
+    box-shadow: 1px 1px 2px white;
+    border-radius: 10px;
+    min-height: 26vh;
+}
 @media(max-width:1400px){
     #main-section{
         background-size: cover;

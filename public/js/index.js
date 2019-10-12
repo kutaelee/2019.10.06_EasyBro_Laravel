@@ -35,8 +35,10 @@ $(document).ready(function () {
         if (id === 'home-move-btn') {
             $('html,body').stop().animate({ scrollTop: 0 }, 600);
         }
+
+    });
         /* 폼 외의 영역 클릭 이벤트 */
-        $(document).click(function (e) {
+        $(document).on('click','.modal',function (e) {
             if (e.target.className === 'modal') {
                 $('.modal').fadeOut();
             }
@@ -47,8 +49,6 @@ $(document).ready(function () {
                 $('.modal').fadeOut();
             }
         });
-    });
-
     /* 즐겨찾기 이동 이벤트 */
     $('#link-section-move').click(function () {
         sectionScrollTop('link-section');
@@ -194,10 +194,14 @@ $(document).ready(function () {
     });
 
     /* 링크 리스트 토글 */
-    $(document).on('click', '.list-item', function (e) {
+    $(document).on('click', '.list-item', function(e) {
         if (e.target.className === 'list-item') {
             $(this).children('ul').slideToggle('fast');
         }
+    });
+
+    $(document).on('click','.list-add', function(){
+        $('#list-modal').fadeIn();                           
     });
 });
 /* 섹션 스크롤 애니메이션 */
@@ -352,8 +356,8 @@ function linkListBind(userData) {
                     for (item of listData) {
                         $('.list-box-ul').append('<li class="list-item" id="list-' + item.LIST_NO + '"><span>' + i + '</span>' + item.LIST_NAME + '</li>');
                         i++;
-
                     }
+                    $('.list-box-ul').append('<li class="list-add"><span>+</span></li>');
                     resolve(listData);
 
                 }, error: function (e) {
