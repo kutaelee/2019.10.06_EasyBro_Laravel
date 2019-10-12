@@ -1,4 +1,4 @@
-a,p,label,div,section{
+a,p,label,div,section,li{
     font-family: 'Nanum Gothic', sans-serif;
 }
 h1,h2{
@@ -237,18 +237,17 @@ body{
 
 .link-list{
     background: white;
-    min-width: 80%;
+    min-width: 60%;
     display: inline-block;
     min-height: 60vh;
     box-shadow: 3px 4px 7px grey;
-    border: 3px solid white;
-    border-radius: 5px;
-    margin:10%;
+    border-radius: 15px;
+    margin:10% 20%;
 }
 .link-search{
     border:2px solid whitesmoke;
     border-radius: 3px;
-    padding:3px;
+    padding: 1vh;
     width:100%;
     opacity: .9;
 }
@@ -340,6 +339,89 @@ body{
 #logout-btn{
     display: none;
 }
+
+.list-box{
+    width:100%;
+    max-height: 60vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.link-list h2{
+    color: #fff;
+    background: #03a9f4;
+    padding: 10px 20px;
+    font-size:20px;
+    font-weight: 600;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.list-box ul{
+    position: relative;
+    background: #fff;
+}
+.list-box-ul:hover li{
+    opacity: .3;
+}
+.list-box-ul .link-item:hover{
+    opacity: 1;
+}
+.list-box .list-item{
+    padding: 10px;
+}
+.list-box ul li{
+    list-style: none;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 5px 25px rgba(0,0,0,.1);
+    transition: transform 0.3s;
+    cursor: pointer;
+}
+.list-box-ul li:hover{
+    z-index: 10;
+    background: #25bcff;
+    box-shadow: 0 5px 25px rgba(0,0,0,.1);
+    opacity: 1;
+}
+.list-item span{
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    background: #25bcff;
+    color: #fff;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    transform: translateY(-2px);
+}
+.list-box ul li:hover span{
+    background: #fff;
+    color: #25bcff;
+}
+.link-item{
+    padding:0;
+}
+.link-item-ul{
+    display: none;
+}
+.link-item-ul li:hover{
+    background: dodgerblue;
+    color: white;
+}
+.link-item a{
+    display: inline-block;
+    width: 100%;
+    padding:10px;
+}
+#login-modal-btn{
+    display: none;
+}
+#join-modal-btn{
+    display: none;
+}
+
 @media(max-width:1400px){
     #main-section{
         background-size: cover;
@@ -383,7 +465,6 @@ body{
     #login-box{
         margin-left:-10vw;
     }
-
 }
 @media(max-width:500px){
     #join-box{

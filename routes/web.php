@@ -12,9 +12,10 @@
 */
 
 Route::get('/', 'HomeController@index');
-Route::get('/list', 'HomeController@list');
 Route::post('/joinIdDupleCheck','UserController@joinIdDupleCheck');
 Route::post('/users','UserController@store');
 Route::get('/session/user','UserController@sessionUser');
 Route::post('/session/destroy','UserController@sessionDestroy');
 Route::post('/users/login','UserController@login');
+Route::get('/lists','ListController@index');
+Route::get('/links','LinkController@index');

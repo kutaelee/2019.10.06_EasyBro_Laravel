@@ -1,25 +1,13 @@
+
+
 $(document).ready(function () {
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    $.ajax({
-        type:'get',
-        url:'session/user',
-        success:function(data){
-            console.log(data.userNo);
-            console.log(data.username);
-            if (data.userNo!=null) {
-                loginNav();
-            } else {
-                logOutNav();
-            }
-        },error:function(e){
-            console.log(e);
-        }
-    })
-
+    /* 세션체크 후 링크페이지 세팅 */
+    sessionCheck().then(linkListBind).then(linkBind);
 
     $('#navi').click(function (e) {
         let id = e.target.id;
@@ -127,14 +115,15 @@ $(document).ready(function () {
 
     $('#logout-btn').click(function () {
         $.ajax({
-            type:'post',
-            url:'session/destroy',
-            success:function(){
+            type: 'post',
+            url: 'session/destroy',
+            success: function () {
                 logOutNav();
-                alert('success','로그아웃','로그아웃이 완료되었습니다.');
-                userNo=null;
-                username=null;
-            },error:function(e){
+                alert('success', '로그아웃', '로그아웃이 완료되었습니다.');
+                userNo = null;
+                username = null;
+                $('.list-box-ul').text('');
+            }, error: function (e) {
                 console.log(e);
             }
         })
@@ -158,6 +147,7 @@ $(document).ready(function () {
                         $('.modal').hide();
                         modalInputInit();
                         loginNav();
+                        linkListBind(data).then(linkBind);
                     } else {
                         alert('danger', '회원가입 실패', '오류가 있습니다 관리자에게 문의해주세요.');
                     }
@@ -175,31 +165,39 @@ $(document).ready(function () {
 
     });
 
-    $('#login-btn').click(function(){
+    $('#login-btn').click(function () {
         const id = $('#login-username').val();
         const pw = $('#login-password').val();
 
         $.ajax({
             type: 'post',
             url: '/users/login',
-            data: { 'id':id, 'pw':pw},
-            success:function(data){
-                if(data.userNo){
+            data: { 'id': id, 'pw': pw },
+            success: function (data) {
+                if (data.userNo) {
                     userNo = data.userNo;
-                    username= data.username;
-                    alert('success', '로그인', '반갑습니다. '+username+'님');
+                    username = data.username;
+                    alert('success', '로그인', '반갑습니다. ' + username + '님');
                     loginNav();
                     $('.modal').hide();
-                    modalInputInit();
-                }else{
-                    alert('danger','로그인',data.msg);
+                    linkListBind(data).then(linkBind);
+                    modalInputInit();         
+                } else {
+                    alert('danger', '로그인', data.msg);
                 }
-          
-            },error:function(e){
+
+            }, error: function (e) {
                 alert('danger', '로그인', '로그인에 오류가 있습니다. 관리자에게 문의해주세요! ');
                 console.log(e);
             }
         })
+    });
+
+    /* 링크 리스트 토글 */
+    $(document).on('click', '.list-item', function (e) {
+        if (e.target.className === 'list-item') {
+            $(this).children('ul').slideToggle('fast');
+        }
     });
 });
 /* 섹션 스크롤 애니메이션 */
@@ -299,8 +297,8 @@ function alert(id, title, msg) {
     $('#' + id + '-alert').fadeIn();
     if (id === 'danger') {
         dangerAlertCloseTimer = setTimeout(function () { clearTimeout(dangerAlertCloseTimer); $('#danger-alert').fadeOut(); }, 5000);
-    } 
-    if(id === 'success') {
+    }
+    if (id === 'success') {
         successAlertCloseTimer = setTimeout(function () { clearTimeout(successAlertCloseTimer); $('#success-alert').fadeOut(); }, 3000);
     }
 
@@ -318,6 +316,76 @@ function logOutNav() {
     $('#logout-btn').hide();
 }
 
+/* 세션 체크 */
+function sessionCheck(callback) {
+    return new Promise(function (resolve) {
+        $.ajax({
+            type: 'get',
+            url: 'session/user',
+            success: function (data) {
+                if (data.userNo) {
+                    loginNav();
+                    console.log(data.userNo);
+                    console.log(data.username);
+                } else {
+                    logOutNav();
+                }
+                resolve(data);
+            }, error: function (e) {
+                console.log(e);
+            }
+        });
+    });
+}
+
+/* 링크 리스트 목록 바인딩 */
+function linkListBind(userData) {
+    return new Promise(function (resolve) {
+        if (userData.userNo) {
+            $.ajax({
+                type: 'get',
+                url: '/lists',
+                data: { 'userNo': userData.userNo },
+                success: function (listData) {
+                    $('.list-box-ul').text('');
+                    let i = 1;
+                    for (item of listData) {
+                        $('.list-box-ul').append('<li class="list-item" id="list-' + item.LIST_NO + '"><span>' + i + '</span>' + item.LIST_NAME + '</li>');
+                        i++;
+
+                    }
+                    resolve(listData);
+
+                }, error: function (e) {
+                    console.log(e);
+                }
+            });
+        }
+    });
+}
+
+/* 리스트에 맞는 링크 바인딩 */
+function linkBind(listData) {
+    if (listData) {
+        for (item of listData) {
+            $.ajax({
+                type: 'get',
+                url: '/links',
+                data: { 'listNo': item.LIST_NO },
+                success: function (linkData) {
+                    for (item of linkData) {
+                        $('#list-' + item.LIST_NO).append('<ul class="link-item-ul"><li class="link-item" id=link-"' + item.LINK_NO + '"><a href="' + item.LINK_URL + '" target="_blank">'
+                            + item.LINK_NAME + '(' + item.LINK_URL + ')</a></li></ul>');
+                    }
+                }, error: function (e) {
+                    console.log(e);
+                }
+            });
+        }
+
+    }
+
+}
 /* 회원가입 유효성 체크 변수 */
 let joinPassCheck = false;
 let joinPass = false;

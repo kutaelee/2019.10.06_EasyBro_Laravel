@@ -17,6 +17,5 @@ class UserTest extends TestCase
     {
         $params= array('id'=>'test','pw'=>'1234','email'=>'a@a.com');
         $response = $this->json('post','/users',$params);
-        echo $response.
     }
 }
