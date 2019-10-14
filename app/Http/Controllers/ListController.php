@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Redis;
 class ListController extends Controller
 {
     public function index(Request $request){
-        $lists=DB::select('SELECT LIST_NO,LIST_NAME FROM LINK_LIST WHERE LIST_OWNER = ? ', [$request->input('userNo')]);
+        $lists=DB::select('SELECT LIST_NO,LIST_NAME FROM LINK_LIST WHERE LIST_OWNER = ?', [$request->input('userNo')]);
         return $lists;
     }
     public function store(Request $request){
@@ -19,6 +19,14 @@ class ListController extends Controller
                 'LIST_NAME'=>htmlspecialchars($request->input('name')),
                 'LIST_OWNER'=> Redis::get('userNo')
             ]);
+        });
+        return response()->json([ 
+            'userNo'=> Redis::get('userNo')
+        ]);
+    }
+    public function destroy(Request $request){
+        DB::transaction(function () use($request) {
+            DB::delete('DELETE FROM LINK_LIST WHERE LIST_NO= ? AND LIST_OWNER= ?' , [$request->input('listNo') , Redis::get('userNo')]);
         });
         return response()->json([ 
             'userNo'=> Redis::get('userNo')

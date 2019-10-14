@@ -237,7 +237,7 @@ body{
 
 .link-list{
     background: white;
-    min-width: 60%;
+    width: 60%;
     display: inline-block;
     min-height: 60vh;
     box-shadow: 3px 4px 7px grey;
@@ -398,7 +398,9 @@ body{
     color: #25bcff;
 }
 .link-item{
-    padding:0;
+    display: inline-block;
+    width: 100%;
+    padding:10px;
 }
 .link-item-ul{
     display: none;
@@ -406,11 +408,6 @@ body{
 .link-item-ul li:hover{
     background: dodgerblue;
     color: white;
-}
-.link-item a{
-    display: inline-block;
-    width: 100%;
-    padding:10px;
 }
 #login-modal-btn{
     display: none;
@@ -432,28 +429,28 @@ body{
 #list-add-modal{
     padding: 15% 35%;
 }
-#list-add-modal h1 , #list-destroy-modal h1{
+#list-add-modal h1 , #list-destroy-modal h1 , #link-add-modal h1 {
     text-align: center;
     font-size: 25px;
     font-weight: 600;
     margin-bottom: 5%;
     color: cornflowerblue;
 }
-#list-add-modal label{
+#list-add-modal label , #link-add-modal label{
     margin:0 5%;
     font-weight: 600;
     font-size: 16px;
     color: gray;
     letter-spacing: 1px;
 }
-#list-add-modal input{
+#list-add-modal input , #link-add-modal input{
     border: 3px solid #589bd1;
     width: 90%;
     padding: 1%;
     margin: 2% 5%;
     border-radius: 10px;
 }
-#list-add-modal button , #list-destroy-modal button{
+#list-add-modal button , #list-destroy-modal button , #link-add-modal button{
     padding: 3% 0;
     color: white;
     letter-spacing: 4px;
@@ -467,7 +464,7 @@ body{
     margin-left: 5%;
     margin-top: 2%;
 }
-#list-add-modal button:hover , #list-destroy-modal button:hover{
+#list-add-modal button:hover , #list-destroy-modal button:hover , #link-add-modal button:hover{
     border: 1px solid #2b6cb0;
     background: #2b6cb0;
     text-align: center;
@@ -475,7 +472,6 @@ body{
 .list-add-box{
     padding: 5%;
     width: 30vw;
-    min-height: 60vh;
     background: white;
     border: 1px solid white;
     box-shadow: 1px 1px 2px white;
@@ -488,7 +484,7 @@ body{
     background: #25bcff;
     font-size: 12px;
 }
-.list-destroy-btn{
+.list-destroy-icon , .link-destroy-icon{
     float: right;
     background: #E50000;
     font-size: 20px;
@@ -501,7 +497,7 @@ body{
 }
 .list-destroy-box{
     padding: 2%;
-    background: white;
+    background: rgb(255, 255, 255);
     width: 50vw;
     min-height: 30vh;
     text-align: center;
@@ -514,6 +510,43 @@ body{
     width: 20%;
     padding: 2%;
     margin-left: 0%;
+}
+.link-add-icon{
+    float: right;
+    background: rgb(61, 112, 223);
+    font-size: 20px;
+    padding: 3px;
+    width: 25px;
+    height: 25px;
+}
+#link-add-modal{
+    padding: 15% 25%;
+}
+.link-add-box{
+    padding: 5%;
+    width: 50vw;
+    background: white;
+    border: 1px solid white;
+    box-shadow: 1px 1px 2px white;
+    border-radius: 10px;
+    min-height: 30vh;
+}
+.link-edit-icon{
+    width: 25px;
+    height: 25px;
+    background: teal;
+    padding: 3px;
+    border-radius: 50%;
+    float: right;
+    margin-right: 1%;
+    margin-top: -.1%;
+}
+.link-item-name{
+    max-width: 90%;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 @media(max-width:1400px){
     #main-section{
