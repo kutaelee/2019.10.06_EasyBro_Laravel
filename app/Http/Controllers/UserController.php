@@ -25,7 +25,7 @@ class UserController extends Controller
         }else{
             DB::transaction(function () use($request) {
             DB::table('USERS')->insert([
-                'USER_ID'=>$request->input('id'),
+                'USER_ID'=>htmlspecialchars($request->input('id')),
                 'USER_PW'=> Hash::make($request->input('pw')),
                 'USER_EMAIL'=>Crypt::encryptString($request->input('email'))
             ]);

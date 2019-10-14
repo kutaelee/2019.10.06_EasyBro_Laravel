@@ -345,6 +345,7 @@ body{
     max-height: 60vh;
     overflow-y: auto;
     overflow-x: hidden;
+    border-radius: 15px;
 }
 .link-list h2{
     color: #fff;
@@ -383,20 +384,16 @@ body{
     opacity: 1;
 }
 .list-item span{
-    width: 20px;
-    height: 20px;
+    color: #fff;
     text-align: center;
     line-height: 20px;
-    background: #25bcff;
-    color: #fff;
     display: inline-block;
     border-radius: 50%;
     margin-right: 10px;
-    font-size: 12px;
     font-weight: 600;
     transform: translateY(-2px);
 }
-.list-box ul li:hover span{
+.list-box ul li:hover .list-item-number , .list-add-icon{
     background: #fff;
     color: #25bcff;
 }
@@ -432,31 +429,31 @@ body{
     font-size: 25px;
     color: #03a9f4;
 }
-#list-modal{
+#list-add-modal{
     padding: 15% 35%;
 }
-#list-modal h1{
+#list-add-modal h1 , #list-destroy-modal h1{
     text-align: center;
     font-size: 25px;
     font-weight: 600;
     margin-bottom: 5%;
     color: cornflowerblue;
 }
-#list-modal label{
+#list-add-modal label{
     margin:0 5%;
     font-weight: 600;
     font-size: 16px;
     color: gray;
     letter-spacing: 1px;
 }
-#list-modal input{
+#list-add-modal input{
     border: 3px solid #589bd1;
     width: 90%;
     padding: 1%;
     margin: 2% 5%;
     border-radius: 10px;
 }
-#list-modal button{
+#list-add-modal button , #list-destroy-modal button{
     padding: 3% 0;
     color: white;
     letter-spacing: 4px;
@@ -470,7 +467,7 @@ body{
     margin-left: 5%;
     margin-top: 2%;
 }
-#list-modal button:hover{
+#list-add-modal button:hover , #list-destroy-modal button:hover{
     border: 1px solid #2b6cb0;
     background: #2b6cb0;
     text-align: center;
@@ -484,6 +481,39 @@ body{
     box-shadow: 1px 1px 2px white;
     border-radius: 10px;
     min-height: 26vh;
+}
+.list-item-number{
+    width: 20px;
+    height: 20px;
+    background: #25bcff;
+    font-size: 12px;
+}
+.list-destroy-btn{
+    float: right;
+    background: #E50000;
+    font-size: 20px;
+    padding: 3px;
+    width: 25px;
+    height: 25px;
+}
+#list-destroy-modal{
+    padding: 15% 25%;
+}
+.list-destroy-box{
+    padding: 2%;
+    background: white;
+    width: 50vw;
+    min-height: 30vh;
+    text-align: center;
+    border-radius: 10px;
+}
+#list-destroy-modal h2{
+    margin: 2%;
+}
+#list-destroy-modal button{
+    width: 20%;
+    padding: 2%;
+    margin-left: 0%;
 }
 @media(max-width:1400px){
     #main-section{

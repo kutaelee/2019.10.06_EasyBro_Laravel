@@ -8,9 +8,9 @@
   <link rel="stylesheet" href="{{mix('css/tailwind.css')}}">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet"> 
   <link rel="stylesheet" href="//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css">
-  <link rel="stylesheet" href="css/index.css?ver=11">
+  <link rel="stylesheet" href="css/index.css?ver=13">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <script src="js/index.js?ver=16"></script>
+  <script src="js/index.js?ver=17"></script>
   <title>@yield('title','EasyBro')</title>
   <div class="modal" id="login-modal">
     <div class="w-full max-w-xs" id="login-box">
@@ -99,15 +99,23 @@
     </div>
   </div>
   @yield('join')
-  <div class="modal" id="list-modal">
+  <div class="modal" id="list-add-modal">
     <div class="list-add-box">
-      <h1> 리스트 추가하기 </h1>
+      <h1> 리스트 추가 </h1>
       <label for="list-name">추가할 리스트 이름</label>
       <input type="text" class="list-name" maxlength="50">
       <button class="list-btn" id="list-add-btn">추가</button>
     </div>
   </div>
-  @yield('list')
+  @yield('list-add')
+  <div class="modal" id="list-destroy-modal">
+      <div class="list-destroy-box">
+          <h1 class="list-destroy-name">삭제 할 리스트 명 : </h1>
+          <h2>리스트를 삭제하시면 포함된 링크도 모두 삭제되며 복구 할 수없습니다.</h2>
+          <h2>정말로 삭제하시겠습니까?</h2>
+          <button class="list-btn" id="list-destroy-btn">확인</button>
+        </div>
+  </div>
   <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" id="danger-alert" role="alert">
       <strong class="font-bold" id="danger-alert-title"></strong>
       <span class="block sm:inline"  id="danger-alert-msg"></span>

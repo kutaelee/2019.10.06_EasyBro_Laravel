@@ -15,10 +15,12 @@ $(document).ready(function () {
         if (id === 'login-modal-btn') {
             $('#join-modal').hide();
             $('#login-modal').fadeIn();
+            $('#login-username').focus();
         }
         if (id === 'join-modal-btn') {
             $('#login-modal').hide();
             $('#join-modal').fadeIn();
+            $('#join-username').focus();
         }
 
         if (id === 'info-section-move-btn') {
@@ -37,18 +39,29 @@ $(document).ready(function () {
         }
 
     });
-        /* 폼 외의 영역 클릭 이벤트 */
-        $(document).on('click','.modal',function (e) {
-            if (e.target.className === 'modal') {
-                $('.modal').fadeOut();
-            }
-        });
-        /* 키 입력 이벤트 */
-        $(document).keydown(function (e) {
-            if (e.keyCode === 27) {
-                $('.modal').fadeOut();
-            }
-        });
+    /* 폼 외의 영역 클릭 이벤트 */
+    $(document).on('click', '.modal', function (e) {
+        if (e.target.className === 'modal') {
+            $('.modal').fadeOut();
+        }
+    });
+    /* 키 입력 이벤트 */
+    $(document).keydown(function (e) {
+        if (e.keyCode === 27) {
+            $('.modal').fadeOut();
+        }
+    });
+    $('#login-modal').keydown(function (e){
+        enterClickTrigger(e,'#login-btn');
+    });
+    $('#join-modal').keydown(function (e){
+        enterClickTrigger(e,'#join-btn');
+    });
+
+    $('.list-add-box').keydown(function (e){
+        enterClickTrigger(e,'#list-add-btn');
+    });
+
     /* 즐겨찾기 이동 이벤트 */
     $('#link-section-move').click(function () {
         sectionScrollTop('link-section');
@@ -194,14 +207,48 @@ $(document).ready(function () {
     });
 
     /* 링크 리스트 토글 */
-    $(document).on('click', '.list-item', function(e) {
+    $(document).on('click', '.list-item', function (e) {
         if (e.target.className === 'list-item') {
             $(this).children('ul').slideToggle('fast');
         }
     });
 
-    $(document).on('click','.list-add', function(){
-        $('#list-modal').fadeIn();                           
+    /* 리스트 추가 */
+    $(document).on('click', '.list-add', function () {
+        $('#list-add-modal').fadeIn();
+        $('.list-name').focus();
+    });
+    $(document).on('click', '#list-add-btn', function () {
+        let name = $('.list-name').val();
+        if (sessionCheck()) {
+            if (name.length > 1) {
+                $.ajax({
+                    type: 'post',
+                    url: '/lists',
+                    data: { 'name': name },
+                    success: function (data) {
+                        alert('success', '리스트 추가', '리스트 추가가 완료되었습니다.');
+                        $('#list-add-modal').fadeOut();
+                        $('.list-name').val('');
+                        linkListBind(data).then(linkBind);
+                    }, error: function (e) {
+                        alert('danger', '리스트 추가', '리스트를 추가하는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');
+                    }
+                });
+            } else {
+                alert('danger', '리스트 추가', '리스트 이름을 입력해주세요.');
+            }
+        } else {
+            alert('danger', '리스트 추가', '리스트 추가는 로그인 후 이용해주세요.');
+        }
+    });
+
+    $(document).on('click','.list-destroy-btn',function(){
+        let listName=$(this).parent().attr('content');
+        let listNo=$(this).parent().attr('number');
+        console.log(listNo);
+        $('.list-destroy-name').append(listName);
+        $('#list-destroy-modal').fadeIn('fast');
     });
 });
 /* 섹션 스크롤 애니메이션 */
@@ -298,12 +345,12 @@ function dangerInfo(id, msg) {
 function alert(id, title, msg) {
     $('#' + id + '-alert-title').text(title);
     $('#' + id + '-alert-msg').text(msg + ' [알림창은 자동으로 닫힙니다.]');
-    $('#' + id + '-alert').fadeIn();
+    $('#' + id + '-alert').fadeIn('fast');
     if (id === 'danger') {
-        dangerAlertCloseTimer = setTimeout(function () { clearTimeout(dangerAlertCloseTimer); $('#danger-alert').fadeOut(); }, 5000);
+        dangerAlertCloseTimer = setTimeout(function () { clearTimeout(dangerAlertCloseTimer); $('#danger-alert').fadeOut('fast'); }, 5000);
     }
     if (id === 'success') {
-        successAlertCloseTimer = setTimeout(function () { clearTimeout(successAlertCloseTimer); $('#success-alert').fadeOut(); }, 3000);
+        successAlertCloseTimer = setTimeout(function () { clearTimeout(successAlertCloseTimer); $('#success-alert').fadeOut('fast'); }, 3000);
     }
 
 }
@@ -321,7 +368,7 @@ function logOutNav() {
 }
 
 /* 세션 체크 */
-function sessionCheck(callback) {
+function sessionCheck() {
     return new Promise(function (resolve) {
         $.ajax({
             type: 'get',
@@ -329,8 +376,6 @@ function sessionCheck(callback) {
             success: function (data) {
                 if (data.userNo) {
                     loginNav();
-                    console.log(data.userNo);
-                    console.log(data.username);
                 } else {
                     logOutNav();
                 }
@@ -352,12 +397,12 @@ function linkListBind(userData) {
                 data: { 'userNo': userData.userNo },
                 success: function (listData) {
                     $('.list-box-ul').text('');
+                    $('.list-box-ul').append('<li class="list-add"><span class="list-add-icon">+</span></li>');
                     let i = 1;
                     for (item of listData) {
-                        $('.list-box-ul').append('<li class="list-item" id="list-' + item.LIST_NO + '"><span>' + i + '</span>' + item.LIST_NAME + '</li>');
+                        $('.list-box-ul').append('<li class="list-item" number="' + item.LIST_NO + '" content="'+item.LIST_NAME+'"><span class="list-item-number">' + i + '</span>' + item.LIST_NAME + ' <span class="list-destroy-btn"> - </span> </li>');
                         i++;
                     }
-                    $('.list-box-ul').append('<li class="list-add"><span>+</span></li>');
                     resolve(listData);
 
                 }, error: function (e) {
@@ -388,6 +433,13 @@ function linkBind(listData) {
         });
     }
 }
+/* 엔터 키 입력 버튼 트리거 */
+function enterClickTrigger(e,obj){
+    if (e.keyCode === 13) {
+        $(obj).trigger('click');
+    }
+}
+
 /* 회원가입 유효성 체크 변수 */
 let joinPassCheck = false;
 let joinPass = false;
