@@ -15,11 +15,13 @@ $(document).ready(function () {
         if (id === 'login-modal-btn') {
             $('#join-modal').hide();
             $('#login-modal').fadeIn();
+            $('body').css('overflow-y','hidden');
             $('#login-username').focus();
         }
         if (id === 'join-modal-btn') {
             $('#login-modal').hide();
             $('#join-modal').fadeIn();
+            $('body').css('overflow-y','hidden');
             $('#join-username').focus();
         }
 
@@ -43,12 +45,14 @@ $(document).ready(function () {
     $(document).on('click', '.modal', function (e) {
         if (e.target.className === 'modal') {
             $('.modal').fadeOut();
+            $('body').css('overflow-y','scroll');
         }
     });
     /* 키 입력 이벤트 */
     $(document).keydown(function (e) {
         if (e.keyCode === 27) {
             $('.modal').fadeOut();
+            $('body').css('overflow-y','scroll');
         }
     });
     $('#login-modal').keydown(function (e) {
@@ -65,7 +69,6 @@ $(document).ready(function () {
     $('.link-add-box').keydown(function (e) {
         enterClickTrigger(e, '#link-add-btn');
     });
-
     /* 즐겨찾기 이동 이벤트 */
     $('#link-section-move').click(function () {
         sectionScrollTop('link-section');
@@ -212,7 +215,7 @@ $(document).ready(function () {
 
     /* 링크 리스트 토글 */
     $(document).on('click', '.list-item', function (e) {
-        if (e.target.className === 'list-item') {
+        if (e.target.className === 'list-item' || e.target.className === 'list-item-name') {
             $(this).children('ul').slideToggle('fast');
         }
     });
@@ -220,6 +223,7 @@ $(document).ready(function () {
     /* 리스트 추가 */
     $(document).on('click', '.list-add', function () {
         $('#list-add-modal').fadeIn();
+        $('body').css('overflow-y','hidden');
         $('.list-name').focus();
     });
     $(document).on('click', '#list-add-btn', function () {
@@ -233,6 +237,7 @@ $(document).ready(function () {
                     success: function (data) {
                         alert('success', '리스트 추가', '리스트 추가가 완료되었습니다.');
                         $('#list-add-modal').fadeOut('fast');
+                        $('body').css('overflow-y','scroll');
                         $('.list-name').val('');
                         linkListBind(data).then(linkBind);
                     }, error: function (e) {
@@ -251,60 +256,149 @@ $(document).ready(function () {
         const listName = $(this).parent().attr('content');
         const listNo = $(this).parent().attr('number');
         $('.list-destroy-name').text('삭제 할 리스트 명 :' + listName);
+        $('.list-destroy-name').attr('num', listNo);
         $('#list-destroy-modal').fadeIn('fast');
-        $(document).on('click', '#list-destroy-btn', function () {
-            $.ajax({
-                type: 'DELETE',
-                url: 'lists/' + listNo,
-                data: { 'listNo': listNo },
-                success: function (data) {
-                    alert('success', '리스트 삭제', '리스트 삭제가 완료되었습니다.');
-                    $('#list-destroy-modal').fadeOut('fast');
-                    linkListBind(data).then(linkBind);
-                }, error: function (e) {
-                    alert('danger', '리스트 삭제', '리스트를 삭제하는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');
-                }
-            })
-        });
+        $('body').css('overflow-y','hidden');
     });
+
+    $(document).on('click', '#list-destroy-btn', function () {
+        const listNo = $('.list-destroy-name').attr('num');
+        $.ajax({
+            type: 'DELETE',
+            url: 'lists/' + listNo,
+            data: { 'listNo': listNo },
+            success: function (data) {
+                alert('success', '리스트 삭제', '리스트 삭제가 완료되었습니다.');
+                $('#list-destroy-modal').fadeOut('fast');
+                $('body').css('overflow-y','scroll');
+                linkListBind(data).then(linkBind);
+            }, error: function (e) {
+                alert('danger', '리스트 삭제', '리스트를 삭제하는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');
+            }
+        })
+    });
+
 
     $(document).on('click', '.link-add-icon', function () {
         $('#link-add-modal').fadeIn('fast');
+        $('body').css('overflow-y','hidden');
         $('#link-name').focus();
         const listNo = $(this).parent().attr('number');
-        $(document).on('click', '#link-add-btn', function () {
-            const linkName = $('#link-name').val();
-            const linkUrl = $('#link-url').val();
-            const regex = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
-            if (linkName.length > 1) {
-                if (regex.test(linkUrl)) {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/links',
-                        data: { 'linkName': linkName, 'linkUrl': linkUrl, 'listNo': listNo },
-                        success: function (data) {
-                            if (data) {
-                                alert('success', '링크 추가', '링크 추가가 완료되었습니다.');
-                                $('#link-add-modal').fadeOut('fast');
-                                $('#link-add-modal input').val('');
+        $('#link-name').attr('num',listNo);
+    });
 
-                                linkListBind(data).then(linkBind);
-                            } else {
-                                alert('danger', '링크 추가', '이미 등록된 링크 입니다.');
-                            }
-                        }, error: function (e) {
-                            alert('danger', '링크 추가', '링크를 추가하는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');
+    $(document).on('click', '#link-add-btn', function () {
+        const listNo=$('#link-name').attr('num');
+        const linkName = $('#link-name').val();
+        const linkUrl = $('#link-url').val();
+        const regex = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+        if (linkName.length > 1) {
+            if (regex.test(linkUrl)) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/links',
+                    data: { 'linkName': linkName, 'linkUrl': linkUrl, 'listNo': listNo },
+                    success: function (data) {
+                        if (data) {
+                            alert('success', '링크 추가', '링크 추가가 완료되었습니다.');
+                            $('#link-add-modal').fadeOut('fast');
+                            $('body').css('overflow-y','scroll');
+                            $('#link-add-modal input').val('');
+                            linkListBind(data).then(linkBind);
+                        } else {
+                            alert('danger', '링크 추가', '이미 등록된 링크 입니다.');
                         }
-                    });
-                } else {
-                    alert('danger', '링크 추가', 'URL 형식이 잘못되었습니다.');
-                }
+                    }, error: function (e) {
+                        alert('danger', '링크 추가', '링크를 추가하는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');
+                    }
+                });
             } else {
-                alert('danger', '링크 추가', '링크 이름을 입력해주세요.');
+                alert('danger', '링크 추가', 'URL 형식이 잘못되었습니다.');
             }
+        } else {
+            alert('danger', '링크 추가', '링크 이름을 입력해주세요.');
+        }
 
+    });
+    $(document).on('click', '.link-item', function (e) {
+        let name = e.target.className;
+        if (name != 'link-destroy-icon') {
+            let url = $('#' + e.target.id).attr('url');
+            window.open(url, '_blank');
+        }
+    });
+
+    $(document).on('click','.list-edit-icon',function(e) {
+        const listNo=$(this).parent().attr('number');
+        let listName=$(this).parent().attr('content');
+        $('.list-edit-box').attr('num',listNo);
+        $('.list-edit-table').text('');
+        $('#list-edit-listName').val(listName);
+        $.ajax({
+            type:'GET',
+            url:'/links/',
+            data:{'list':{0:{'LIST_NO':listNo}}},
+            success:function(data){  
+                if(data[0]){
+                    $('.list-edit-table').append('<tr> <th class="link-name-th">이름</th> <th>URL</th> </tr>');
+                    for(item of data[0]){                  
+                        $('.list-edit-table').append('<tr><td><input type="text" maxlength="50" value="'+item.LINK_NAME+'" num="'+item.LINK_NO+'"></td> <td><input type="text" maxlength="200" value="'+item.LINK_URL+'"></td></tr>');
+                    }
+                }else{                 
+                    $('.list-edit-table').append('<tr><td style="text-align:center">비어있는 리스트 입니다.</td></tr>');
+                }
+                $('#list-edit-modal').fadeIn('fast');
+                $('body').css('overflow-y','hidden');
+                $('#list-edit-listName').focus();
+            },error:function(e){
+                alert('danger', '리스트 수정', '리스트를 가져오는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');  
+            }
         });
     });
+
+    $(document).on('click','#list-edit-btn',function(e){
+        const listName=$('#list-edit-listName').val();
+        const listNo=$('.list-edit-box').attr('num');
+        let linkNums=new Array();
+        let linkNames=new Array();
+        let linkUrls=new Array();
+        const regex = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+        let urlCheck=true;
+        $('.list-edit-table > tbody  > tr > td > input').each(function(index) {
+            if(index%2===0){
+                linkNames.push($(this).val());
+                linkNums.push($(this).attr('num'));
+            }else{
+                if(!regex.test($(this).val())){
+                    urlCheck=false;
+                    $(this).focus();
+                }
+                linkUrls.push($(this).val());
+            }
+        });
+        
+
+        if(urlCheck){
+            $.ajax({
+                type:'PATCH',
+                url:'/list/'+listNo,
+                data:{'listNo':listNo,'listName':listName,'linkNames':linkNames,'linkUrls':linkUrls,'linkNums':linkNums},
+                success:function(data){
+                    console.log(data);
+                    alert('success', '리스트 수정', '리스트 수정이 완료되었습니다.');  
+                    $('#list-edit-modal').fadeOut('fast');
+                    $('body').css('overflow-y','scroll');
+                    linkListBind(data).then(linkBind);
+                },error:function(e){
+                    alert('danger', '리스트 수정', '리스트를 수정하는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');  
+                }
+            });
+        }else{
+            alert('danger', '리스트 수정', '수정한 URL 중 형식이 잘못된 부분이 있습니다.');  
+        }
+
+    });
+
 });
 /* 섹션 스크롤 애니메이션 */
 function sectionScrollTop(id) {
@@ -455,7 +549,7 @@ function linkListBind(userData) {
                     $('.list-box-ul').append('<li class="list-add"><span class="list-add-icon">+</span></li>');
                     let i = 1;
                     for (item of listData) {
-                        $('.list-box-ul').append('<li class="list-item" id="list-' + item.LIST_NO + '" number="' + item.LIST_NO + '" content="' + item.LIST_NAME + '"><span class="list-item-number">' + i + '</span>' + item.LIST_NAME + ' <span class="list-destroy-icon"> - </span> <span class="link-add-icon"> + </span> </li>');
+                        $('.list-box-ul').append('<li class="list-item" id="list-' + item.LIST_NO + '" number="' + item.LIST_NO + '" content="' + item.LIST_NAME + '"><span class="list-item-number">' + i + '</span><a class="list-item-name">' + item.LIST_NAME + '</a> <span class="list-destroy-icon"> - </span> <span class="link-add-icon"> + </span> <img src="/img/listEdit.png" class="list-edit-icon"> </li>');
                         i++;
                     }
                     resolve(listData);
@@ -477,11 +571,11 @@ function linkBind(listData) {
                 url: '/links',
                 data: { 'list': listData },
                 success: function (linkData) {
-                    $('.link-box-ul').text('');
+                    $('.link-item-ul').text('');
                     for (link of linkData) {
                         for (item of link) {
-                            $('#list-' + item.LIST_NO).append('<ul class="link-item-ul"><li class="link-item" id=link-"' + item.LINK_NO + '" url="' + item.LINK_URL + '"><a class="link-item-name">'
-                                + item.LINK_NAME + '(' + item.LINK_URL + ')</a> <span class="link-destroy-icon">-</span> <img src="/img/linkEdit.png" class="link-edit-icon"></li></ul>');
+                            $('#list-' + item.LIST_NO).append('<ul class="link-item-ul"><li class="link-item" id="link-' + item.LINK_NO + '" url="' + item.LINK_URL + '"><a class="link-item-name">'
+                                + item.LINK_NAME + '(' + item.LINK_URL + ')</a> <span class="link-destroy-icon">-</span> </li></ul>');
                         }
                     }
                     resolve();

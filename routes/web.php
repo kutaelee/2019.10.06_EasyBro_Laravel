@@ -28,7 +28,9 @@ Route::post('/lists','ListController@store');
 
 Route::delete('/lists/{list}','ListController@destroy');
 
+Route::patch('/list/{list}','ListController@update');
 /* link */
 Route::get('/links','LinkController@index');
 Route::post('/links','LinkController@store');
+
 

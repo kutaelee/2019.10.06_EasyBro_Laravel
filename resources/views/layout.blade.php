@@ -8,9 +8,9 @@
   <link rel="stylesheet" href="{{mix('css/tailwind.css')}}">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet"> 
   <link rel="stylesheet" href="//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css">
-  <link rel="stylesheet" href="css/index.css?ver=13">
+  <link rel="stylesheet" href="css/index.css?ver=16">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <script src="js/index.js?ver=18"></script>
+  <script src="js/index.js?ver=20"></script>
   <title>@yield('title','EasyBro')</title>
   <div class="modal" id="login-modal">
     <div class="w-full max-w-xs" id="login-box">
@@ -127,6 +127,18 @@
           <button class="list-btn" id="list-destroy-btn">확인</button>
         </div>
   </div>
+  @yield('list-destroy')
+  <div class="modal" id="list-edit-modal">
+    <div class="list-edit-box">
+        <h1>리스트 수정</h1>
+        <label for="list-edit-listName">리스트 : </label>
+        <input type="text" maxlength="50" id="list-edit-listName">
+        <table class="list-edit-table">         
+        </table>
+        <button class="list-btn" id="list-edit-btn">확인</button>
+    </div>
+  </div>
+  @yield('list-edit')
   <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" id="danger-alert" role="alert">
       <strong class="font-bold" id="danger-alert-title"></strong>
       <span class="block sm:inline"  id="danger-alert-msg"></span>

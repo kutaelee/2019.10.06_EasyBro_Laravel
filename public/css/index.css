@@ -429,12 +429,14 @@ body{
 #list-add-modal{
     padding: 15% 35%;
 }
-#list-add-modal h1 , #list-destroy-modal h1 , #link-add-modal h1 {
+#list-add-modal h1 , #list-destroy-modal h1 , #link-add-modal h1 , #list-edit-modal h1{
+    background: cornflowerblue;
+    color: white;
+    border-radius: 10px;
     text-align: center;
     font-size: 25px;
     font-weight: 600;
     margin-bottom: 5%;
-    color: cornflowerblue;
 }
 #list-add-modal label , #link-add-modal label{
     margin:0 5%;
@@ -450,7 +452,7 @@ body{
     margin: 2% 5%;
     border-radius: 10px;
 }
-#list-add-modal button , #list-destroy-modal button , #link-add-modal button{
+.list-btn , #link-add-modal button{
     padding: 3% 0;
     color: white;
     letter-spacing: 4px;
@@ -464,13 +466,13 @@ body{
     margin-left: 5%;
     margin-top: 2%;
 }
-#list-add-modal button:hover , #list-destroy-modal button:hover , #link-add-modal button:hover{
+.list-btn:hover , #link-add-modal button:hover{
     border: 1px solid #2b6cb0;
     background: #2b6cb0;
     text-align: center;
 }
 .list-add-box{
-    padding: 5%;
+    padding: 2% 5%;
     width: 30vw;
     background: white;
     border: 1px solid white;
@@ -495,9 +497,9 @@ body{
 #list-destroy-modal{
     padding: 15% 25%;
 }
-.list-destroy-box{
+.list-destroy-box {
     padding: 2%;
-    background: rgb(255, 255, 255);
+    background: white;
     width: 50vw;
     min-height: 30vh;
     text-align: center;
@@ -519,11 +521,14 @@ body{
     width: 25px;
     height: 25px;
 }
-#link-add-modal{
-    padding: 15% 25%;
+#link-add-modal {
+    padding: 10% 25%;
 }
-.link-add-box{
-    padding: 5%;
+#list-edit-modal{
+    padding: 5% 25%;
+}
+.link-add-box {
+    padding: 2% 5%;
     width: 50vw;
     background: white;
     border: 1px solid white;
@@ -531,7 +536,49 @@ body{
     border-radius: 10px;
     min-height: 30vh;
 }
-.link-edit-icon{
+.list-edit-box{
+    padding: 2% 5%;
+    width: 50vw;
+    background: white;
+    border-radius: 10px;
+    max-height: 80vh;
+    overflow-y: scroll;
+}
+.list-edit-box label{
+    margin-left: 32%;
+    font-size: 18px;
+    font-weight: 600;
+}
+#list-edit-listName{
+    border: 1px solid gray;
+    width: 30%;
+    padding: 1%;
+}
+.list-edit-box table{
+    margin-top:3%;
+    border: 1px solid gray;
+    width: 100%;
+}
+
+.list-edit-box th{
+    background: cornflowerblue;
+    color: white;
+    letter-spacing: 1px;
+}
+
+.list-edit-box th,td{
+    border: 1px solid gray;
+}
+
+.list-edit-box table input{
+    width: 100%;
+    padding: 2%;
+    letter-spacing: 1px;
+}
+.link-name-th{
+    
+}
+.list-edit-icon{
     width: 25px;
     height: 25px;
     background: teal;
@@ -548,6 +595,15 @@ body{
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.list-item-name{
+    max-width: 70%;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
 @media(max-width:1400px){
     #main-section{
         background-size: cover;
