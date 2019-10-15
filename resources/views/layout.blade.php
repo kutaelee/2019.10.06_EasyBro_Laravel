@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css">
   <link rel="stylesheet" href="css/index.css?ver=16">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <script src="js/index.js?ver=20"></script>
+  <script src="js/index.js?ver=21"></script>
   <title>@yield('title','EasyBro')</title>
   <div class="modal" id="login-modal">
     <div class="w-full max-w-xs" id="login-box">
@@ -128,6 +128,15 @@
         </div>
   </div>
   @yield('list-destroy')
+  <div class="modal" id="link-destroy-modal">
+    <div class="link-destroy-box">
+        <h1 class="link-destroy-name"></h1>
+        <h2>링크를 삭제하시면 복구 할 수없습니다.</h2>
+        <h2>정말로 삭제하시겠습니까?</h2>
+        <button class="link-btn" id="link-destroy-btn">확인</button>
+      </div>
+</div>
+@yield('link-destroy')
   <div class="modal" id="list-edit-modal">
     <div class="list-edit-box">
         <h1>리스트 수정</h1>

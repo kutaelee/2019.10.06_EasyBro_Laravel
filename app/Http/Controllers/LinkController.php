@@ -45,4 +45,23 @@ class LinkController extends Controller
             return null;
         }
     }
+
+    public function destroy(Request $request){
+        $owner=DB::select('SELECT LIST_OWNER FROM LINK_LIST WHERE LIST_NO=(SELECT LIST_NO FROM LINKS WHERE LINK_NO = ?) ',[$request->input('linkNo')]);
+        if(!empty($owner)){
+            if($owner[0]->LIST_OWNER===Redis::get('userNo')){
+                DB::transaction(function () use($request) {
+                    DB::delete('DELETE FROM LINKS WHERE LINK_NO= ? ', [$request->input('linkNo')]);
+                });
+                return response()->json([ 
+                    'userNo'=> Redis::get('userNo')
+                ]);
+            }else{
+                return null;
+            }  
+        }else{
+            return null;
+        }
+
+    }
 }

@@ -200,6 +200,7 @@ $(document).ready(function () {
                     alert('success', '로그인', '반갑습니다. ' + username + '님');
                     loginNav();
                     $('.modal').hide();
+                    $('body').css('overflow-y','scroll');
                     linkListBind(data).then(linkBind);
                     modalInputInit();
                 } else {
@@ -275,7 +276,7 @@ $(document).ready(function () {
             }, error: function (e) {
                 alert('danger', '리스트 삭제', '리스트를 삭제하는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');
             }
-        })
+        });
     });
 
 
@@ -384,7 +385,6 @@ $(document).ready(function () {
                 url:'/list/'+listNo,
                 data:{'listNo':listNo,'listName':listName,'linkNames':linkNames,'linkUrls':linkUrls,'linkNums':linkNums},
                 success:function(data){
-                    console.log(data);
                     alert('success', '리스트 수정', '리스트 수정이 완료되었습니다.');  
                     $('#list-edit-modal').fadeOut('fast');
                     $('body').css('overflow-y','scroll');
@@ -399,6 +399,35 @@ $(document).ready(function () {
 
     });
 
+    $(document).on('click','.link-destroy-icon',function(){
+        const linkNo=$(this).attr('num');
+        const linkName=$('#link-'+linkNo+' a').text();
+        $('.link-destroy-name').attr('num',linkNo);
+        $('.link-destroy-name').text('삭제할 링크이름 : '+ linkName);
+        $('#link-destroy-modal').fadeIn('fast');
+        $('body').css('overflow-y','hidden');
+    });
+
+    $(document).on('click','#link-destroy-btn',function(){
+        const linkNo = $('.link-destroy-name').attr('num');
+        $.ajax({
+            type: 'DELETE',
+            url: 'links/' + linkNo,
+            data: { 'linkNo': linkNo },
+            success: function (data) {
+                if(data){
+                    alert('success', '링크 삭제', '링크 삭제가 완료되었습니다.');
+                    $('#link-destroy-modal').fadeOut('fast');
+                    $('body').css('overflow-y','scroll');
+                    linkListBind(data).then(linkBind);
+                }else{
+                    alert('danger', '링크 삭제', '링크를 삭제하는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');
+                }
+            }, error: function (e) {
+                alert('danger', '링크 삭제', '링크를 삭제하는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');
+            }
+        });
+    });
 });
 /* 섹션 스크롤 애니메이션 */
 function sectionScrollTop(id) {
@@ -508,11 +537,11 @@ function alert(id, title, msg) {
 function loginNav() {
     $('#login-modal-btn').hide();
     $('#join-modal-btn').hide();
-    $('#logout-btn').show();
+    $('#logout-btn').css('display','block');
 }
 function logOutNav() {
-    $('#login-modal-btn').show();
-    $('#join-modal-btn').show();
+    $('#login-modal-btn').css('display','block');
+    $('#join-modal-btn').css('display','block');
     $('#logout-btn').hide();
 }
 
@@ -575,7 +604,7 @@ function linkBind(listData) {
                     for (link of linkData) {
                         for (item of link) {
                             $('#list-' + item.LIST_NO).append('<ul class="link-item-ul"><li class="link-item" id="link-' + item.LINK_NO + '" url="' + item.LINK_URL + '"><a class="link-item-name">'
-                                + item.LINK_NAME + '(' + item.LINK_URL + ')</a> <span class="link-destroy-icon">-</span> </li></ul>');
+                                + item.LINK_NAME + '(' + item.LINK_URL + ')</a> <span class="link-destroy-icon" num="'+item.LINK_NO+'">-</span> </li></ul>');
                         }
                     }
                     resolve();

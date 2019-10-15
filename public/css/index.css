@@ -429,7 +429,7 @@ body{
 #list-add-modal{
     padding: 15% 35%;
 }
-#list-add-modal h1 , #list-destroy-modal h1 , #link-add-modal h1 , #list-edit-modal h1{
+#list-add-modal h1 , #list-destroy-modal h1 , #link-add-modal h1 , #list-edit-modal h1 , #link-destroy-modal h1{
     background: cornflowerblue;
     color: white;
     border-radius: 10px;
@@ -452,7 +452,7 @@ body{
     margin: 2% 5%;
     border-radius: 10px;
 }
-.list-btn , #link-add-modal button{
+.list-btn , .link-btn{
     padding: 3% 0;
     color: white;
     letter-spacing: 4px;
@@ -466,7 +466,7 @@ body{
     margin-left: 5%;
     margin-top: 2%;
 }
-.list-btn:hover , #link-add-modal button:hover{
+.list-btn:hover , .link-btn:hover{
     border: 1px solid #2b6cb0;
     background: #2b6cb0;
     text-align: center;
@@ -494,10 +494,10 @@ body{
     width: 25px;
     height: 25px;
 }
-#list-destroy-modal{
+#list-destroy-modal , #link-destroy-modal{
     padding: 15% 25%;
 }
-.list-destroy-box {
+.list-destroy-box , .link-destroy-box {
     padding: 2%;
     background: white;
     width: 50vw;
@@ -505,10 +505,10 @@ body{
     text-align: center;
     border-radius: 10px;
 }
-#list-destroy-modal h2{
+#list-destroy-modal h2 , #link-destroy-modal h2{
     margin: 2%;
 }
-#list-destroy-modal button{
+#list-destroy-modal button , #link-destroy-modal button{
     width: 20%;
     padding: 2%;
     margin-left: 0%;
@@ -575,9 +575,6 @@ body{
     padding: 2%;
     letter-spacing: 1px;
 }
-.link-name-th{
-    
-}
 .list-edit-icon{
     width: 25px;
     height: 25px;
@@ -585,8 +582,8 @@ body{
     padding: 3px;
     border-radius: 50%;
     float: right;
-    margin-right: 1%;
-    margin-top: -.1%;
+    margin-right: 10px;
+    margin-top: -2px;
 }
 .link-item-name{
     max-width: 90%;
@@ -610,10 +607,7 @@ body{
     }
 }
 @media(max-width:1024px){
-    #join-modal-btn{
-        float:none;
-    }
-    #login-modal-btn{
+    #login-modal-btn ,  #logout-btn , #join-modal-btn{
         float:none;
     }
     #navi-menu{
@@ -641,20 +635,32 @@ body{
         font-size: 25px;
         margin-top: 7%;
     }
-    #join-box{
+    #join-box , #login-box{
         margin-left:-10vw;
     }
-    #login-box{
-        margin-left:-10vw;
+    .link-list{
+        width: 90%;
+        margin: 20% 5%;
+    }
+    .list-edit-box , .link-add-box , .list-destroy-box , .link-destroy-box , .list-add-box{
+        width: 90vw;
+        margin: 20% 5%;
+    }
+    #list-add-modal,#list-edit-modal,#list-destroy-modal,#link-destroy-modal,#link-add-modal{
+        padding: 0;
+    }
+    .section-title{
+        font-size:18px;
+    }
+    .container{
+        margin:10% 0;
+    }
+    .list-item-name{
+        max-width: 50%;
     }
 }
 @media(max-width:500px){
-    #join-box{
-        max-width: 100vw;
-        margin-left:-41vw;
-        margin-top: 15vh;
-    }
-    #login-box{
+    #join-box ,  #login-box{
         max-width: 100vw;
         margin-left:-41vw;
         margin-top: 15vh;
