@@ -8,9 +8,9 @@
   <link rel="stylesheet" href="{{mix('css/tailwind.css')}}">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet"> 
   <link rel="stylesheet" href="//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css">
-  <link rel="stylesheet" href="css/index.css?ver=16">
+  <link rel="stylesheet" href="css/index.css?ver=17">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <script src="js/index.js?ver=21"></script>
+  <script src="js/index.js?ver=22"></script>
   <title>@yield('title','EasyBro')</title>
   <div class="modal" id="login-modal">
     <div class="w-full max-w-xs" id="login-box">
@@ -148,6 +148,13 @@
     </div>
   </div>
   @yield('list-edit')
+  <div class="modal" id="list-share-modal">
+      <div class="list-share-box">
+          <h1 class="list-share-name">리스트 공유</h1>
+          <button class="list-btn" id="list-share-btn">확인</button>
+        </div>
+  </div>
+  @yield('link-share')
   <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" id="danger-alert" role="alert">
       <strong class="font-bold" id="danger-alert-title"></strong>
       <span class="block sm:inline"  id="danger-alert-msg"></span>
@@ -325,7 +332,13 @@
 
   <section class="board-section" id="board-section">
     <h1 class="section-title">#즐겨찾기 공유 게시판</h1>
-    <div class="board"></div>
+    <div class="board">
+      <div class="share">
+         <table class="list-share-table"></table>
+      </div>
+      <button class="list-btn" id="list-share-modal-btn">리스트 공유</button>
+    </div>
+    
   </section>
   @yield('board')
 

@@ -8,7 +8,7 @@ $(document).ready(function () {
     });
     /* 세션체크 후 링크페이지 세팅 */
     sessionCheck().then(linkListBind).then(linkBind);
-
+    boardInit();
     $('#navi').click(function (e) {
         let id = e.target.id;
         /* 모달 버튼 클릭 이벤트 */
@@ -140,8 +140,6 @@ $(document).ready(function () {
             success: function () {
                 logOutNav();
                 alert('success', '로그아웃', '로그아웃이 완료되었습니다.');
-                userNo = null;
-                username = null;
                 $('.list-box-ul').text('');
             }, error: function (e) {
                 console.log(e);
@@ -160,8 +158,6 @@ $(document).ready(function () {
                 data: { 'id': id, 'pw': pw, 'email': email },
                 success: function (data) {
                     if (data.result) {
-                        userNo = data.userNo;
-                        username = data.username;
                         alert('success', '회원가입', '회원가입이 완료되었습니다.');
                         $('.modal input').val('');
                         $('.modal').hide();
@@ -195,8 +191,6 @@ $(document).ready(function () {
             data: { 'id': id, 'pw': pw },
             success: function (data) {
                 if (data.userNo) {
-                    userNo = data.userNo;
-                    username = data.username;
                     alert('success', '로그인', '반갑습니다. ' + username + '님');
                     loginNav();
                     $('.modal').hide();
@@ -428,7 +422,16 @@ $(document).ready(function () {
             }
         });
     });
+
+    $(document).on('click','#list-share-modal-btn','click',function(){
+        $('#list-share-modal').fadeIn('fast');
+        $('body').css('overflow-y','hidden');
+    });
 });
+function boardInit(){
+    $('.list-share-table').text('');
+    $('.list-share-table').append('<tr><th>번호</th><th>리스트명</th><th>생성한 시간</th><th>공유한 시간</th><th>공유된 횟수</th></tr>');
+}
 /* 섹션 스크롤 애니메이션 */
 function sectionScrollTop(id) {
     let SectionTop = $('#' + id).offset().top;
@@ -630,7 +633,3 @@ let joinEmail = false;
 /* 알렛 타이머 변수 */
 let dangerAlertCloseTimer;
 let successAlertCloseTimer;
-
-/* 회원 아이디 및 번호 */
-let userNo = null;
-let username = null;
