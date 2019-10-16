@@ -272,6 +272,7 @@ $(document).ready(function () {
                 $('#list-destroy-modal').fadeOut('fast');
                 $('body').css('overflow-y', 'scroll');
                 linkListBind(data).then(linkBind);
+                boardInit(1,keyword,selected);
             }, error: function (e) {
                 alert('danger', '리스트 삭제', '리스트를 삭제하는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');
             }
@@ -419,6 +420,7 @@ $(document).ready(function () {
                     $('#link-destroy-modal').fadeOut('fast');
                     $('body').css('overflow-y', 'scroll');
                     linkListBind(data).then(linkBind);
+
                 } else {
                     alert('danger', '링크 삭제', '링크를 삭제하는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');
                 }
@@ -520,7 +522,7 @@ $(document).ready(function () {
             currentPageNum=currentPageNum+plusNum;         
         }
         if(currentPageNum>Math.ceil(boardCount/10)){
-            currentPageNum=Math.ceil(boardCount/10)-boardCount%10+1;
+            currentPageNum=Math.ceil(boardCount/10)-boardCount%10;
         }
         boardInit(currentPageNum,keyword,selected);
     });
@@ -900,8 +902,8 @@ function pagingInit(count,currentPageNum){
     maxPageNum=10*Math.ceil(currentPageNum/10);
  
 
-    if(maxPageNum>count/10+1){
-        maxPageNum=count/10+1;
+    if(maxPageNum>Math.ceil(count/10)){
+        maxPageNum=Math.ceil(count/10);
     }
 
     if(count<=10){
