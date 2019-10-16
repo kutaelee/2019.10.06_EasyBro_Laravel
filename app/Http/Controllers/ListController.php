@@ -10,7 +10,12 @@ use Illuminate\Support\Facades\Redis;
 class ListController extends Controller
 {
     public function index(Request $request){
-        $lists=DB::select('SELECT LIST_NO,LIST_NAME FROM LINK_LIST WHERE LIST_OWNER = ?', [Redis::get('userNo')]);
+        if(!empty($request->input('keyword'))){
+            $keyword='%'.htmlspecialchars($request->input('keyword')).'%';
+            $lists=DB::select('SELECT DISTINCT LL.LIST_NO,LL.LIST_NAME FROM LINK_LIST AS LL JOIN LINKS AS LS ON LL.LIST_NO = LS.LIST_NO WHERE LIST_OWNER = ? AND LINK_NAME LIKE ?', [Redis::get('userNo'),$keyword]);
+        }else{
+            $lists=DB::select('SELECT LIST_NO,LIST_NAME FROM LINK_LIST WHERE LIST_OWNER = ?', [Redis::get('userNo')]);
+        }
         return $lists;
     }
     public function show(Request $request){

@@ -18,6 +18,7 @@ class BoardController extends Controller
             }else{
                 $lists=DB::select('SELECT B.DOC_NO,B.LIST_NO,B.SHARE_COUNT,B.DOC_CREATE_AT,L.LIST_CREATED_AT,L.LIST_NAME,U.USER_ID FROM BOARD AS B JOIN LINK_LIST AS L ON B.LIST_NO = L.LIST_NO JOIN USERS AS U ON L.LIST_OWNER = U.USER_NO WHERE USER_ID LIKE ? ORDER BY DOC_CREATE_AT DESC LIMIT ?,10',[$keyword,$request->input('pageNum')]);
             }
+            
         }else{
             $lists=DB::select('SELECT B.DOC_NO,B.LIST_NO,B.SHARE_COUNT,B.DOC_CREATE_AT,L.LIST_CREATED_AT,L.LIST_NAME,U.USER_ID FROM BOARD AS B JOIN LINK_LIST AS L ON B.LIST_NO = L.LIST_NO JOIN USERS AS U ON L.LIST_OWNER = U.USER_NO ORDER BY DOC_CREATE_AT DESC LIMIT ?,10',[$request->input('pageNum')]);
         }

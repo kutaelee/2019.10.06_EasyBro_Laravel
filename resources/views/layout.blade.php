@@ -281,8 +281,7 @@
             <h2>즐겨찾기 추가</h2>
             <p>
               즐겨찾기 탭에서 자신만의 즐겨찾기 리스트를 만들 수 있습니다.<br><br>
-              즐겨찾기 탭에서는 리스트에 포함된 사이트를 이름으로 검색할 수 있고 <br><br>
-              리스트에 포함되어 있지 않더라도 웹에서 검색하기 버튼으로 찾고 쉽게 추가할 수 있습니다.<br><br>
+              즐겨찾기 탭에서는 리스트에 포함된 사이트를 등록한 이름으로 검색할 수 있습니다. <br><br>
             </p>
           </div>
         </div>
@@ -332,7 +331,7 @@
     <h1 class="section-title" id="link-title">#저장한 즐겨찾기 리스트</h1>
     <div class="link-list" id="link-use">
       <h2 class="list-title">즐겨찾기 리스트</h2>
-      <input type="text" class="link-search" placeholder="내 리스트에서 검색하기">
+      <input type="text" class="link-search" placeholder="내 리스트에서 등록한 이름으로 검색 + ENTER">
       <div class="list-box">
         <ul class="list-box-ul">
         </ul>

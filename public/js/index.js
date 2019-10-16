@@ -530,6 +530,13 @@ $(document).ready(function () {
         selected=$('#board-search-select option:selected').val();
         boardInit(1,keyword,selected);
     });
+
+    $('.link-search').keyup(function(e){
+        linkKeyword=$(this).val();
+        if(e.keyCode===13 || !linkKeyword){
+            sessionCheck().then(linkListBind).then(linkBind);
+        }
+    });
 });
 
 /* 섹션 스크롤 애니메이션 */
@@ -675,6 +682,7 @@ function linkListBind(userData) {
             $.ajax({
                 type: 'get',
                 url: '/lists',
+                data:{'keyword':linkKeyword},
                 success: function (listData) {
                     $('.list-box-ul').text('');
                     $('.list-box-ul').append('<li class="list-add"><span class="list-add-icon">+</span></li>');
@@ -923,3 +931,4 @@ let maxPageNum=10;
 let boardCount=0;
 let keyword=null;
 let selected=null;
+let linkKeyword=null;
