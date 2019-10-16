@@ -26,23 +26,45 @@ class LinkController extends Controller
     }
 
     public function store(Request $request){
-        $num=$request->input('listNo');
-        $name=htmlspecialchars($request->input('linkName'));
-        $url=htmlspecialchars($request->input('linkUrl'));
-        $duple=DB::select('SELECT COUNT(*) AS COUNT FROM LINKS WHERE LIST_NO = ? AND LINK_NAME = ? AND LINK_URL = ?' , [ $num , $name , $url]);
-        if(!$duple[0]->COUNT){
-            DB::transaction(function () use($num,$name,$url) {
-                DB::table('LINKS')->insert([
-                    'LINK_NAME'=> $name,
-                    'LIST_NO'=> $num,
-                    'LINK_URL'=> $url
-                ]);
-            });
+        $list=$request->input('list');
+        if(!empty($list)){
+
+            $num=$request->input('listNo');
+            $names=$request->input('linkNames');
+            $urls=$request->input('linkUrls');
+            if(!empty($names)){
+                DB::transaction(function () use($num,$names,$urls) {
+                    for($i=0;$i<count($names);$i++){
+                        DB::table('LINKS')->insert([
+                           'LINK_NAME'=>htmlspecialchars($names[$i]),
+                           'LIST_NO'=>$num,
+                           'LINK_URL'=>htmlspecialchars($urls[$i])
+                        ]);
+                    }
+                  });
+            }
             return response()->json([ 
                 'userNo'=> Redis::get('userNo')
             ]);
         }else{
-            return null;
+            $num=$request->input('listNo');
+            $name=htmlspecialchars($request->input('linkName'));
+            $url=htmlspecialchars($request->input('linkUrl'));
+            $duple=DB::select('SELECT COUNT(*) AS COUNT FROM LINKS WHERE LIST_NO = ? AND LINK_NAME = ? AND LINK_URL = ?' , [ $num , $name , $url]);
+            if(!$duple[0]->COUNT){
+                DB::transaction(function () use($num,$name,$url) {
+                    DB::table('LINKS')->insert([
+                        'LINK_NAME'=> $name,
+                        'LIST_NO'=> $num,
+                        'LINK_URL'=> $url
+                    ]);
+                });
+                return response()->json([ 
+                    'userNo'=> Redis::get('userNo')
+                ]);
+            }else{
+                return null;
+            }
         }
     }
 

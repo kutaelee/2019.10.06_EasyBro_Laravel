@@ -10,19 +10,28 @@ use Illuminate\Support\Facades\Redis;
 class ListController extends Controller
 {
     public function index(Request $request){
-        $lists=DB::select('SELECT LIST_NO,LIST_NAME FROM LINK_LIST WHERE LIST_OWNER = ?', [$request->input('userNo')]);
+        $lists=DB::select('SELECT LIST_NO,LIST_NAME FROM LINK_LIST WHERE LIST_OWNER = ?', [Redis::get('userNo')]);
         return $lists;
     }
+    public function show(Request $request){
+        $list=DB::select('SELECT LIST_NO FROM LINK_LIST WHERE LIST_OWNER = ? AND LIST_NAME = ?', [Redis::get('userNo'),htmlspecialchars($request->input('name'))]);
+        return $list;
+    }
     public function store(Request $request){
-        DB::transaction(function () use($request) {
-            DB::table('LINK_LIST')->insert([
-                'LIST_NAME'=>htmlspecialchars($request->input('name')),
-                'LIST_OWNER'=> Redis::get('userNo')
-            ]);
-        });
-        return response()->json([ 
+        $count=DB::select('SELECT COUNT(*) AS COUNT FROM LINK_LIST WHERE LIST_NAME = ? AND LIST_OWNER = ?',[htmlspecialchars($request->input('name')),Redis::get('userNo')]);
+        if(!$count[0]->COUNT){
+            DB::transaction(function () use($request) {
+                $index=DB::table('LINK_LIST')->insert([
+                    'LIST_NAME'=>htmlspecialchars($request->input('name')),
+                    'LIST_OWNER'=> Redis::get('userNo')
+                ]);
+            });       
+            return response()->json([ 
             'userNo'=> Redis::get('userNo')
-        ]);
+            ]);
+        }else{
+            return null;
+        }
     }
     public function destroy(Request $request){
         DB::transaction(function () use($request) {

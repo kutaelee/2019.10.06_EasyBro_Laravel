@@ -263,7 +263,7 @@ body{
     background: white;
     min-width: 80%;
     display: inline-block;
-    min-height: 60vh;
+    min-height: 70vh;
     box-shadow: 3px 4px 7px grey;
     border: 3px solid white;
     border-radius: 5px;
@@ -429,7 +429,7 @@ body{
 #list-add-modal{
     padding: 15% 35%;
 }
-#list-add-modal h1 , #list-destroy-modal h1 , #link-add-modal h1 , #list-edit-modal h1 , #link-destroy-modal h1 , #list-share-modal h1{
+.modal h1{
     background: cornflowerblue;
     color: white;
     border-radius: 10px;
@@ -525,7 +525,7 @@ body{
 #link-add-modal {
     padding: 10% 25%;
 }
-#list-edit-modal{
+#list-edit-modal,#share-board-modal{
     padding: 5% 25%;
 }
 .link-add-box {
@@ -537,13 +537,13 @@ body{
     border-radius: 10px;
     min-height: 30vh;
 }
-.list-edit-box{
+.list-edit-box , .share-board-box{
     padding: 2% 5%;
     width: 50vw;
     background: white;
     border-radius: 10px;
     max-height: 80vh;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 .list-edit-box label{
     margin-left: 32%;
@@ -555,19 +555,26 @@ body{
     width: 30%;
     padding: 1%;
 }
-.list-edit-box table{
+.list-edit-box table , .share-board-table{
     margin-top:3%;
     border: 1px solid gray;
     width: 100%;
 }
-
+.share-board-table{
+    text-align: center;
+}
+.share-board-table a{
+    color: dodgerblue;
+    text-decoration: underline;
+    font-family: none;
+}
 .list-edit-box th{
     background: cornflowerblue;
     color: white;
     letter-spacing: 1px;
 }
 
-.list-edit-box th,td{
+.list-edit-table th , .list-edit-table td , .share-board-table th , .share-board-table td{
     border: 1px solid gray;
 }
 
@@ -604,15 +611,41 @@ body{
     width: 100%;
     margin: 0;
     border-top: 1px solid gray;
+    text-align: center;
 }
 .list-share-table th:first-child , .list-share-table th:last-child{
     width:10%;
 }
-
-.share{
-    min-height: 50vh;
+.list-share-table tr{
+    cursor: pointer;
+    height: 5vh;
 }
-
+.list-share-table tr:first-child{
+    background:#001D44;
+    color: white;
+    font-weight: 600;
+    cursor: unset;
+}
+.share-item:hover {
+    background: #4CB9FE;
+    color: white;
+    font-weight: 500;
+}
+.list-share-table th, .list-share-table td{
+    border-bottom: 1px solid gray;
+}
+.share{
+    min-height: 60vh;
+}
+.my-list{
+    width: 98%;
+    border: 1px solid cornflowerblue;
+    height: 35px;
+    display: block;
+    font-weight: 600;
+    margin-left: 1%;
+    border-radius: 5px;
+}
 #list-share-modal-btn{
     padding: 1%;
     color: white;
@@ -626,10 +659,19 @@ body{
     margin-left: 45%;
     width: 10%;
 }
+#list-share-modal-btn:hover{
+    border: 1px solid #2b6cb0;
+    background: #2b6cb0;
+}
 #list-share-btn{
     width: 25%;
     padding: 2%;
     margin: 2% 0;
+}
+#list-get-btn{
+    width: 20%;
+    padding: 2%;
+    margin-left: 40%;
 }
 @media(max-width:1400px){
     #main-section{

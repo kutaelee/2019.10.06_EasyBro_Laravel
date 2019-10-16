@@ -26,10 +26,14 @@ Route::get('/lists','ListController@index');
 Route::post('/lists','ListController@store');
 Route::delete('/lists/{list}','ListController@destroy');
 Route::patch('/list/{list}','ListController@update');
+Route::get('/lists/{list}','ListController@show');
 
 /* link */
 Route::get('/links','LinkController@index');
 Route::post('/links','LinkController@store');
 Route::delete('/links/{link}','LinkController@destroy');
 
-
+/* board */
+Route::get('/boards','BoardController@index');
+Route::get('/boards/{document}','BoardController@show');
+Route::post('/boards','BoardController@store');

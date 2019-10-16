@@ -6,11 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="{{mix('css/tailwind.css')}}">
-  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css">
-  <link rel="stylesheet" href="css/index.css?ver=17">
+  <link rel="stylesheet" href="css/index.css?ver=22">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <script src="js/index.js?ver=22"></script>
+  <script src="js/index.js?ver=24"></script>
   <title>@yield('title','EasyBro')</title>
   <div class="modal" id="login-modal">
     <div class="w-full max-w-xs" id="login-box">
@@ -28,8 +28,8 @@
             패스워드
           </label>
           <input
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="login-password" type="password" placeholder="****">
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="login-password" type="password" placeholder="****">
         </div>
 
         <div class="flex items-center justify-between">
@@ -58,8 +58,8 @@
           </label>
           <input
             class="shadow appearance-none border mb-2 border-red-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="join-username" type="text" placeholder="ID"  maxlength="20">
-            <p class="text-red-500 text-xs italic" id="join-username-info">아이디를 입력해주세요.</p>
+            id="join-username" type="text" placeholder="ID" maxlength="20">
+          <p class="text-red-500 text-xs italic" id="join-username-info">아이디를 입력해주세요.</p>
         </div>
         <div class="mb-6">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="join-password">
@@ -70,21 +70,21 @@
             id="join-password" type="password" placeholder="****" maxlength="50">
           <p class="text-red-500 text-xs italic mb-2" id="join-password-info">패스워드를 입력해주세요.</p>
           <label class="block text-gray-700 text-sm font-bold mb-2" for="join-password-check">
-              패스워드 체크
-            </label>
+            패스워드 체크
+          </label>
           <input
-          class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-          id="join-password-check" type="password" placeholder="****" maxlength="50">
-        <p class="text-red-500 text-xs italic mb-3" id="join-password-check-info">패스워드가 같지 않습니다.</p>
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="join-email">
+            class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+            id="join-password-check" type="password" placeholder="****" maxlength="50">
+          <p class="text-red-500 text-xs italic mb-3" id="join-password-check-info">패스워드가 같지 않습니다.</p>
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="join-email">
             이메일
           </label>
-        <input
-        class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-        id="join-email" type="email" placeholder="YourEmail@Example.com" maxlength="50">
-      <p class="text-red-500 text-xs italic" id="join-email-info">비밀번호 찾기를 위해 정확히 입력해주세요.</p>
+          <input
+            class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+            id="join-email" type="email" placeholder="YourEmail@Example.com" maxlength="50">
+          <p class="text-red-500 text-xs italic" id="join-email-info">비밀번호 찾기를 위해 정확히 입력해주세요.</p>
 
-      </div>
+        </div>
         <div class="flex items-center justify-between text-center">
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded focus:outline-none focus:shadow-outline"
@@ -109,65 +109,82 @@
   </div>
   @yield('list-add')
   <div class="modal" id="link-add-modal">
-      <div class="link-add-box">
-          <h1> 링크 추가 </h1>
-          <label for="link-name">이름</label>
-          <input type="text" class="link-name" id="link-name" maxlength="50" placeholder="구글">
-          <label for="link-url">URL</label>
-          <input type="text" class="link-url" id="link-url" maxlength="200" placeholder="https://google.com">
-          <button class="link-btn" id="link-add-btn">추가</button>
-        </div>
+    <div class="link-add-box">
+      <h1> 링크 추가 </h1>
+      <label for="link-name">이름</label>
+      <input type="text" class="link-name" id="link-name" maxlength="50" placeholder="구글">
+      <label for="link-url">URL</label>
+      <input type="text" class="link-url" id="link-url" maxlength="200" placeholder="https://google.com">
+      <button class="link-btn" id="link-add-btn">추가</button>
+    </div>
   </div>
   @yield('link-add')
   <div class="modal" id="list-destroy-modal">
-      <div class="list-destroy-box">
-          <h1 class="list-destroy-name"></h1>
-          <h2>리스트를 삭제하시면 포함된 링크도 모두 삭제되며 복구 할 수없습니다.</h2>
-          <h2>정말로 삭제하시겠습니까?</h2>
-          <button class="list-btn" id="list-destroy-btn">확인</button>
-        </div>
+    <div class="list-destroy-box">
+      <h1 class="list-destroy-name"></h1>
+      <h2>리스트를 삭제하시면 포함된 링크도 모두 삭제되며 복구 할 수없습니다.</h2>
+      <h2>정말로 삭제하시겠습니까?</h2>
+      <button class="list-btn" id="list-destroy-btn">확인</button>
+    </div>
   </div>
   @yield('list-destroy')
   <div class="modal" id="link-destroy-modal">
     <div class="link-destroy-box">
-        <h1 class="link-destroy-name"></h1>
-        <h2>링크를 삭제하시면 복구 할 수없습니다.</h2>
-        <h2>정말로 삭제하시겠습니까?</h2>
-        <button class="link-btn" id="link-destroy-btn">확인</button>
-      </div>
-</div>
-@yield('link-destroy')
+      <h1 class="link-destroy-name"></h1>
+      <h2>링크를 삭제하시면 복구 할 수없습니다.</h2>
+      <h2>정말로 삭제하시겠습니까?</h2>
+      <button class="link-btn" id="link-destroy-btn">확인</button>
+    </div>
+  </div>
+  @yield('link-destroy')
   <div class="modal" id="list-edit-modal">
     <div class="list-edit-box">
-        <h1>리스트 수정</h1>
-        <label for="list-edit-listName">리스트 : </label>
-        <input type="text" maxlength="50" id="list-edit-listName">
-        <table class="list-edit-table">         
-        </table>
-        <button class="list-btn" id="list-edit-btn">확인</button>
+      <h1>리스트 수정</h1>
+      <label for="list-edit-listName">리스트 : </label>
+      <input type="text" maxlength="50" id="list-edit-listName">
+      <table class="list-edit-table">
+      </table>
+      <button class="list-btn" id="list-edit-btn">확인</button>
     </div>
   </div>
   @yield('list-edit')
   <div class="modal" id="list-share-modal">
-      <div class="list-share-box">
-          <h1 class="list-share-name">리스트 공유</h1>
-          <button class="list-btn" id="list-share-btn">확인</button>
-        </div>
-  </div>
-  @yield('link-share')
-  <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" id="danger-alert" role="alert">
-      <strong class="font-bold" id="danger-alert-title"></strong>
-      <span class="block sm:inline"  id="danger-alert-msg"></span>
-      <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-        <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" id="danger-alert-close"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
-      </span>
+    <div class="list-share-box">
+      <h1 class="list-share-name">리스트 공유</h1>
+      <select class="my-list" name="my-list"></select>
+      <button class="list-btn" id="list-share-btn">확인</button>
     </div>
-    @yield('danger-alert')
-    <div class="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3" id="success-alert" role="alert">
-        <p class="font-bold" id="success-alert-title"></p>
-        <p class="text-sm"  id="success-alert-msg"></p>
-      </div>
-      @yield('success-alert')
+  </div>
+  @yield('list-share')
+  <div class="modal" id="share-board-modal">
+    <div class="share-board-box">
+      <h1 class="share-board-name"></h1>
+      <table class="share-board-table">
+
+      </table>
+      <button class="list-btn" id="list-get-btn">담기</button>
+    </div>
+  </div>
+  @yield('share-board')
+  <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" id="danger-alert" role="alert">
+    <strong class="font-bold" id="danger-alert-title"></strong>
+    <span class="block sm:inline" id="danger-alert-msg"></span>
+    <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+      <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20" id="danger-alert-close">
+        <title>Close</title>
+        <path
+          d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+      </svg>
+    </span>
+  </div>
+  @yield('danger-alert')
+  <div class="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3" id="success-alert" role="alert">
+    <p class="font-bold" id="success-alert-title"></p>
+    <p class="text-sm" id="success-alert-msg"></p>
+  </div>
+  @yield('success-alert')
+
 <body>
   <nav class="flex items-center justify-between flex-wrap bg-blue-600 p-6 sticky top-0 z-50" id="navi">
     <div class="flex items-center flex-shrink-0 text-white mr-6">
@@ -186,16 +203,13 @@
     </div>
     <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto" id="navi-menu">
       <div class="text-sm lg:flex-grow">
-        <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200  mr-4 cursor-pointer"
-          id="info-section-move-btn">
+        <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200  mr-4 cursor-pointer" id="info-section-move-btn">
           이용안내
         </a>
-        <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200  mr-4 cursor-pointer"
-          id="link-section-move-btn">
+        <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200  mr-4 cursor-pointer" id="link-section-move-btn">
           즐겨찾기
         </a>
-        <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200  mr-4 cursor-pointer"
-          id="board-section-move-btn">
+        <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200  mr-4 cursor-pointer" id="board-section-move-btn">
           공유게시판
         </a>
         <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200  cursor-pointer mr-12 float-right"
@@ -206,8 +220,7 @@
           id="login-modal-btn">
           로그인
         </a>
-        <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 cursor-pointer mr-6 float-right"
-          id="logout-btn">
+        <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 cursor-pointer mr-6 float-right" id="logout-btn">
           로그아웃
         </a>
       </div>
@@ -250,10 +263,10 @@
       </div>
     </div>
   </section>
-@yield('main')
+  @yield('main')
 
   <section class="info" id="info-section">
-      <h1 class="section-title" id="link-title"># 이용안내</h1>
+    <h1 class="section-title" id="link-title"># 이용안내</h1>
     <div class="infobackground">
       <div class="container">
         <div class="cards">
@@ -318,15 +331,15 @@
   @yield('info')
 
   <section class="link-section" id="link-section">
-      <h1 class="section-title" id="link-title">#저장한 즐겨찾기 리스트</h1>
-      <div class="link-list" id="link-use">
-        <h2 class="list-title">즐겨찾기 리스트</h2>
-        <input type="text" class="link-search" placeholder="내 리스트에서 검색하기">
-        <div class="list-box">
-          <ul class="list-box-ul">
-          </ul>
-        </div>
+    <h1 class="section-title" id="link-title">#저장한 즐겨찾기 리스트</h1>
+    <div class="link-list" id="link-use">
+      <h2 class="list-title">즐겨찾기 리스트</h2>
+      <input type="text" class="link-search" placeholder="내 리스트에서 검색하기">
+      <div class="list-box">
+        <ul class="list-box-ul">
+        </ul>
       </div>
+    </div>
   </section>
   @yield('list')
 
@@ -334,11 +347,11 @@
     <h1 class="section-title">#즐겨찾기 공유 게시판</h1>
     <div class="board">
       <div class="share">
-         <table class="list-share-table"></table>
+        <table class="list-share-table"></table>
       </div>
       <button class="list-btn" id="list-share-modal-btn">리스트 공유</button>
     </div>
-    
+
   </section>
   @yield('board')
 

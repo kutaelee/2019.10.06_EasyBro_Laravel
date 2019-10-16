@@ -16,8 +16,9 @@ class CreateLinkListTable extends Migration
         Schema::create('LINK_LIST', function (Blueprint $table) {
             $table->integer('LIST_NO')->autoIncrement();
             $table->string('LIST_NAME')->nullable(false);
-            $table->string('LIST_OWNER')->nullable(false);
+            $table->integer('LIST_OWNER')->nullable(false);
             $table->timestamp('LIST_CREATED_AT')->useCurrent();
+            $table->foreign('LIST_OWNER')->references('USER_NO')->on('USERS')->onDelete('cascade');
         });
     }
 
