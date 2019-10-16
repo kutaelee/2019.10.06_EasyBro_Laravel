@@ -8,9 +8,9 @@
   <link rel="stylesheet" href="{{mix('css/tailwind.css')}}">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css">
-  <link rel="stylesheet" href="css/index.css?ver=22">
+  <link rel="stylesheet" href="css/index.css?ver=25">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <script src="js/index.js?ver=24"></script>
+  <script src="js/index.js?ver=25"></script>
   <title>@yield('title','EasyBro')</title>
   <div class="modal" id="login-modal">
     <div class="w-full max-w-xs" id="login-box">
@@ -349,7 +349,15 @@
       <div class="share">
         <table class="list-share-table"></table>
       </div>
-      <button class="list-btn" id="list-share-modal-btn">리스트 공유</button>
+      <select id="board-search-select">
+        <option value="title">리스트명</option>
+        <option value="title">공유한사람</option>
+      </select>
+      <input type="text" id="board-search-keyword" maxlength="50">
+      <button id="search-btn">검색</button>
+      <div class="board-paging">
+      </div>
+        <br/><button class="list-btn" id="list-share-modal-btn">공유하기</button>
     </div>
 
   </section>

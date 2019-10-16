@@ -429,7 +429,7 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '#list-share-modal-btn', function () {
-        sessionCheck().then(getLists);
+        sessionCheck().then(getShareLists);
     });
 
     $(document).on('click', '#list-share-btn', function () {
@@ -481,102 +481,51 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '#list-get-btn', function () {
-        const listName = $('.share-board-name').attr('content');
-        storeList(listName).then(getListNo).then(storeLinks);
+        sessionCheck().then(bringList);
+
     });
-    function storeLinks(data) {
-        let linkNames = new Array();
-        let linkUrls = new Array();
-        let urlCheck = true;
-        let count = 0;
-        const regex = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-        $('.share-board-table > tbody  > tr > td ').each(function (index) {
-            if (index % 2 === 0) {
-                linkNames.push($(this).text());
-            } else {
-                if (!regex.test($(this).text())) {
-                    urlCheck = false;
-                    $(this).focus();
-                }
-                linkUrls.push($(this).text());
-            }
-        });
-        if (urlCheck) {
-            $.ajax({
-                type: 'POST',
-                url: '/links',
-                data: { 'list': 1, 'listNo': data.LIST_NO, 'linkNames': linkNames, 'linkUrls': linkUrls },
-                success: function (data) {
-                    alert('success', '리스트 담기', '리스트 담기를 완료하였습니다.');
-                    $('#share-board-modal').fadeOut('fast');
-                    $('body').css('overflow-y', 'scroll');
-                    linkListBind(data).then(linkBind);
-                }, error: function (e) {
-                    alert('danger', '리스트 담기', '공유된 리스트 저장 중 문제가 발생했습니다 관리자에게 문의해주세요.');
-                }
-            })
-        } else {
-            alert('danger', '리스트 담기', '공유된 리스트 URL에 문제가 있습니다 관리자에게 문의해주세요.');
+    $(document).on('click','.pageNum', function(){
+        currentPageNum=$(this).text();
+        boardInit(currentPageNum);
+    });
+
+    $(document).on('click','#first-page', function(){
+        currentPageNum=1;
+        boardInit(currentPageNum);
+    });
+
+    $(document).on('click','#last-page', function(){
+        currentPageNum=Math.ceil(boardCount/10);
+        boardInit(currentPageNum);
+    });
+
+    $(document).on('click','#prev-page', function(){
+        if(currentPageNum>10){
+            let minusNum=currentPageNum%10;
+            if(minusNum===0) {minusNum=10;}
+            currentPageNum=currentPageNum-minusNum;
+        }else{
+            currentPageNum=1;
         }
+        boardInit(currentPageNum);
+    });
 
-
-    }
-    function getListNo(result) {
-        return new Promise(function (resolve) {
-            $.ajax({
-                type: 'GET',
-                url: '/lists/' + result.listName,
-                data: { 'name': result.listName, 'userNo': result.userNo },
-                success: function (data) {
-                    resolve(data[0]);
-                }, error: function (e) {
-                    alert('danger', '리스트 담기', '공유 리스트를 복사한 후 가져오는 중 문제가 발생했습니다 관리자에게 문의해주세요.');
-                }
-            })
-        });
-    }
-    function storeList(listName) {
-        return new Promise(function (resolve) {
-            $.ajax({
-                type: 'POST',
-                url: '/lists',
-                data: { 'name': listName },
-                success: function (data) {
-                    if (data) {
-                        let result = { 'userNo': data.userNo, 'listName': listName };
-                        resolve(result);
-                    } else {
-                        alert('danger', '리스트 담기', '중복된 이름의 리스트가 있거나 이미 담긴 리스트입니다.');
-                    }
-                }, error: function (e) {
-                    alert('danger', '리스트 담기', '공유 리스트를 담는중에 문제가 발생했습니다 관리자에게 문의해주세요.');
-                }
-            });
-        });
-    }
+    $(document).on('click','#next-page', function(){
+        currentPageNum*=1;
+        if(currentPageNum>10){
+            let plusNum=10-currentPageNum%10+1;
+            currentPageNum=currentPageNum+plusNum;
+        }else{
+            let plusNum=10-currentPageNum+1;
+            currentPageNum=currentPageNum+plusNum;         
+        }
+        if(currentPageNum>Math.ceil(boardCount/10)){
+            currentPageNum=Math.ceil(boardCount/10)-boardCount%10+1;
+        }
+        boardInit(currentPageNum);
+    });
 });
-function boardInit() {
-    $('.list-share-table').text('');
-    $('.list-share-table').append('<tr><th>번호</th><th>리스트명</th><th style="width: 20%">생성한 시간</th><th style="width: 20%">공유한 시간</th><th>공유한 사람</th><th>공유된 횟수</th></tr>');
-    $.ajax({
-        type: 'GET',
-        url: '/boards',
-        data: { 'pageNum': 0 },
-        success: function (data) {
-            for (item of data) {
-                $('.list-share-table').append('<tr class="share-item" num="' + item.DOC_NO + '"><td>' + item.DOC_NO + '</td>'
-                    + '<td class="share-item-name">' + item.LIST_NAME + '</td>'
-                    + '<td>' + item.LIST_CREATED_AT + '</td>'
-                    + '<td>' + item.DOC_CREATE_AT + '</td>'
-                    + '<td>' + item.USER_ID + '</td>'
-                    + '<td>' + item.SHARE_COUNT + '</td></tr>');
-            }
-        }, error: function (e) {
-            alert('danger', '공유 게시판', '공유게시판을 가져오는중 문제가 발생했습니다 관리자에게 문의해주세요.');
-        }
-    })
 
-}
 /* 섹션 스크롤 애니메이션 */
 function sectionScrollTop(id) {
     let SectionTop = $('#' + id).offset().top;
@@ -770,7 +719,7 @@ function enterClickTrigger(e, obj) {
 }
 
 /* 공유할 리스트 가져오는 함수 */
-function getLists(userData) {
+function getShareLists(userData) {
     if (userData.userNo) {
         $.ajax({
             type: 'GET',
@@ -791,6 +740,163 @@ function getLists(userData) {
     }
 
 }
+
+/* 공유된 리스트의 링크 정보 내 리스트에 저장 */
+function storeLinks(data) {
+    let linkNames = new Array();
+    let linkUrls = new Array();
+    let urlCheck = true;
+    let count = 0;
+    const regex = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    $('.share-board-table > tbody  > tr > td ').each(function (index) {
+        if (index % 2 === 0) {
+            linkNames.push($(this).text());
+        } else {
+            if (!regex.test($(this).text())) {
+                urlCheck = false;
+                $(this).focus();
+            }
+            linkUrls.push($(this).text());
+        }
+    });
+    if (urlCheck) {
+        $.ajax({
+            type: 'POST',
+            url: '/links',
+            data: { 'list': 1, 'listNo': data.LIST_NO, 'linkNames': linkNames, 'linkUrls': linkUrls },
+            success: function (data) {
+                alert('success', '리스트 담기', '리스트 담기를 완료하였습니다.');
+                $('#share-board-modal').fadeOut('fast');
+                $('body').css('overflow-y', 'scroll');
+                linkListBind(data).then(linkBind);
+            }, error: function (e) {
+                alert('danger', '리스트 담기', '공유된 리스트 저장 중 문제가 발생했습니다 관리자에게 문의해주세요.');
+            }
+        })
+    } else {
+        alert('danger', '리스트 담기', '공유된 리스트 URL에 문제가 있습니다 관리자에게 문의해주세요.');
+    }
+
+
+}
+
+/* 복사한 리스트 번호 가져오는 함수 */
+function getListNo(result) {
+    return new Promise(function (resolve) {
+        $.ajax({
+            type: 'GET',
+            url: '/lists/' + result.listName,
+            data: { 'name': result.listName, 'userNo': result.userNo },
+            success: function (data) {
+                resolve(data[0]);
+            }, error: function (e) {
+                alert('danger', '리스트 담기', '공유 리스트를 복사한 후 가져오는 중 문제가 발생했습니다 관리자에게 문의해주세요.');
+            }
+        })
+    });
+}
+
+/* 공유된 리스트명 내 리스트에 저장  */
+function storeList(listName) {
+    return new Promise(function (resolve) {
+        $.ajax({
+            type: 'POST',
+            url: '/lists',
+            data: { 'name': listName },
+            success: function (data) {
+                if (data) {
+                    let result = { 'userNo': data.userNo, 'listName': listName };
+                    resolve(result);
+                } else {
+                    alert('danger', '리스트 담기', '중복된 이름의 리스트가 있거나 이미 담긴 리스트입니다.');
+                }
+            }, error: function (e) {
+                alert('danger', '리스트 담기', '공유 리스트를 담는중에 문제가 발생했습니다 관리자에게 문의해주세요.');
+            }
+        });
+    });
+}
+
+/* 리스트 담기 기능 */
+function bringList(userData){
+    if(userData.userNo){
+        const listName = $('.share-board-name').attr('content');
+        storeList(listName).then(getListNo).then(storeLinks);
+    }else{
+            alert('danger', '리스트 담기', '로그인 후 이용해주세요.');      
+    }
+
+}
+
+/* 공유게시판 바인딩 */
+function boardInit(pageNum) {
+    $('.list-share-table').text('');
+    $('.list-share-table').append('<tr><th>번호</th><th>리스트명</th><th style="width: 20%">생성한 시간</th><th style="width: 20%">공유한 시간</th><th>공유한 사람</th><th>공유된 횟수</th></tr>');
+    if(!pageNum || pageNum===1){
+        pageNum=0;
+    }else{
+        pageNum=(pageNum-1)*10;
+    }
+    $.ajax({
+        type: 'GET',
+        url: '/boards',
+        data: { 'pageNum': pageNum },
+        success: function (data) {
+            for (item of data) {
+                $('.list-share-table').append('<tr class="share-item" num="' + item.DOC_NO + '"><td>' + item.DOC_NO + '</td>'
+                    + '<td class="share-item-name">' + item.LIST_NAME + '</td>'
+                    + '<td>' + item.LIST_CREATED_AT + '</td>'
+                    + '<td>' + item.DOC_CREATE_AT + '</td>'
+                    + '<td>' + item.USER_ID + '</td>'
+                    + '<td>' + item.SHARE_COUNT + '</td></tr>');
+            }
+        }, error: function (e) {
+            alert('danger', '공유 게시판', '공유게시판을 가져오는중 문제가 발생했습니다 관리자에게 문의해주세요.');
+        }
+    });
+    $.ajax({
+        type:'GET',
+        url:'/boardCount',
+        success:function(data){   
+            boardCount=data.count; 
+            pagingInit(boardCount,currentPageNum);
+        },error:function(e){
+            alert('danger', '공유 게시판', '게시글 수를 가져오는중 문제가 발생했습니다 관리자에게 문의해주세요.');
+        }
+    });
+}
+
+/* 페이징 */
+function pagingInit(count,currentPageNum){
+    $('.board-paging').text('');
+    $('.pageNum').css('color','#001D44');
+    $('.board-paging').append('<span id="first-page"><<</span>');
+    $('.board-paging').append('<span id="prev-page"><</span>');
+
+    if(currentPageNum%10===0){
+        startPageNum=10*Math.floor((currentPageNum-10)/10)+1;
+    }else{
+        startPageNum=10*Math.floor(currentPageNum/10)+1;
+    }
+
+    maxPageNum=10*Math.ceil(currentPageNum/10);
+ 
+
+    if(maxPageNum>count/10+1){
+        maxPageNum=count/10+1;
+    }
+
+    if(count<=10){
+        $('.board-paging').append('<span>1</span>');
+    }else{
+        for(let i=startPageNum;i<=maxPageNum;i++){
+            $('.board-paging').append('<span class="pageNum" id="pageNum-'+i+'">'+i+'</span>');
+        }
+    }
+    $('.board-paging').append('<span id="next-page">></span>');
+    $('.board-paging').append('<span id="last-page">>></span>');
+    $('#pageNum-'+currentPageNum).css('color','red');
+}
 /* 회원가입 유효성 체크 변수 */
 let joinPassCheck = false;
 let joinPass = false;
@@ -799,3 +905,9 @@ let joinEmail = false;
 /* 알렛 타이머 변수 */
 let dangerAlertCloseTimer;
 let successAlertCloseTimer;
+
+/* 페이징 변수 */
+let currentPageNum=1;
+let startPageNum=1;
+let maxPageNum=10;
+let boardCount=0;

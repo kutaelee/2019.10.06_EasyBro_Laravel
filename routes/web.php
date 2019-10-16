@@ -13,7 +13,7 @@
 
 /* home */
 Route::get('/', 'HomeController@index');
-
+Route::get('/test','BoardController@test');
 /* user */
 Route::get('/session/user','UserController@sessionUser');
 Route::post('/joinIdDupleCheck','UserController@joinIdDupleCheck');
@@ -37,3 +37,4 @@ Route::delete('/links/{link}','LinkController@destroy');
 Route::get('/boards','BoardController@index');
 Route::get('/boards/{document}','BoardController@show');
 Route::post('/boards','BoardController@store');
+Route::get('/boardCount','BoardController@count');
