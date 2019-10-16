@@ -8,9 +8,9 @@
   <link rel="stylesheet" href="{{mix('css/tailwind.css')}}">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css">
-  <link rel="stylesheet" href="css/index.css?ver=25">
+  <link rel="stylesheet" href="css/index.css?ver=26">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <script src="js/index.js?ver=25"></script>
+  <script src="js/index.js?ver=26"></script>
   <title>@yield('title','EasyBro')</title>
   <div class="modal" id="login-modal">
     <div class="w-full max-w-xs" id="login-box">
@@ -300,7 +300,7 @@
             <h2>회원가입 및 이용안내</h2>
             <p>
               아이디와 비밀번호를 찾기위한 최소한의 정보만 요구합니다.<br><br>
-              로그인 하시면 어느 장소에서나 즐겨찾기 정보가 제공됩니다.<br><br>
+              로그인 하시면 어느 장소에서나 저장된 즐겨찾기 정보가 제공됩니다.<br><br>
               EASY BRO는 무료로 이용 가능합니다. <br><br>
             </p>
           </div>
@@ -317,9 +317,7 @@
           <div class="content">
             <h2>공유 게시판 이용안내</h2>
             <p>
-              로그인하지 않아도 공유 게시판으로 언제 어디서나 자신만의 리스트를 공유할 수 있고<br><br>
-              자신만의 리스트에 담아서 사용할 수 있습니다.<br><br>
-              현재 리스트의 즐겨찾기 목록을 공유게시판에 올리고 <br><br>
+              현재 리스트의 즐겨찾기 목록을 공유게시판에 올릴 수 있습니다.<br><br>
               다른 PC에 접속해서 담기 버튼 한번이면 사용 가능합니다.
             </p>
           </div>
@@ -350,8 +348,8 @@
         <table class="list-share-table"></table>
       </div>
       <select id="board-search-select">
-        <option value="title">리스트명</option>
-        <option value="title">공유한사람</option>
+        <option value="LIST_NAME">리스트명</option>
+        <option value="USER_ID">공유한사람</option>
       </select>
       <input type="text" id="board-search-keyword" maxlength="50">
       <button id="search-btn">검색</button>

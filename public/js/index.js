@@ -486,17 +486,17 @@ $(document).ready(function () {
     });
     $(document).on('click','.pageNum', function(){
         currentPageNum=$(this).text();
-        boardInit(currentPageNum);
+        boardInit(currentPageNum,keyword,selected);
     });
 
     $(document).on('click','#first-page', function(){
         currentPageNum=1;
-        boardInit(currentPageNum);
+        boardInit(currentPageNum,keyword,selected);
     });
 
     $(document).on('click','#last-page', function(){
         currentPageNum=Math.ceil(boardCount/10);
-        boardInit(currentPageNum);
+        boardInit(currentPageNum,keyword,selected);
     });
 
     $(document).on('click','#prev-page', function(){
@@ -507,7 +507,7 @@ $(document).ready(function () {
         }else{
             currentPageNum=1;
         }
-        boardInit(currentPageNum);
+        boardInit(currentPageNum,keyword,selected);
     });
 
     $(document).on('click','#next-page', function(){
@@ -522,7 +522,13 @@ $(document).ready(function () {
         if(currentPageNum>Math.ceil(boardCount/10)){
             currentPageNum=Math.ceil(boardCount/10)-boardCount%10+1;
         }
-        boardInit(currentPageNum);
+        boardInit(currentPageNum,keyword,selected);
+    });
+
+    $(document).on('click','#search-btn',function(){
+        keyword=$('#board-search-keyword').val();
+        selected=$('#board-search-select option:selected').val();
+        boardInit(1,keyword,selected);
     });
 });
 
@@ -829,10 +835,11 @@ function bringList(userData){
 }
 
 /* 공유게시판 바인딩 */
-function boardInit(pageNum) {
+function boardInit(pageNum,keyword,selected) {
     $('.list-share-table').text('');
     $('.list-share-table').append('<tr><th>번호</th><th>리스트명</th><th style="width: 20%">생성한 시간</th><th style="width: 20%">공유한 시간</th><th>공유한 사람</th><th>공유된 횟수</th></tr>');
-    if(!pageNum || pageNum===1){
+    if(!pageNum || pageNum===1 || pageNum<0){
+        currentPageNum=1;
         pageNum=0;
     }else{
         pageNum=(pageNum-1)*10;
@@ -840,7 +847,7 @@ function boardInit(pageNum) {
     $.ajax({
         type: 'GET',
         url: '/boards',
-        data: { 'pageNum': pageNum },
+        data: { 'pageNum': pageNum ,'keyword':keyword,'selected':selected },
         success: function (data) {
             for (item of data) {
                 $('.list-share-table').append('<tr class="share-item" num="' + item.DOC_NO + '"><td>' + item.DOC_NO + '</td>'
@@ -854,17 +861,20 @@ function boardInit(pageNum) {
             alert('danger', '공유 게시판', '공유게시판을 가져오는중 문제가 발생했습니다 관리자에게 문의해주세요.');
         }
     });
-    $.ajax({
-        type:'GET',
-        url:'/boardCount',
-        success:function(data){   
-            boardCount=data.count; 
-            pagingInit(boardCount,currentPageNum);
-        },error:function(e){
-            alert('danger', '공유 게시판', '게시글 수를 가져오는중 문제가 발생했습니다 관리자에게 문의해주세요.');
-        }
-    });
+
+        $.ajax({
+            type:'GET',
+            url:'/boardCount',
+            data:{'keyword':keyword,'selected':selected},
+            success:function(data){   
+                boardCount=data.count; 
+                pagingInit(boardCount,currentPageNum);
+            },error:function(e){
+                alert('danger', '공유 게시판', '게시글 수를 가져오는중 문제가 발생했습니다 관리자에게 문의해주세요.');
+            }
+        });
 }
+
 
 /* 페이징 */
 function pagingInit(count,currentPageNum){
@@ -887,7 +897,7 @@ function pagingInit(count,currentPageNum){
     }
 
     if(count<=10){
-        $('.board-paging').append('<span>1</span>');
+        $('.board-paging').append('<span class="pageNum" id="pageNum-1">1</span>');
     }else{
         for(let i=startPageNum;i<=maxPageNum;i++){
             $('.board-paging').append('<span class="pageNum" id="pageNum-'+i+'">'+i+'</span>');
@@ -911,3 +921,5 @@ let currentPageNum=1;
 let startPageNum=1;
 let maxPageNum=10;
 let boardCount=0;
+let keyword=null;
+let selected=null;

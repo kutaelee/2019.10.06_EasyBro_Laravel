@@ -10,14 +10,28 @@ use Illuminate\Support\Facades\Redis;
 class BoardController extends Controller
 {
     public function index(Request $request){
-        $lists=DB::select('SELECT B.DOC_NO,B.LIST_NO,B.SHARE_COUNT,B.DOC_CREATE_AT,L.LIST_CREATED_AT,L.LIST_NAME,U.USER_ID from BOARD AS B JOIN LINK_LIST AS L ON B.LIST_NO = L.LIST_NO JOIN USERS AS U ON L.LIST_OWNER = U.USER_NO ORDER BY DOC_CREATE_AT DESC LIMIT ?,10',[$request->input('pageNum')]);
-        return $lists;
+        if(!empty($request->input('keyword'))){
+            $selected=$request->input('selected');
+            $keyword='%'.htmlspecialchars($request->input('keyword')).'%';
+            if($selected==='LIST_NAME'){
+                $lists=DB::select('SELECT B.DOC_NO,B.LIST_NO,B.SHARE_COUNT,B.DOC_CREATE_AT,L.LIST_CREATED_AT,L.LIST_NAME,U.USER_ID FROM BOARD AS B JOIN LINK_LIST AS L ON B.LIST_NO = L.LIST_NO JOIN USERS AS U ON L.LIST_OWNER = U.USER_NO WHERE LIST_NAME LIKE ? ORDER BY DOC_CREATE_AT DESC LIMIT ?,10',[$keyword,$request->input('pageNum')]);
+            }else{
+                $lists=DB::select('SELECT B.DOC_NO,B.LIST_NO,B.SHARE_COUNT,B.DOC_CREATE_AT,L.LIST_CREATED_AT,L.LIST_NAME,U.USER_ID FROM BOARD AS B JOIN LINK_LIST AS L ON B.LIST_NO = L.LIST_NO JOIN USERS AS U ON L.LIST_OWNER = U.USER_NO WHERE USER_ID LIKE ? ORDER BY DOC_CREATE_AT DESC LIMIT ?,10',[$keyword,$request->input('pageNum')]);
+            }
+        }else{
+            $lists=DB::select('SELECT B.DOC_NO,B.LIST_NO,B.SHARE_COUNT,B.DOC_CREATE_AT,L.LIST_CREATED_AT,L.LIST_NAME,U.USER_ID FROM BOARD AS B JOIN LINK_LIST AS L ON B.LIST_NO = L.LIST_NO JOIN USERS AS U ON L.LIST_OWNER = U.USER_NO ORDER BY DOC_CREATE_AT DESC LIMIT ?,10',[$request->input('pageNum')]);
+        }
+          return $lists;
     }
     public function count(Request $request){
-        if(!empty($request->input('search'))){
+        if(!empty($request->input('keyword'))){
             $selected=$request->input('selected');
-            $keyword=htmlspecialchars($request->input('keyword'));
-            $count=DB::select('SELECT COUNT(*) AS COUNT FROM BOARD WHERE ? = %?%',[$selected,$keyword]);         
+            $keyword='%'.htmlspecialchars($request->input('keyword')).'%';
+            if($selected==='LIST_NAME'){
+                $count=DB::select('SELECT COUNT(*) AS COUNT FROM BOARD AS B JOIN LINK_LIST AS L ON B.LIST_NO = L.LIST_NO JOIN USERS AS U ON L.LIST_OWNER = U.USER_NO WHERE LIST_NAME LIKE ?',[$keyword]);         
+            }else{
+                $count=DB::select('SELECT COUNT(*) AS COUNT FROM BOARD AS B JOIN LINK_LIST AS L ON B.LIST_NO = L.LIST_NO JOIN USERS AS U ON L.LIST_OWNER = U.USER_NO WHERE USER_ID LIKE ?',[$keyword]);         
+            }
         }else{
             $count=DB::select('SELECT COUNT(*) AS COUNT FROM BOARD');
         }
@@ -46,14 +60,4 @@ class BoardController extends Controller
         return $lists;
     }
 
-    public function test(){
-        // for($i=0;$i<100;$i++){
-        //     DB::table('BOARD')->insert([
-        //         'LIST_NO'=>44
-        //     ]);
-        //     DB::table('BOARD')->insert([
-        //         'LIST_NO'=>45
-        //     ]);
-        // }
-    }
 }
