@@ -38,3 +38,6 @@ Route::get('/boards','BoardController@index');
 Route::get('/boards/{document}','BoardController@show');
 Route::post('/boards','BoardController@store');
 Route::get('/boardCount','BoardController@count');
+
+/* Auth */
+Route::post('/auth/send','AuthController@send');

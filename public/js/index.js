@@ -71,7 +71,7 @@ $(document).ready(function () {
     });
     /* 즐겨찾기 이동 이벤트 */
     $('#link-section-move').click(function () {
-        sectionScrollTop('link-section');
+        sectionScrollTop('info-section');
     });
 
 
@@ -533,11 +533,46 @@ $(document).ready(function () {
         boardInit(1,keyword,selected);
     });
 
-    $('.link-search').keyup(function(e){
+    $('.link-search').keyup(function(e){ 
         linkKeyword=$(this).val();
         if(e.keyCode===13 || !linkKeyword){
             sessionCheck().then(linkListBind).then(linkBind);
         }
+    });
+
+    $('#board-search-keyword').keyup(function(e){
+        keyword=$('#board-search-keyword').val();
+        if(e.keyCode===13 || !keyword){
+            selected=$('#board-search-select option:selected').val();
+            boardInit(1,keyword,selected);
+        }
+    });
+
+    $('#forget-modal-btn').click(function(){
+        $('#login-modal').hide();
+        $('#forget-modal').show();
+    });
+    $('#auth-cancel-btn').click(function(){
+        $('#forget-modal').hide();
+        $('#login-modal').show();
+    });
+    $('#email-send-btn').click(function(){
+        const email=$('#forget-email').val();
+        const id=$('#forget-username').val();
+        $.ajax({
+            type:'POST',
+            url:'/auth/send',
+            data:{'email':email,'id':id},
+            success:function(data){
+                if(data){
+
+                }else{
+                    alert('danger', '아이디 비밀번호찾기', '아이디와 이메일 정보가 서로 맞지 않습니다.');
+                }
+            },error:function(e){
+                alert('danger', '아이디 비밀번호찾기', '인증메일 전송 중 문제가 발생했습니다 관리자에게 문의해주세요.');
+            }
+        })
     });
 });
 
@@ -740,6 +775,7 @@ function getShareLists(userData) {
         $.ajax({
             type: 'GET',
             url: '/lists',
+            data: {'share':1},
             success: function (data) {
                 $('.my-list').text('');
                 for (item of data) {
@@ -866,6 +902,12 @@ function boardInit(pageNum,keyword,selected) {
                     + '<td>' + item.DOC_CREATE_AT + '</td>'
                     + '<td>' + item.USER_ID + '</td>'
                     + '<td>' + item.SHARE_COUNT + '</td></tr>');
+            }
+
+            if(!data[0]){
+                $('#share-info').show();
+            }else{
+                $('#share-info').hide();
             }
         }, error: function (e) {
             alert('danger', '공유 게시판', '공유게시판을 가져오는중 문제가 발생했습니다 관리자에게 문의해주세요.');

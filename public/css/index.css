@@ -677,6 +677,9 @@ body{
 #board-search-keyword,#board-search-select{
     border: 1px solid gray;
 }
+#board-search-keyword{
+    width:20%;
+}
 #search-btn{
     padding: 3px 0;
     color: white;
@@ -702,9 +705,46 @@ body{
 .board-paging span:hover{
     color:red;
 }
+#share-info{
+    display: none;
+    font-size: 22px;
+    text-align: center;
+    margin: 17%;
+    font-weight: 600;
+}
+#forget-modal{
+    padding: 10% 38%;
+}
+#forget-username{
+    width:95%;
+}
+#forget-email{
+    width:73%;
+    display: inline-block;
+}
+#send-btn-box{
+    display: inline-block;
+}
+#forget-btn-box{
+    width:100%;
+    text-align: center;
+}
 @media(max-width:1400px){
     #main-section{
         background-size: cover;
+    }
+    #forget-email{
+        width:100%;
+    }
+    #send-btn-box{
+        text-align: center;
+        width: 100%;
+    }
+    #send-btn-box button{
+        width: 90%;
+    }
+    #forget-username{
+        width:100%;
     }
 }
 @media(max-width:1024px){
@@ -714,7 +754,9 @@ body{
     #navi-menu{
         display: none;
     }
-
+    #forget-modal {
+        padding: 10% 25%;
+    }
 }
 @media(max-width:800px){
     #main-section{
@@ -796,5 +838,8 @@ body{
     }
     #join-box{
         margin-top: 5vh;
+    }
+    #forget-modal {
+        padding: 20% 0;
     }
 }

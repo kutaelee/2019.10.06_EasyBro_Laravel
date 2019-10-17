@@ -8,9 +8,9 @@
   <link rel="stylesheet" href="{{mix('css/tailwind.css')}}">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css">
-  <link rel="stylesheet" href="css/index.css?ver=26">
+  <link rel="stylesheet" href="css/index.css?ver=27">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <script src="js/index.js?ver=26"></script>
+  <script src="js/index.js?ver=28"></script>
   <title>@yield('title','EasyBro')</title>
   <div class="modal" id="login-modal">
     <div class="w-full max-w-xs" id="login-box">
@@ -38,7 +38,7 @@
             type="button" id="login-btn">
             로그인
           </button>
-          <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
+          <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 cursor-pointer" id="forget-modal-btn">
             비밀번호를 잊으셨나요?
           </a>
         </div>
@@ -99,6 +99,42 @@
     </div>
   </div>
   @yield('join')
+  <div class="modal" id="forget-modal">
+    <div id="forget-box">
+      <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" action="" onsubmit="return false">
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="forget-username">
+            아이디
+          </label>
+          <input
+            class="shadow appearance-none border w-full rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="forget-username" type="text" placeholder="ID" maxlength="20">
+        </div>
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="forget-email">
+          등록한 이메일
+        </label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 mr-1 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          id="forget-email" type="email" placeholder="YourEmail@Example.com" maxlength="50">
+        <div class="flex items-center justify-between" id="send-btn-box">
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="button" id="email-send-btn">
+            전송
+          </button>
+        </div>
+        <h2 class="mt-2">이메일 인증을 완료한 후 확인버튼을 눌러주세요.</h2>
+        <div id="forget-btn-box">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-3 mt-2 rounded focus:outline-none focus:shadow-outline" id="auth-btn">확인</button>
+        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" id="auth-cancel-btn">취소</button>
+        </div>
+      </form>
+      <p class="text-center text-gray-500 text-xs">
+        &copy;2019 Acme Corp. All rights reserved.
+      </p>
+    </div>
+  </div>
+  @yield('forget')
   <div class="modal" id="list-add-modal">
     <div class="list-add-box">
       <h1> 리스트 추가 </h1>
@@ -345,12 +381,13 @@
     <div class="board">
       <div class="share">
         <table class="list-share-table"></table>
+        <h2 id="share-info"> 공유된 리스트가 없습니다. </h2>
       </div>
       <select id="board-search-select">
         <option value="LIST_NAME">리스트명</option>
         <option value="USER_ID">공유한사람</option>
       </select>
-      <input type="text" id="board-search-keyword" maxlength="50">
+      <input type="text" id="board-search-keyword" maxlength="50" placeholder="비우시면 검색취소가 됩니다.">
       <button id="search-btn">검색</button>
       <div class="board-paging">
       </div>
