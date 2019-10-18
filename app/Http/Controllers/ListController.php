@@ -53,7 +53,7 @@ class ListController extends Controller
        
         $owner=DB::select('SELECT LIST_OWNER FROM LINK_LIST WHERE LIST_NO = ?',[$request->input('listNo')]);
         if(!empty($owner)){
-            if($owner[0]->LIST_OWNER===Redis::get('userNo')){
+            if($owner[0]->LIST_OWNER==Redis::get('userNo')){
                 DB::transaction(function () use($request) {
                     DB::update('UPDATE LINK_LIST SET LIST_NAME = ? WHERE LIST_NO = ? AND LIST_OWNER = ?',[htmlspecialchars($request->input('listName')),$request->input('listNo'),Redis::get('userNo')]);
                     for($i=0;$i<count($request->input('linkNames'));$i++){

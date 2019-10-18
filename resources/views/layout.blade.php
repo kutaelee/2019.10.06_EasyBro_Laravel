@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css">
   <link rel="stylesheet" href="css/index.css?ver=28">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <script src="js/index.js?ver=28"></script>
+  <script src="js/index.js?ver=29"></script>
   <title>@yield('title','EasyBro')</title>
   <div class="modal" id="login-modal">
     <div class="w-full max-w-xs" id="login-box">
@@ -167,6 +167,18 @@
       </div>
     </div>
     @yield('change')
+    <div class="modal" id="loading-modal">
+        <div id="loading-box">
+          <ul>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <ul>
+        </div>
+      </div>
   <div class="modal" id="list-add-modal">
     <div class="list-add-box">
       <h1> 리스트 추가 </h1>

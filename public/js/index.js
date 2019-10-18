@@ -7,8 +7,7 @@ $(document).ready(function () {
         }
     });
     /* 세션체크 후 링크페이지 세팅 */
-    sessionCheck().then(linkListBind).then(linkBind);
-    boardInit();
+    sessionCheck().then(linkListBind).then(linkBind).then(boardInit);
     $('#navi').click(function (e) {
         let id = e.target.id;
         /* 모달 버튼 클릭 이벤트 */
@@ -134,6 +133,7 @@ $(document).ready(function () {
     });
 
     $('#logout-btn').click(function () {
+        loadingOn();
         $.ajax({
             type: 'DELETE',
             url: '/session/destroy',
@@ -141,13 +141,16 @@ $(document).ready(function () {
                 logOutNav();
                 alert('success', '로그아웃', '로그아웃이 완료되었습니다.');
                 $('.list-box-ul').text('');
+                loadingOff();
             }, error: function (e) {
                 console.log(e);
+                loadingOff();
             }
         })
     });
 
     $('#join-btn').click(function () {
+        loadingOn();
         if (joinPassCheck && joinPass && joinIdCheckVal && joinEmail) {
             const id = $('#join-username').val();
             const pw = $('#join-password').val();
@@ -167,8 +170,11 @@ $(document).ready(function () {
                     } else {
                         alert('danger', '회원가입 실패', '오류가 있습니다 관리자에게 문의해주세요.');
                     }
+                    loadingOff();
                 }, error: function (e) {
                     console.log(e);
+                    loadingOff();
+                    alert('danger', '회원가입 실패', '오류가 있습니다 관리자에게 문의해주세요.');
                 }
             });
         } else {
@@ -182,6 +188,7 @@ $(document).ready(function () {
     });
 
     $('#login-btn').click(function () {
+        loadingOn();
         const id = $('#login-username').val();
         const pw = $('#login-password').val();
 
@@ -200,10 +207,10 @@ $(document).ready(function () {
                 } else {
                     alert('danger', '로그인', data.msg);
                 }
-
+                loadingOff();
             }, error: function (e) {
                 alert('danger', '로그인', '로그인에 오류가 있습니다. 관리자에게 문의해주세요! ');
-                console.log(e);
+                loadingOff();
             }
         })
     });
@@ -248,6 +255,7 @@ $(document).ready(function () {
                 alert('danger', '리스트 추가', '리스트 이름을 입력해주세요.');
             }
         } else {
+            loadingOff();
             alert('danger', '리스트 추가', '리스트 추가는 로그인 후 이용해주세요.');
         }
     });
@@ -385,10 +393,14 @@ $(document).ready(function () {
                 url: '/list/' + listNo,
                 data: { 'listNo': listNo, 'listName': listName, 'linkNames': linkNames, 'linkUrls': linkUrls, 'linkNums': linkNums },
                 success: function (data) {
-                    alert('success', '리스트 수정', '리스트 수정이 완료되었습니다.');
-                    $('#list-edit-modal').fadeOut('fast');
-                    $('body').css('overflow-y', 'scroll');
-                    linkListBind(data).then(linkBind);
+                    if(data){
+                        alert('success', '리스트 수정', '리스트 수정이 완료되었습니다.');
+                        $('#list-edit-modal').fadeOut('fast');
+                        $('body').css('overflow-y', 'scroll');
+                        linkListBind(data).then(linkBind);
+                    }else{
+                        alert('danger', '리스트 수정', '리스트를 수정하는 도중 문제가 발생했습니다 다시 로그인 후 시도해주세요.');
+                    }
                 }, error: function (e) {
                     alert('danger', '리스트 수정', '리스트를 수정하는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');
                 }
@@ -557,6 +569,7 @@ $(document).ready(function () {
         $('#login-modal').show();
     });
     $('#email-send-btn').click(function(){
+        loadingOn();
         const email=$('#forget-email').val();
         const id=$('#forget-username').val();
         $.ajax({
@@ -569,8 +582,10 @@ $(document).ready(function () {
                 }else{
                     alert('danger', '비밀번호변경', '아이디와 이메일 정보가 서로 맞지 않습니다.');
                 }
+                loadingOff();
             },error:function(e){
                 alert('danger', '비밀번호변경', '인증메일 전송 중 문제가 발생했습니다 관리자에게 문의해주세요.');
+                loadingOff();
             }
         });
     });
@@ -629,6 +644,7 @@ $(document).ready(function () {
     });
 
     $('#change-btn').click(function(){
+        loadingOn();
         if(changePw && changePwCheck){
             const pw=$('#change-password').val();
             $.ajax({
@@ -645,7 +661,9 @@ $(document).ready(function () {
                     }else{
                         alert('danger', '비밀번호변경', data.msg);
                     }
+                    loadingOff();
                 },error:function(e){
+                    loadingOff();
                     alert('danger', '비밀번호변경', '비밀번호 변경 중 문제가 생겼습니다 관리자에게 문의해주세요.');
                 }
             });
@@ -773,6 +791,7 @@ function logOutNav() {
 
 /* 세션 체크 */
 function sessionCheck() {
+    loadingOn();
     return new Promise(function (resolve) {
         $.ajax({
             type: 'get',
@@ -820,6 +839,7 @@ function linkListBind(userData) {
 /* 리스트에 맞는 링크 바인딩 */
 function linkBind(listData) {
     return new Promise(function (resolve) {
+        $('#loading-modal').fadeIn('fast');
         if (listData) {
             $.ajax({
                 type: 'get',
@@ -833,9 +853,11 @@ function linkBind(listData) {
                                 + item.LINK_NAME + '(' + item.LINK_URL + ')</a> <span class="link-destroy-icon" num="' + item.LINK_NO + '">-</span> </li></ul>');
                         }
                     }
+                    loadingOff();
                     resolve();
                 }, error: function (e) {
                     console.log(e);
+                    loadingOff();
                 }
             });
         }
@@ -856,7 +878,10 @@ function getShareLists(userData) {
             url: '/lists',
             data: {'share':1},
             success: function (data) {
-                $('.my-list').text('');
+                $('.my-list').text('');           
+                if(!data[0]){
+                    alert('danger', '리스트 공유', '리스트에 링크가 없어서 공유할 수 없습니다.');
+                }
                 for (item of data) {
                     $('.my-list').append('<option value="' + item.LIST_NO + '">' + item.LIST_NAME + '</option>');
                     $('#list-share-modal').fadeIn('fast');
@@ -869,7 +894,7 @@ function getShareLists(userData) {
     } else {
         alert('danger', '리스트 공유', '로그인 후 이용해주세요.');
     }
-
+    loadingOff();
 }
 
 /* 공유된 리스트의 링크 정보 내 리스트에 저장 */
@@ -956,11 +981,12 @@ function bringList(userData){
     }else{
             alert('danger', '리스트 담기', '로그인 후 이용해주세요.');      
     }
-
+    loadingOff();
 }
 
 /* 공유게시판 바인딩 */
 function boardInit(pageNum,keyword,selected) {
+    loadingOn();
     $('.list-share-table').text('');
     $('.list-share-table').append('<tr><th>번호</th><th>리스트명</th><th style="width: 20%">생성한 시간</th><th style="width: 20%">공유한 시간</th><th>공유한 사람</th><th>공유된 횟수</th></tr>');
     if(!pageNum || pageNum===1 || pageNum<0){
@@ -1037,6 +1063,17 @@ function pagingInit(count,currentPageNum){
     $('.board-paging').append('<span id="next-page">></span>');
     $('.board-paging').append('<span id="last-page">>></span>');
     $('#pageNum-'+currentPageNum).css('color','red');
+    loadingOff();
+}
+function loadingOn(){
+    if($('#loading-modal').css('display')==='none'){
+        $('#loading-modal').fadeIn('fast');
+    }
+}
+function loadingOff(){
+    if($('#loading-modal').css('display')==='block'){
+    $('#loading-modal').fadeOut('fast');
+    }
 }
 /* 회원가입 유효성 체크 변수 */
 let joinPassCheck = false;
