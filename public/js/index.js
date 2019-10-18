@@ -590,9 +590,9 @@ $(document).ready(function () {
         });
     });
 
-    $('#change-cancel-btn').click(function(){
+    $('#change-cancel-btn').click(function(){       
         $('#change-modal').hide();
-        $('#login-modal').show();
+        $('body').css('overflow-y', 'scroll');      
     });
 
     $('#auth-btn').click(function(){
@@ -643,34 +643,46 @@ $(document).ready(function () {
         }
     });
 
-    $('#change-btn').click(function(){
+    $('#change-btn').click(function(){      
         loadingOn();
         if(changePw && changePwCheck){
             const pw=$('#change-password').val();
-            $.ajax({
-                type:'PATCH',
-                url:'/users/user',
-                data:{'pw':pw},
-                success:function(data){
-                    if(data.result){
-                        alert('success', '비밀번호변경', data.msg);
-                        $('#change-modal').hide();
-                        $('#login-username').val(data.result);
-                        $('#login-modal').show();
-                        $('#login-password').focus();
-                    }else{
-                        alert('danger', '비밀번호변경', data.msg);
-                    }
+            const email=$('#change-email').val();
+            const emailRegExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+                if(!email || emailRegExp.test(email)){             
+                    $.ajax({
+                        type:'PATCH',
+                        url:'/users/user',
+                        data:{'pw':pw,'email':email},
+                        success:function(data){
+                            if(data.action==='mypage'){                                             
+                                $('#change-modal input').val('');
+                            }else{
+                                $('#login-username').val(data.result);
+                                $('#login-modal').show();
+                                $('#login-password').focus();
+                            }
+                            $('#change-modal').hide();
+                            alert('success', '정보변경', data.msg);
+                            loadingOff();
+                        },error:function(e){
+                            loadingOff();
+                            alert('danger', '정보변경', '정보 변경 중 문제가 생겼습니다 관리자에게 문의해주세요.');
+                        }
+                    });
+                }else{
+                    alert('danger', '정보변경', '이메일 형식이 맞지 않습니다.');
                     loadingOff();
-                },error:function(e){
-                    loadingOff();
-                    alert('danger', '비밀번호변경', '비밀번호 변경 중 문제가 생겼습니다 관리자에게 문의해주세요.');
                 }
-            });
         }else{
-            alert('danger', '비밀번호변경', '비밀번호가 서로 다릅니다.');
-        }
+            alert('danger', '정보변경', '비밀번호 형식을 맞춰주세요.');
+            loadingOff();
+        }     
     });
+
+    $('#mypage-btn').click(function(){
+        $('#change-modal').show();
+    }); 
 });
 
 /* 섹션 스크롤 애니메이션 */
@@ -782,11 +794,13 @@ function loginNav() {
     $('#login-modal-btn').hide();
     $('#join-modal-btn').hide();
     $('#logout-btn').css('display', 'block');
+    $('#mypage-btn').css('display', 'block');
 }
 function logOutNav() {
     $('#login-modal-btn').css('display', 'block');
     $('#join-modal-btn').css('display', 'block');
     $('#logout-btn').hide();
+    $('#mypage-btn').hide();
 }
 
 /* 세션 체크 */
@@ -799,6 +813,9 @@ function sessionCheck() {
             success: function (data) {
                 if (data.userNo) {
                     loginNav();
+                    $('#login-modal').hide();
+                    $('join-modal').hide();
+                    $('#change-id').text('ID : '+data.username);
                 } else {
                     logOutNav();
                 }
@@ -827,11 +844,13 @@ function linkListBind(userData) {
                         i++;
                     }
                     resolve(listData);
-
+                    
                 }, error: function (e) {
                     console.log(e);
                 }
             });
+        }else{
+            loadingOff();
         }
     });
 }

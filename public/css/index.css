@@ -336,7 +336,7 @@ body{
     z-index: 100;
     display: none;
 }
-#logout-btn{
+#logout-btn,#mypage-btn{
     display: none;
 }
 
@@ -795,6 +795,9 @@ body{
 {
     animation-delay: .6s;
 }
+#change-modal{
+    padding: 10% 35%;
+}
 @media(max-width:1400px){
     #main-section{
         background-size: cover;
@@ -813,11 +816,14 @@ body{
         width:100%;
     }
     #change-modal{
-        padding: 10% 37%;
+        padding: 10% 30%;
+    }
+    #board-search-keyword{
+        width: 35%;
     }
 }
 @media(max-width:1024px){
-    #login-modal-btn ,  #logout-btn , #join-modal-btn{
+    #login-modal-btn ,  #logout-btn , #join-modal-btn , #mypage-btn{
         float:none;
     }
     #navi-menu{
@@ -897,7 +903,7 @@ body{
         font-size: 13px;
     }
     #change-modal{
-        padding: 10% 30%;
+        padding: 10% 20%;
     }
 }
 @media(max-width:500px){
@@ -913,5 +919,9 @@ body{
     }
     #forget-modal , #change-modal {
         padding: 20% 0;
+    }
+    #board-search-keyword{
+        width: 50%;
+        font-size: 14px;
     }
 }

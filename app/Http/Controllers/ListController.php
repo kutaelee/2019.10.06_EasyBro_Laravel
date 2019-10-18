@@ -12,7 +12,7 @@ class ListController extends Controller
     public function index(Request $request){
         if(!empty($request->input('keyword'))){
             $keyword='%'.htmlspecialchars($request->input('keyword')).'%';
-            $lists=DB::select('SELECT DISTINCT LL.LIST_NO,LL.LIST_NAME FROM LINK_LIST AS LL JOIN LINKS AS LS ON LL.LIST_NO = LS.LIST_NO WHERE LIST_OWNER = ? AND LINK_NAME LIKE ?', [Redis::get('userNo'),$keyword]);
+            $lists=DB::select('SELECT DISTINCT LL.LIST_NO,LL.LIST_NAME FROM LINK_LIST AS LL JOIN LINKS AS LS ON LL.LIST_NO = LS.LIST_NO WHERE (LIST_OWNER = ?) AND (LINK_NAME LIKE ? OR LIST_NAME LIKE ?)', [Redis::get('userNo'),$keyword,$keyword]);
         }else if(!empty($request->input('share'))){
             $lists=DB::select('SELECT DISTINCT LL.LIST_NO,LIST_NAME FROM LINK_LIST AS LL JOIN LINKS AS L ON LL.LIST_NO = L.LIST_NO WHERE LIST_OWNER = ?', [Redis::get('userNo')]);
         }else{

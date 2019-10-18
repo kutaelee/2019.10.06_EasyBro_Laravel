@@ -90,20 +90,47 @@ class UserController extends Controller
 
     public function update(Request $request){
         $pw=$request->input('pw');
+        $email=$request->input('email');
         $id=Redis::get('changeId');
-        if(!empty($request->input('pw'))){ 
+        $action='auth';
+        if(empty($id)){
+            $action='mypage';
+            $id=Redis::get('username');
+        }
+        if(empty($id)){
+            return response()->json([
+                'msg'=>'인증정보가 없습니다 다시 시도해주세요.'
+            ]);
+        }
+        if(!empty($pw)){
             if(strlen($pw)>3){
-                DB::update('UPDATE USERS SET USER_PW = ? WHERE USER_ID = ?',[Hash::make($pw) , $id]);
-                Redis::del('changeId');
-                return response()->json([
-                    'msg'=>'비밀번호가 변경되었습니다.',
-                    'result'=>$id
-                ]);
+                if(!empty($email)){
+                    DB::update('UPDATE USERS SET USER_PW = ? , USER_EMAIL = ? WHERE USER_ID = ?',[Hash::make($pw), Crypt::encryptString($email) , $id]);
+                    return response()->json([
+                        'msg'=>'변경이 완료되었습니다.',
+                        'result'=>$id,
+                        'action'=>$action
+                    ]);
+                }else{
+                    DB::update('UPDATE USERS SET USER_PW = ? WHERE USER_ID = ?',[Hash::make($pw) , $id]);
+                    Redis::del('changeId');
+                    return response()->json([
+                        'msg'=>'변경이 완료되었습니다.',
+                        'result'=>$id,
+                        'action'=>$action
+                    ]);
+                }
+
             }else{
-                 return response()->json([
+                return response()->json([
                     'msg'=>'비밀번호가 너무 짧습니다.'
                 ]);
             }
+            
+        }else{
+            return response()->json([
+                'msg'=>'비밀번호가 너무 짧습니다.'
+            ]);
         }
     }
 }

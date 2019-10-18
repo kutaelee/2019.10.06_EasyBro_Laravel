@@ -8,9 +8,9 @@
   <link rel="stylesheet" href="{{mix('css/tailwind.css')}}">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css">
-  <link rel="stylesheet" href="css/index.css?ver=28">
+  <link rel="stylesheet" href="css/index.css?ver=29">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <script src="js/index.js?ver=29"></script>
+  <script src="js/index.js?ver=30"></script>
   <title>@yield('title','EasyBro')</title>
   <div class="modal" id="login-modal">
     <div class="w-full max-w-xs" id="login-box">
@@ -139,8 +139,17 @@
       <div id="change-box">
         <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" action="" onsubmit="return false">
           <div class="mb-4">
+              <label class="block text-gray-700 text-sm font-bold mb-2" id="change-id">
+                  
+                </label>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="change-email">
+                    이메일(변경을 원치 않으시면 빈값)
+                  </label>
+                  <input
+                  class="shadow appearance-none border rounded w-full py-2 mr-1 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                  id="change-email" type="email" placeholder="YourEmail@Example.com" maxlength="50">
               <label class="block text-gray-700 text-sm font-bold mb-2" for="change-password">
-                  새로운 패스워드
+                  새로운 패스워드(변경을 원치 않으시면 기존값)
                 </label>
                 <input
                   class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
@@ -303,6 +312,9 @@
         <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 cursor-pointer mr-6 float-right" id="logout-btn">
           로그아웃
         </a>
+        <a class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 cursor-pointer mr-6 float-right" id="mypage-btn">
+          마이페이지
+        </a>
       </div>
 
     </div>
@@ -411,7 +423,7 @@
     <h1 class="section-title" id="link-title">#저장한 즐겨찾기 리스트</h1>
     <div class="link-list" id="link-use">
       <h2 class="list-title">즐겨찾기 리스트</h2>
-      <input type="text" class="link-search" placeholder="내 리스트에서 등록한 이름으로 검색 + ENTER">
+      <input type="text" class="link-search" placeholder="리스트명 또는 링크명 + ENTER (비우면 검색취소)">
       <div class="list-box">
         <ul class="list-box-ul">
         </ul>
