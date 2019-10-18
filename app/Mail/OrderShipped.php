@@ -16,9 +16,10 @@ class OrderShipped extends Mailable
      *
      * @return void
      */
+
     public function __construct()
     {
-        //
+ 
     }
 
     /**
@@ -28,6 +29,6 @@ class OrderShipped extends Mailable
      */
     public function build()
     {
-        return $this->from('kutaelee0@gmail.com')->view('view.name');
+        return $this->from('servercheckbot@gmail.com')->view('authMail');
     }
 }

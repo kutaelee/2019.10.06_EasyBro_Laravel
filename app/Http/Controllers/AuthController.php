@@ -7,37 +7,73 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Crypt;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+use Illuminate\Support\Facades\Mail;
 
-require __DIR__.'/../vendor/autoload.php';
 class AuthController extends Controller
 {
     public function send(Request $request){
         $email=DB::select('SELECT USER_EMAIL FROM USERS WHERE USER_ID = ?', [$request->input('id')]);
-        if(Crypt::decryptString($email[0]->USER_EMAIL)===$request->input('email')){
-            $subject='(EASYBRO) 아이디/비밀번호 찾기 인증메일';
-            $toMail=$request->input('email');
-            $body='본인이 보낸 메일이 아니라면 삭제 부탁드립니다. </br><a href="http://127.0.0.1:8000/auth">인증</a>';
-            $mail = new \PHPMailer();
-            $mail->isSMTP();
-            $mail->SMTPAuth = true;
-            $mail->SMTPSecure = 'tls';
-            $mail->Host = 'smtp.gmail.com';
-            $mail->Port = 587;
-            $mail->Username = env(GOOGLE_ID);
-            $mail->Password = env(GOOGLE_PW);
-            $mail->setFrom(GOOGLE_ID, '이지브로');
-            $mail->CharSet = 'UTF-8';
-            $mail->Subject = $subject;
-            $mail->Body = $body;
-            $mail->addAddress($toMail);
-            $mail->send();
-            return response()->json([ 
-                'msg'=> '인증메일이 전송되었습니다.'
-                ]);
+        if(!empty($email)){
+            if(Crypt::decryptString($email[0]->USER_EMAIL)===$request->input('email')){
+                try{
+                    $user=array('email'=>$request->input('email'));
+                    Redis::set('auth',false);
+                    Redis::set('changeId',htmlspecialchars($request->input('id')));
+                    Mail::send('authMail', $user, function($message) use ($user) {
+                        $message->to($user['email']);
+                        $message->subject('[EASY BRO] 비밀번호변경 인증메일');
+                    });
+                    return response()->json([ 
+                        'msg'=> '인증메일이 전송되었습니다.'
+                        ]);
+                }catch(Exception $e){
+                    Log::info($e);
+                }
+
+            }else{
+                return null;
+            }
         }else{
             return null;
         }
+    }
+
+    public function auth(){
+        $auth=Redis::get('auth');
+        Log::info($auth);
+        if(isset($auth)){
+           if(!$auth){
+                Redis::set('auth',true);
+                return '인증이 완료되었습니다.';
+           }else{
+                return '인증이 이미 완료되었습니다.';
+           }
+        }else{
+            return '인증정보가 없습니다.';
+        }
+    }
+
+    public function check(){
+        $auth=Redis::get('auth');
+        Log::info($auth);
+        if(isset($auth)){
+            if($auth){
+                 Redis::del('auth');
+                 return response()->json([
+                    'msg'=> '인증이 완료되었습니다. 새로운 비밀번호를 입력해주세요.',
+                    'auth'=> true
+                    ]);
+            }else{
+                return response()->json([
+                    'msg'=> '인증메일을 확인해주세요.',
+                    'auth'=> false
+                    ]);
+            }
+         }else{
+            return response()->json([ 
+                'msg'=> '인증정보가 없습니다.',
+                'auth'=> false
+                ]);
+         }
     }
 }

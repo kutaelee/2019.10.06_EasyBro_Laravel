@@ -20,6 +20,7 @@ Route::post('/joinIdDupleCheck','UserController@joinIdDupleCheck');
 Route::post('/users','UserController@store');
 Route::delete('/session/destroy','UserController@sessionDestroy');
 Route::post('/users/login','UserController@login');
+Route::patch('/users/user','UserController@update');
 
 /* list */
 Route::get('/lists','ListController@index');
@@ -41,3 +42,5 @@ Route::get('/boardCount','BoardController@count');
 
 /* Auth */
 Route::post('/auth/send','AuthController@send');
+Route::get('/auth','AuthController@auth');
+Route::get('/auth/check','AuthController@check');

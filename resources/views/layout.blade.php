@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="{{mix('css/tailwind.css')}}">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css">
-  <link rel="stylesheet" href="css/index.css?ver=27">
+  <link rel="stylesheet" href="css/index.css?ver=28">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script src="js/index.js?ver=28"></script>
   <title>@yield('title','EasyBro')</title>
@@ -70,7 +70,7 @@
             id="join-password" type="password" placeholder="****" maxlength="50">
           <p class="text-red-500 text-xs italic mb-2" id="join-password-info">패스워드를 입력해주세요.</p>
           <label class="block text-gray-700 text-sm font-bold mb-2" for="join-password-check">
-            패스워드 체크
+            패스워드 확인
           </label>
           <input
             class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
@@ -135,6 +135,38 @@
     </div>
   </div>
   @yield('forget')
+  <div class="modal" id="change-modal">
+      <div id="change-box">
+        <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" action="" onsubmit="return false">
+          <div class="mb-4">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="change-password">
+                  새로운 패스워드
+                </label>
+                <input
+                  class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                  id="change-password" type="password" placeholder="****" maxlength="50">
+                <p class="text-red-500 text-xs italic mb-2" id="change-password-info">패스워드를 입력해주세요.</p>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="change-password-check">
+                  패스워드 확인
+                </label>
+                <input
+                  class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                  id="change-password-check" type="password" placeholder="****" maxlength="50">
+                <p class="text-red-500 text-xs italic mb-3" id="change-password-check-info">패스워드가 같지 않습니다.</p>
+        
+              </div>
+              <div id="change-btn-box">
+                  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-3 mt-2 rounded focus:outline-none focus:shadow-outline" id="change-btn">확인</button>
+                  <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" id="change-cancel-btn">취소</button>
+              </div>
+          </div>
+        </form>
+        <p class="text-center text-gray-500 text-xs">
+          &copy;2019 Acme Corp. All rights reserved.
+        </p>
+      </div>
+    </div>
+    @yield('change')
   <div class="modal" id="list-add-modal">
     <div class="list-add-box">
       <h1> 리스트 추가 </h1>

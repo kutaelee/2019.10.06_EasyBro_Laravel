@@ -565,14 +565,93 @@ $(document).ready(function () {
             data:{'email':email,'id':id},
             success:function(data){
                 if(data){
-
+                    alert('success', '비밀번호변경', data.msg);
                 }else{
-                    alert('danger', '아이디 비밀번호찾기', '아이디와 이메일 정보가 서로 맞지 않습니다.');
+                    alert('danger', '비밀번호변경', '아이디와 이메일 정보가 서로 맞지 않습니다.');
                 }
             },error:function(e){
-                alert('danger', '아이디 비밀번호찾기', '인증메일 전송 중 문제가 발생했습니다 관리자에게 문의해주세요.');
+                alert('danger', '비밀번호변경', '인증메일 전송 중 문제가 발생했습니다 관리자에게 문의해주세요.');
+            }
+        });
+    });
+
+    $('#change-cancel-btn').click(function(){
+        $('#change-modal').hide();
+        $('#login-modal').show();
+    });
+
+    $('#auth-btn').click(function(){
+        $.ajax({
+            type:'GET',
+            url:'/auth/check',
+            success:function(data){
+                if(data.auth){
+                    alert('success', '비밀번호변경', data.msg);
+                    $('#forget-modal').hide();
+                    $('#change-modal').show();
+                }else{
+                    alert('danger', '비밀번호변경', data.msg);
+                }
+            },error:function(e){
+                alert('danger', '비밀번호변경', '인증 체크 중 문제가 발생했습니다 관리자에게 문의해주세요. ');
             }
         })
+    });
+
+    $('#change-password').keyup(function(){
+        let pw=$(this).val();
+        let pwCheck=$('#change-password-check').val();
+        if(pw.length<4){
+            dangerInfo('change-password', '4자리 이상 입력해주세요.');
+            changePw=false;
+        }else{
+            successInfo('change-password', '사용해도 좋은 비밀번호 입니다.');
+            changePw=true;
+        }
+        if(pwCheck!=pw){
+            dangerInfo('change-password-check', '비밀번호가 서로 다릅니다.');
+            changePwCheck=false;
+        }else{
+            successInfo('change-password-check', '비밀번호가 같습니다.');
+            changePwCheck=true;
+        }
+    });
+    $('#change-password-check').keyup(function(){
+        let pw=$('#change-password').val();
+        let pwCheck=$(this).val();
+        if(pwCheck!=pw){
+            dangerInfo('change-password-check', '비밀번호가 서로 다릅니다.');
+            changePwCheck=false;
+        }else{
+            successInfo('change-password-check', '비밀번호가 같습니다.');
+            changePwCheck=true;
+        }
+    });
+
+    $('#change-btn').click(function(){
+        if(changePw && changePwCheck){
+            const pw=$('#change-password').val();
+            $.ajax({
+                type:'PATCH',
+                url:'/users/user',
+                data:{'pw':pw},
+                success:function(data){
+                    if(data.result){
+                        alert('success', '비밀번호변경', data.msg);
+                        $('#change-modal').hide();
+                        $('#login-username').val(data.result);
+                        $('#login-modal').show();
+                        $('#login-password').focus();
+                    }else{
+                        alert('danger', '비밀번호변경', data.msg);
+                    }
+                },error:function(e){
+                    alert('danger', '비밀번호변경', '비밀번호 변경 중 문제가 생겼습니다 관리자에게 문의해주세요.');
+                }
+            });
+        }else{
+            alert('danger', '비밀번호변경', '비밀번호가 서로 다릅니다.');
+        }
     });
 });
 
@@ -976,3 +1055,7 @@ let boardCount=0;
 let keyword=null;
 let selected=null;
 let linkKeyword=null;
+
+/* 비밀번호 변경 변수 */
+let changePw=false;
+let changePwCheck=false;

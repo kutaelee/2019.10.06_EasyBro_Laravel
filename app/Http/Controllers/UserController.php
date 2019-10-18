@@ -87,4 +87,23 @@ class UserController extends Controller
         }
         
     }
+
+    public function update(Request $request){
+        $pw=$request->input('pw');
+        $id=Redis::get('changeId');
+        if(!empty($request->input('pw'))){ 
+            if(strlen($pw)>3){
+                DB::update('UPDATE USERS SET USER_PW = ? WHERE USER_ID = ?',[Hash::make($pw) , $id]);
+                Redis::del('changeId');
+                return response()->json([
+                    'msg'=>'비밀번호가 변경되었습니다.',
+                    'result'=>$id
+                ]);
+            }else{
+                 return response()->json([
+                    'msg'=>'비밀번호가 너무 짧습니다.'
+                ]);
+            }
+        }
+    }
 }
