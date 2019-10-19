@@ -52,7 +52,8 @@ class UserController extends Controller
         
     }
     public function sessionUser(){
-     
+        Redis::del('changeId');
+        Redis::del('auth');
         return response()->json([
             'userNo'=>   Redis::get('userNo'),
             'username'=> Redis::get('username')
@@ -67,9 +68,7 @@ class UserController extends Controller
  
         $pwCheck=DB::select('SELECT USER_PW FROM USERS WHERE USER_ID = ? ',[$request->input('id')]);
         
-        if($pwCheck!=null){
-            Log::info($pwCheck[0]->USER_PW);
-            
+        if($pwCheck!=null){   
             if(Hash::check($request->input('pw'), $pwCheck[0]->USER_PW)){
                 $userNo=DB::select('SELECT USER_NO FROM USERS WHERE USER_ID = ? ',[$request->input('id')]);
                 Redis::set('userNo',$userNo[0]->USER_NO);
@@ -102,31 +101,18 @@ class UserController extends Controller
                 'msg'=>'인증정보가 없습니다 다시 시도해주세요.'
             ]);
         }
-        if(!empty($pw)){
-            if(strlen($pw)>3){
+        if(!empty($pw) && strlen($pw)>3){
                 if(!empty($email)){
                     DB::update('UPDATE USERS SET USER_PW = ? , USER_EMAIL = ? WHERE USER_ID = ?',[Hash::make($pw), Crypt::encryptString($email) , $id]);
-                    return response()->json([
-                        'msg'=>'변경이 완료되었습니다.',
-                        'result'=>$id,
-                        'action'=>$action
-                    ]);
                 }else{
                     DB::update('UPDATE USERS SET USER_PW = ? WHERE USER_ID = ?',[Hash::make($pw) , $id]);
                     Redis::del('changeId');
-                    return response()->json([
-                        'msg'=>'변경이 완료되었습니다.',
-                        'result'=>$id,
-                        'action'=>$action
-                    ]);
                 }
-
-            }else{
                 return response()->json([
-                    'msg'=>'비밀번호가 너무 짧습니다.'
-                ]);
-            }
-            
+                    'msg'=>'변경이 완료되었습니다.',
+                    'result'=>$id,
+                    'action'=>$action
+                ]);       
         }else{
             return response()->json([
                 'msg'=>'비밀번호가 너무 짧습니다.'

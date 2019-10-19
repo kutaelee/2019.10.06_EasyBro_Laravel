@@ -8,20 +8,27 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class AuthController extends Controller
 {
     public function send(Request $request){
         $email=DB::select('SELECT USER_EMAIL FROM USERS WHERE USER_ID = ?', [$request->input('id')]);
         if(!empty($email)){
-            if(Crypt::decryptString($email[0]->USER_EMAIL)===$request->input('email')){
+            if(!strcmp(Crypt::decryptString($email[0]->USER_EMAIL),$request->input('email'))){
                 try{
                     $user=array('email'=>$request->input('email'));
                     Redis::set('auth',false);
                     Redis::set('changeId',htmlspecialchars($request->input('id')));
-                    Mail::send('authMail', $user, function($message) use ($user) {
+                    srand(time());
+                    $key=rand();
+                    Redis::set('key',$key);
+                    $key=Crypt::encryptString($key);
+                
+                    Mail::send('authMail', ['key'=>$key], function($message) use ($user) {
                         $message->to($user['email']);
                         $message->subject('[EASY BRO] 비밀번호변경 인증메일');
+                        $message-> sender('servercheckbot@gmail.com', 'EASY BRO');
                     });
                     return response()->json([ 
                         'msg'=> '인증메일이 전송되었습니다.'
@@ -38,16 +45,29 @@ class AuthController extends Controller
         }
     }
 
-    public function auth(){
+    public function auth(Request $request){
         $auth=Redis::get('auth');
-        Log::info($auth);
-        if(isset($auth)){
-           if(!$auth){
+        $param=$request->query('key');
+        if(isset($auth) && isset($param)){     
+            try{
+                $param=Crypt::decryptString($param);
+            }catch(DecryptException  $e){
+                return '키값이 잘못되었습니다. 다시 인증해주세요.';
+            }
+      
+            $key=Redis::get('key');
+        if(!strcmp($param,$key)){
+            if(!$auth ){
                 Redis::set('auth',true);
+                Redis::del('key');
                 return '인증이 완료되었습니다.';
-           }else{
+           }else {
                 return '인증이 이미 완료되었습니다.';
            }
+        }else{
+            return '키값이 틀립니다 다시 인증을 시도해주세요.';
+        }
+    
         }else{
             return '인증정보가 없습니다.';
         }
@@ -55,7 +75,6 @@ class AuthController extends Controller
 
     public function check(){
         $auth=Redis::get('auth');
-        Log::info($auth);
         if(isset($auth)){
             if($auth){
                  Redis::del('auth');

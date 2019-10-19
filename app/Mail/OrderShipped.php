@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
+
 class OrderShipped extends Mailable
 {
     use Queueable, SerializesModels;
@@ -19,7 +20,7 @@ class OrderShipped extends Mailable
 
     public function __construct()
     {
- 
+
     }
 
     /**
