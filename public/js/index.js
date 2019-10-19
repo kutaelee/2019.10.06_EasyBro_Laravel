@@ -41,11 +41,10 @@ $(document).ready(function () {
 
     });
     /* 폼 외의 영역 클릭 이벤트 */
-    $(document).on('click', '.modal', function (e) {
-        if (e.target.className === 'modal') {
-            $('.modal').fadeOut();
-            $('body').css('overflow-y', 'scroll');
-        }
+    $(document).on('click', '.modal-close-btn', function () {
+
+        $('.modal').fadeOut();
+        $('body').css('overflow-y', 'scroll');
     });
     /* 키 입력 이벤트 */
     $(document).keydown(function (e) {
@@ -280,7 +279,7 @@ $(document).ready(function () {
                 $('#list-destroy-modal').fadeOut('fast');
                 $('body').css('overflow-y', 'scroll');
                 linkListBind(data).then(linkBind);
-                boardInit(1,keyword,selected);
+                boardInit(1, keyword, selected);
             }, error: function (e) {
                 alert('danger', '리스트 삭제', '리스트를 삭제하는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');
             }
@@ -393,12 +392,12 @@ $(document).ready(function () {
                 url: '/list/' + listNo,
                 data: { 'listNo': listNo, 'listName': listName, 'linkNames': linkNames, 'linkUrls': linkUrls, 'linkNums': linkNums },
                 success: function (data) {
-                    if(data){
+                    if (data) {
                         alert('success', '리스트 수정', '리스트 수정이 완료되었습니다.');
                         $('#list-edit-modal').fadeOut('fast');
                         $('body').css('overflow-y', 'scroll');
                         linkListBind(data).then(linkBind);
-                    }else{
+                    } else {
                         alert('danger', '리스트 수정', '리스트를 수정하는 도중 문제가 발생했습니다 다시 로그인 후 시도해주세요.');
                     }
                 }, error: function (e) {
@@ -498,191 +497,191 @@ $(document).ready(function () {
         sessionCheck().then(bringList);
 
     });
-    $(document).on('click','.pageNum', function(){
-        currentPageNum=$(this).text();
-        boardInit(currentPageNum,keyword,selected);
+    $(document).on('click', '.pageNum', function () {
+        currentPageNum = $(this).text();
+        boardInit(currentPageNum, keyword, selected);
     });
 
-    $(document).on('click','#first-page', function(){
-        currentPageNum=1;
-        boardInit(currentPageNum,keyword,selected);
+    $(document).on('click', '#first-page', function () {
+        currentPageNum = 1;
+        boardInit(currentPageNum, keyword, selected);
     });
 
-    $(document).on('click','#last-page', function(){
-        currentPageNum=Math.ceil(boardCount/10);
-        boardInit(currentPageNum,keyword,selected);
+    $(document).on('click', '#last-page', function () {
+        currentPageNum = Math.ceil(boardCount / 10);
+        boardInit(currentPageNum, keyword, selected);
     });
 
-    $(document).on('click','#prev-page', function(){
-        if(currentPageNum>10){
-            let minusNum=currentPageNum%10;
-            if(minusNum===0) {minusNum=10;}
-            currentPageNum=currentPageNum-minusNum;
-        }else{
-            currentPageNum=1;
+    $(document).on('click', '#prev-page', function () {
+        if (currentPageNum > 10) {
+            let minusNum = currentPageNum % 10;
+            if (minusNum === 0) { minusNum = 10; }
+            currentPageNum = currentPageNum - minusNum;
+        } else {
+            currentPageNum = 1;
         }
-        boardInit(currentPageNum,keyword,selected);
+        boardInit(currentPageNum, keyword, selected);
     });
 
-    $(document).on('click','#next-page', function(){
-        currentPageNum*=1;
-        if(currentPageNum>10){
-            let plusNum=10-currentPageNum%10+1;
-            currentPageNum=currentPageNum+plusNum;
-        }else{
-            let plusNum=10-currentPageNum+1;
-            currentPageNum=currentPageNum+plusNum;         
+    $(document).on('click', '#next-page', function () {
+        currentPageNum *= 1;
+        if (currentPageNum > 10) {
+            let plusNum = 10 - currentPageNum % 10 + 1;
+            currentPageNum = currentPageNum + plusNum;
+        } else {
+            let plusNum = 10 - currentPageNum + 1;
+            currentPageNum = currentPageNum + plusNum;
         }
-        if(currentPageNum>Math.ceil(boardCount/10)){
-            currentPageNum=Math.ceil(boardCount/10)-boardCount%10;
+        if (currentPageNum > Math.ceil(boardCount / 10)) {
+            currentPageNum = Math.ceil(boardCount / 10) - boardCount % 10;
         }
-        boardInit(currentPageNum,keyword,selected);
+        boardInit(currentPageNum, keyword, selected);
     });
 
-    $(document).on('click','#search-btn',function(){
-        keyword=$('#board-search-keyword').val();
-        selected=$('#board-search-select option:selected').val();
-        boardInit(1,keyword,selected);
+    $(document).on('click', '#search-btn', function () {
+        keyword = $('#board-search-keyword').val();
+        selected = $('#board-search-select option:selected').val();
+        boardInit(1, keyword, selected);
     });
 
-    $('.link-search').keyup(function(e){ 
-        linkKeyword=$(this).val();
-        if(e.keyCode===13 || !linkKeyword){
+    $('.link-search').keyup(function (e) {
+        linkKeyword = $(this).val();
+        if (e.keyCode === 13 || !linkKeyword) {
             sessionCheck().then(linkListBind).then(linkBind);
         }
     });
 
-    $('#board-search-keyword').keyup(function(e){
-        keyword=$('#board-search-keyword').val();
-        if(e.keyCode===13 || !keyword){
-            selected=$('#board-search-select option:selected').val();
-            boardInit(1,keyword,selected);
+    $('#board-search-keyword').keyup(function (e) {
+        keyword = $('#board-search-keyword').val();
+        if (e.keyCode === 13 || !keyword) {
+            selected = $('#board-search-select option:selected').val();
+            boardInit(1, keyword, selected);
         }
     });
 
-    $('#forget-modal-btn').click(function(){
+    $('#forget-modal-btn').click(function () {
         $('#login-modal').hide();
         $('#forget-modal').show();
     });
-    $('#auth-cancel-btn').click(function(){
+    $('#auth-cancel-btn').click(function () {
         $('#forget-modal').hide();
         $('#login-modal').show();
     });
-    $('#email-send-btn').click(function(){
+    $('#email-send-btn').click(function () {
         loadingOn();
-        const email=$('#forget-email').val();
-        const id=$('#forget-username').val();
+        const email = $('#forget-email').val();
+        const id = $('#forget-username').val();
         $.ajax({
-            type:'POST',
-            url:'/auth/send',
-            data:{'email':email,'id':id},
-            success:function(data){
-                if(data){
+            type: 'POST',
+            url: '/auth/send',
+            data: { 'email': email, 'id': id },
+            success: function (data) {
+                if (data) {
                     alert('success', '비밀번호변경', data.msg);
-                }else{
+                } else {
                     alert('danger', '비밀번호변경', '아이디와 이메일 정보가 서로 맞지 않습니다.');
                 }
                 loadingOff();
-            },error:function(e){
+            }, error: function (e) {
                 alert('danger', '비밀번호변경', '인증메일 전송 중 문제가 발생했습니다 관리자에게 문의해주세요.');
                 loadingOff();
             }
         });
     });
 
-    $('#change-cancel-btn').click(function(){       
+    $('#change-cancel-btn').click(function () {
         $('#change-modal').hide();
-        $('body').css('overflow-y', 'scroll');      
+        $('body').css('overflow-y', 'scroll');
     });
 
-    $('#auth-btn').click(function(){
+    $('#auth-btn').click(function () {
         $.ajax({
-            type:'GET',
-            url:'/auth/check',
-            success:function(data){
-                if(data.auth){
+            type: 'GET',
+            url: '/auth/check',
+            success: function (data) {
+                if (data.auth) {
                     alert('success', '비밀번호변경', data.msg);
                     $('#forget-modal').hide();
                     $('#change-modal').show();
-                }else{
+                } else {
                     alert('danger', '비밀번호변경', data.msg);
                 }
-            },error:function(e){
+            }, error: function (e) {
                 alert('danger', '비밀번호변경', '인증 체크 중 문제가 발생했습니다 관리자에게 문의해주세요. ');
             }
         })
     });
 
-    $('#change-password').keyup(function(){
-        let pw=$(this).val();
-        let pwCheck=$('#change-password-check').val();
-        if(pw.length<4){
+    $('#change-password').keyup(function () {
+        let pw = $(this).val();
+        let pwCheck = $('#change-password-check').val();
+        if (pw.length < 4) {
             dangerInfo('change-password', '4자리 이상 입력해주세요.');
-            changePw=false;
-        }else{
+            changePw = false;
+        } else {
             successInfo('change-password', '사용해도 좋은 비밀번호 입니다.');
-            changePw=true;
+            changePw = true;
         }
-        if(pwCheck!=pw){
+        if (pwCheck != pw) {
             dangerInfo('change-password-check', '비밀번호가 서로 다릅니다.');
-            changePwCheck=false;
-        }else{
+            changePwCheck = false;
+        } else {
             successInfo('change-password-check', '비밀번호가 같습니다.');
-            changePwCheck=true;
+            changePwCheck = true;
         }
     });
-    $('#change-password-check').keyup(function(){
-        let pw=$('#change-password').val();
-        let pwCheck=$(this).val();
-        if(pwCheck!=pw){
+    $('#change-password-check').keyup(function () {
+        let pw = $('#change-password').val();
+        let pwCheck = $(this).val();
+        if (pwCheck != pw) {
             dangerInfo('change-password-check', '비밀번호가 서로 다릅니다.');
-            changePwCheck=false;
-        }else{
+            changePwCheck = false;
+        } else {
             successInfo('change-password-check', '비밀번호가 같습니다.');
-            changePwCheck=true;
+            changePwCheck = true;
         }
     });
 
-    $('#change-btn').click(function(){      
+    $('#change-btn').click(function () {
         loadingOn();
-        if(changePw && changePwCheck){
-            const pw=$('#change-password').val();
-            const email=$('#change-email').val();
+        if (changePw && changePwCheck) {
+            const pw = $('#change-password').val();
+            const email = $('#change-email').val();
             const emailRegExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-                if(!email || emailRegExp.test(email)){             
-                    $.ajax({
-                        type:'PATCH',
-                        url:'/users/user',
-                        data:{'pw':pw,'email':email},
-                        success:function(data){
-                            if(data.action==='mypage'){                                             
-                                $('#change-modal input').val('');
-                            }else{
-                                $('#login-username').val(data.result);
-                                $('#login-modal').show();
-                                $('#login-password').focus();
-                            }
-                            $('#change-modal').hide();
-                            alert('success', '정보변경', data.msg);
-                            loadingOff();
-                        },error:function(e){
-                            loadingOff();
-                            alert('danger', '정보변경', '정보 변경 중 문제가 생겼습니다 관리자에게 문의해주세요.');
+            if (!email || emailRegExp.test(email)) {
+                $.ajax({
+                    type: 'PATCH',
+                    url: '/users/user',
+                    data: { 'pw': pw, 'email': email },
+                    success: function (data) {
+                        if (data.action === 'mypage') {
+                            $('#change-modal input').val('');
+                        } else {
+                            $('#login-username').val(data.result);
+                            $('#login-modal').show();
+                            $('#login-password').focus();
                         }
-                    });
-                }else{
-                    alert('danger', '정보변경', '이메일 형식이 맞지 않습니다.');
-                    loadingOff();
-                }
-        }else{
+                        $('#change-modal').hide();
+                        alert('success', '정보변경', data.msg);
+                        loadingOff();
+                    }, error: function (e) {
+                        loadingOff();
+                        alert('danger', '정보변경', '정보 변경 중 문제가 생겼습니다 관리자에게 문의해주세요.');
+                    }
+                });
+            } else {
+                alert('danger', '정보변경', '이메일 형식이 맞지 않습니다.');
+                loadingOff();
+            }
+        } else {
             alert('danger', '정보변경', '비밀번호 형식을 맞춰주세요.');
             loadingOff();
-        }     
+        }
     });
 
-    $('#mypage-btn').click(function(){
+    $('#mypage-btn').click(function () {
         $('#change-modal').show();
-    }); 
+    });
 });
 
 /* 섹션 스크롤 애니메이션 */
@@ -815,7 +814,7 @@ function sessionCheck() {
                     loginNav();
                     $('#login-modal').hide();
                     $('join-modal').hide();
-                    $('#change-id').text('ID : '+data.username);
+                    $('#change-id').text('ID : ' + data.username);
                 } else {
                     logOutNav();
                 }
@@ -834,7 +833,7 @@ function linkListBind(userData) {
             $.ajax({
                 type: 'get',
                 url: '/lists',
-                data:{'keyword':linkKeyword},
+                data: { 'keyword': linkKeyword },
                 success: function (listData) {
                     $('.list-box-ul').text('');
                     $('.list-box-ul').append('<li class="list-add"><span class="list-add-icon">+</span></li>');
@@ -844,12 +843,12 @@ function linkListBind(userData) {
                         i++;
                     }
                     resolve(listData);
-                    
+
                 }, error: function (e) {
                     console.log(e);
                 }
             });
-        }else{
+        } else {
             loadingOff();
         }
     });
@@ -895,10 +894,10 @@ function getShareLists(userData) {
         $.ajax({
             type: 'GET',
             url: '/lists',
-            data: {'share':1},
+            data: { 'share': 1 },
             success: function (data) {
-                $('.my-list').text('');           
-                if(!data[0]){
+                $('.my-list').text('');
+                if (!data[0]) {
                     alert('danger', '리스트 공유', '리스트에 링크가 없어서 공유할 수 없습니다.');
                 }
                 for (item of data) {
@@ -993,31 +992,31 @@ function storeList(listName) {
 }
 
 /* 리스트 담기 기능 */
-function bringList(userData){
-    if(userData.userNo){
+function bringList(userData) {
+    if (userData.userNo) {
         const listName = $('.share-board-name').attr('content');
         storeList(listName).then(getListNo).then(storeLinks);
-    }else{
-            alert('danger', '리스트 담기', '로그인 후 이용해주세요.');      
+    } else {
+        alert('danger', '리스트 담기', '로그인 후 이용해주세요.');
     }
     loadingOff();
 }
 
 /* 공유게시판 바인딩 */
-function boardInit(pageNum,keyword,selected) {
+function boardInit(pageNum, keyword, selected) {
     loadingOn();
     $('.list-share-table').text('');
     $('.list-share-table').append('<tr><th>번호</th><th>리스트명</th><th style="width: 20%">생성한 시간</th><th style="width: 20%">공유한 시간</th><th>공유한 사람</th><th>공유된 횟수</th></tr>');
-    if(!pageNum || pageNum===1 || pageNum<0){
-        currentPageNum=1;
-        pageNum=0;
-    }else{
-        pageNum=(pageNum-1)*10;
+    if (!pageNum || pageNum === 1 || pageNum < 0) {
+        currentPageNum = 1;
+        pageNum = 0;
+    } else {
+        pageNum = (pageNum - 1) * 10;
     }
     $.ajax({
         type: 'GET',
         url: '/boards',
-        data: { 'pageNum': pageNum ,'keyword':keyword,'selected':selected },
+        data: { 'pageNum': pageNum, 'keyword': keyword, 'selected': selected },
         success: function (data) {
             for (item of data) {
                 $('.list-share-table').append('<tr class="share-item" num="' + item.DOC_NO + '"><td>' + item.DOC_NO + '</td>'
@@ -1028,9 +1027,9 @@ function boardInit(pageNum,keyword,selected) {
                     + '<td>' + item.SHARE_COUNT + '</td></tr>');
             }
 
-            if(!data[0]){
+            if (!data[0]) {
                 $('#share-info').show();
-            }else{
+            } else {
                 $('#share-info').hide();
             }
         }, error: function (e) {
@@ -1038,60 +1037,60 @@ function boardInit(pageNum,keyword,selected) {
         }
     });
 
-        $.ajax({
-            type:'GET',
-            url:'/boardCount',
-            data:{'keyword':keyword,'selected':selected},
-            success:function(data){   
-                boardCount=data.count; 
-                pagingInit(boardCount,currentPageNum);
-            },error:function(e){
-                alert('danger', '공유 게시판', '게시글 수를 가져오는중 문제가 발생했습니다 관리자에게 문의해주세요.');
-            }
-        });
+    $.ajax({
+        type: 'GET',
+        url: '/boardCount',
+        data: { 'keyword': keyword, 'selected': selected },
+        success: function (data) {
+            boardCount = data.count;
+            pagingInit(boardCount, currentPageNum);
+        }, error: function (e) {
+            alert('danger', '공유 게시판', '게시글 수를 가져오는중 문제가 발생했습니다 관리자에게 문의해주세요.');
+        }
+    });
 }
 
 
 /* 페이징 */
-function pagingInit(count,currentPageNum){
+function pagingInit(count, currentPageNum) {
     $('.board-paging').text('');
-    $('.pageNum').css('color','#001D44');
+    $('.pageNum').css('color', '#001D44');
     $('.board-paging').append('<span id="first-page"><<</span>');
     $('.board-paging').append('<span id="prev-page"><</span>');
 
-    if(currentPageNum%10===0){
-        startPageNum=10*Math.floor((currentPageNum-10)/10)+1;
-    }else{
-        startPageNum=10*Math.floor(currentPageNum/10)+1;
+    if (currentPageNum % 10 === 0) {
+        startPageNum = 10 * Math.floor((currentPageNum - 10) / 10) + 1;
+    } else {
+        startPageNum = 10 * Math.floor(currentPageNum / 10) + 1;
     }
 
-    maxPageNum=10*Math.ceil(currentPageNum/10);
- 
+    maxPageNum = 10 * Math.ceil(currentPageNum / 10);
 
-    if(maxPageNum>Math.ceil(count/10)){
-        maxPageNum=Math.ceil(count/10);
+
+    if (maxPageNum > Math.ceil(count / 10)) {
+        maxPageNum = Math.ceil(count / 10);
     }
 
-    if(count<=10){
+    if (count <= 10) {
         $('.board-paging').append('<span class="pageNum" id="pageNum-1">1</span>');
-    }else{
-        for(let i=startPageNum;i<=maxPageNum;i++){
-            $('.board-paging').append('<span class="pageNum" id="pageNum-'+i+'">'+i+'</span>');
+    } else {
+        for (let i = startPageNum; i <= maxPageNum; i++) {
+            $('.board-paging').append('<span class="pageNum" id="pageNum-' + i + '">' + i + '</span>');
         }
     }
     $('.board-paging').append('<span id="next-page">></span>');
     $('.board-paging').append('<span id="last-page">>></span>');
-    $('#pageNum-'+currentPageNum).css('color','red');
+    $('#pageNum-' + currentPageNum).css('color', 'red');
     loadingOff();
 }
-function loadingOn(){
-    if($('#loading-modal').css('display')==='none'){
+function loadingOn() {
+    if ($('#loading-modal').css('display') === 'none') {
         $('#loading-modal').fadeIn('fast');
     }
 }
-function loadingOff(){
-    if($('#loading-modal').css('display')==='block'){
-    $('#loading-modal').fadeOut('fast');
+function loadingOff() {
+    if ($('#loading-modal').css('display') === 'block') {
+        $('#loading-modal').fadeOut('fast');
     }
 }
 /* 회원가입 유효성 체크 변수 */
@@ -1104,14 +1103,14 @@ let dangerAlertCloseTimer;
 let successAlertCloseTimer;
 
 /* 페이징 변수 */
-let currentPageNum=1;
-let startPageNum=1;
-let maxPageNum=10;
-let boardCount=0;
-let keyword=null;
-let selected=null;
-let linkKeyword=null;
+let currentPageNum = 1;
+let startPageNum = 1;
+let maxPageNum = 10;
+let boardCount = 0;
+let keyword = null;
+let selected = null;
+let linkKeyword = null;
 
 /* 비밀번호 변경 변수 */
-let changePw=false;
-let changePwCheck=false;
+let changePw = false;
+let changePwCheck = false;

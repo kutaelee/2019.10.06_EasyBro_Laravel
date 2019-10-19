@@ -8,13 +8,15 @@
   <link rel="stylesheet" href="{{mix('css/tailwind.css')}}">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css">
-  <link rel="stylesheet" href="css/index.css?ver=29">
+  <link rel="stylesheet" href="css/index.css?ver=30">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <script src="js/index.js?ver=30"></script>
+  <script src="js/index.js?ver=32"></script>
   <title>@yield('title','EasyBro')</title>
   <div class="modal" id="login-modal">
     <div class="w-full max-w-xs" id="login-box">
+   
       <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          <img src="/img/delete.png" class="modal-close-btn">
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="login-username">
             아이디
@@ -52,6 +54,7 @@
   <div class="modal" id="join-modal">
     <div class="max-w-xs" id="join-box">
       <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          <img src="/img/delete.png" class="modal-close-btn">
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="join-username">
             아이디
@@ -102,6 +105,7 @@
   <div class="modal" id="forget-modal">
     <div id="forget-box">
       <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" action="" onsubmit="return false">
+          <img src="/img/delete.png" class="modal-close-btn">
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="forget-username">
             아이디
@@ -138,9 +142,9 @@
   <div class="modal" id="change-modal">
       <div id="change-box">
         <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" action="" onsubmit="return false">
+            <img src="/img/delete.png" class="modal-close-btn">
           <div class="mb-4">
-              <label class="block text-gray-700 text-sm font-bold mb-2" id="change-id">
-                  
+              <label class="block text-gray-700 text-sm font-bold mb-2" id="change-id">              
                 </label>
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="change-email">
                     이메일(변경을 원치 않으시면 빈값)
@@ -190,6 +194,7 @@
       </div>
   <div class="modal" id="list-add-modal">
     <div class="list-add-box">
+        <img src="/img/delete.png" class="modal-close-btn">
       <h1> 리스트 추가 </h1>
       <label for="list-name">추가할 리스트 이름</label>
       <input type="text" class="list-name" id="list-name" maxlength="50">
@@ -199,6 +204,7 @@
   @yield('list-add')
   <div class="modal" id="link-add-modal">
     <div class="link-add-box">
+        <img src="/img/delete.png" class="modal-close-btn">
       <h1> 링크 추가 </h1>
       <label for="link-name">이름</label>
       <input type="text" class="link-name" id="link-name" maxlength="50" placeholder="구글">
@@ -210,6 +216,7 @@
   @yield('link-add')
   <div class="modal" id="list-destroy-modal">
     <div class="list-destroy-box">
+        <img src="/img/delete.png" class="modal-close-btn">
       <h1 class="list-destroy-name"></h1>
       <h2>리스트를 삭제하시면 포함된 링크도 모두 삭제되며 복구 할 수없습니다.</h2>
       <h2>정말로 삭제하시겠습니까?</h2>
@@ -219,6 +226,7 @@
   @yield('list-destroy')
   <div class="modal" id="link-destroy-modal">
     <div class="link-destroy-box">
+        <img src="/img/delete.png" class="modal-close-btn">
       <h1 class="link-destroy-name"></h1>
       <h2>링크를 삭제하시면 복구 할 수없습니다.</h2>
       <h2>정말로 삭제하시겠습니까?</h2>
@@ -228,6 +236,7 @@
   @yield('link-destroy')
   <div class="modal" id="list-edit-modal">
     <div class="list-edit-box">
+        <img src="/img/delete.png" class="modal-close-btn">
       <h1>리스트 수정</h1>
       <label for="list-edit-listName">리스트 : </label>
       <input type="text" maxlength="50" id="list-edit-listName">
@@ -239,6 +248,7 @@
   @yield('list-edit')
   <div class="modal" id="list-share-modal">
     <div class="list-share-box">
+        <img src="/img/delete.png" class="modal-close-btn">
       <h1 class="list-share-name">리스트 공유</h1>
       <select class="my-list" name="my-list"></select>
       <button class="list-btn" id="list-share-btn">확인</button>
@@ -247,6 +257,7 @@
   @yield('list-share')
   <div class="modal" id="share-board-modal">
     <div class="share-board-box">
+        <img src="/img/delete.png" class="modal-close-btn">
       <h1 class="share-board-name"></h1>
       <table class="share-board-table">
 
