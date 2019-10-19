@@ -1,5 +1,5 @@
 const mix = require('laravel-mix');
-
+require('laravel-mix-polyfill');
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -11,7 +11,14 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css')
+mix.js(['resources/js/app.js','public/js/index.js'],'public/js')
+    .styles(['public/css/index.css','resources/sass/app.scss'],'public/css/bundle.css')
     .postCss('resources/css/tailwind.css', 'public/css', [
-        require('tailwindcss'),]);
+    require('tailwindcss'),])
+    .polyfill({
+        enabled: true,
+        useBuiltIns: "usage",
+        targets: {"firefox": "50", "ie": 11}
+    });
+
+

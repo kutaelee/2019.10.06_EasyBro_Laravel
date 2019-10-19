@@ -8,6 +8,7 @@ $(document).ready(function () {
     });
     /* 세션체크 후 링크페이지 세팅 */
     sessionCheck().then(linkListBind).then(linkBind).then(boardInit);
+
     $('#navi').click(function (e) {
         let id = e.target.id;
         /* 모달 버튼 클릭 이벤트 */
@@ -163,13 +164,13 @@ $(document).ready(function () {
                         alert('success', '회원가입', '회원가입이 완료되었습니다.');
                         $('.modal input').val('');
                         $('.modal').hide();
+                        $('body').css('overflow-y', 'scroll');
                         modalInputInit();
                         loginNav();
-                        linkListBind(data).then(linkBind);
+                        linkListBind(data).then(linkBind).then(boardInit);
                     } else {
-                        alert('danger', '회원가입 실패', '오류가 있습니다 관리자에게 문의해주세요.');
-                    }
-                    loadingOff();
+                        alert('danger', '회원가입 실패', '데이터에 문제가있습니다 재입력 후 다시 시도해주세요.');
+                    }                            
                 }, error: function (e) {
                     console.log(e);
                     loadingOff();
@@ -179,6 +180,7 @@ $(document).ready(function () {
         } else {
             alert('danger', '회원가입 실패', '모든 정보를 정확히 입력해주세요.');
         }
+        loadingOff(); 
     });
     $('#danger-alert-close').click(function () {
         clearTimeout(dangerAlertCloseTimer);
@@ -349,7 +351,7 @@ $(document).ready(function () {
             success: function (data) {
                 if (data[0]) {
                     $('.list-edit-table').append('<tr> <th class="link-name-th">이름</th> <th>URL</th> </tr>');
-                    for (item of data[0]) {
+                    for (let item of data[0]) {
                         $('.list-edit-table').append('<tr><td><input type="text" maxlength="50" value="' + item.LINK_NAME + '" num="' + item.LINK_NO + '"></td> <td><input type="text" maxlength="200" value="' + item.LINK_URL + '"></td></tr>');
                     }
                 } else {
@@ -480,8 +482,8 @@ $(document).ready(function () {
             url: '/boards/' + docNo,
             data: { 'docNo': docNo },
             success: function (data) {
-                $('.share-board-name').attr('listNum', item.LIST_NO);
-                for (item of data) {
+                $('.share-board-name').attr('listNum', data.LIST_NO);
+                for (let item of data) {
                     $('.share-board-table').append('<tr><td>' + item.LINK_NAME + '</td>'
                         + '<td><a href="' + item.LINK_URL + '" target="_blank">' + item.LINK_URL + '</a></td></tr>');
                 }
@@ -838,7 +840,7 @@ function linkListBind(userData) {
                     $('.list-box-ul').text('');
                     $('.list-box-ul').append('<li class="list-add"><span class="list-add-icon">+</span></li>');
                     let i = 1;
-                    for (item of listData) {
+                    for (let item of listData) {
                         $('.list-box-ul').append('<li class="list-item" id="list-' + item.LIST_NO + '" number="' + item.LIST_NO + '" content="' + item.LIST_NAME + '"><span class="list-item-number">' + i + '</span><a class="list-item-name">' + item.LIST_NAME + '</a> <span class="list-destroy-icon"> - </span> <span class="link-add-icon"> + </span> <img src="/img/listEdit.png" class="list-edit-icon"> </li>');
                         i++;
                     }
@@ -865,8 +867,8 @@ function linkBind(listData) {
                 data: { 'list': listData },
                 success: function (linkData) {
                     $('.link-item-ul').text('');
-                    for (link of linkData) {
-                        for (item of link) {
+                    for (let link of linkData) {
+                        for (let item of link) {
                             $('#list-' + item.LIST_NO).append('<ul class="link-item-ul"><li class="link-item" id="link-' + item.LINK_NO + '" url="' + item.LINK_URL + '"><a class="link-item-name">'
                                 + item.LINK_NAME + '(' + item.LINK_URL + ')</a> <span class="link-destroy-icon" num="' + item.LINK_NO + '">-</span> </li></ul>');
                         }
@@ -878,6 +880,8 @@ function linkBind(listData) {
                     loadingOff();
                 }
             });
+        }else{
+            resolve();
         }
     });
 }
@@ -900,7 +904,7 @@ function getShareLists(userData) {
                 if (!data[0]) {
                     alert('danger', '리스트 공유', '리스트에 링크가 없어서 공유할 수 없습니다.');
                 }
-                for (item of data) {
+                for (let item of data) {
                     $('.my-list').append('<option value="' + item.LIST_NO + '">' + item.LIST_NAME + '</option>');
                     $('#list-share-modal').fadeIn('fast');
                     $('body').css('overflow-y', 'hidden');
@@ -1018,7 +1022,7 @@ function boardInit(pageNum, keyword, selected) {
         url: '/boards',
         data: { 'pageNum': pageNum, 'keyword': keyword, 'selected': selected },
         success: function (data) {
-            for (item of data) {
+            for (let item of data) {
                 $('.list-share-table').append('<tr class="share-item" num="' + item.DOC_NO + '"><td>' + item.DOC_NO + '</td>'
                     + '<td class="share-item-name">' + item.LIST_NAME + '</td>'
                     + '<td>' + item.LIST_CREATED_AT + '</td>'

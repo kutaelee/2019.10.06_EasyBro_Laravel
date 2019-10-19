@@ -98,7 +98,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
 }
 .container{
     position:relative;
@@ -126,9 +126,7 @@ body{
     z-index: 20;
     pointer-events: none;
 }
-.container .cards img{
-    width:100%;
-}
+
 .container .cards .imgBx{
     position: absolute;
     top: 0;
@@ -269,7 +267,7 @@ body{
     box-shadow: 3px 4px 7px grey;
     border: 3px solid white;
     border-radius: 5px;
-    margin:7% 10%;
+    margin:10%;
 }
 .board-section h1{
     color:white;
@@ -529,7 +527,7 @@ body{
     padding: 10% 25%;
 }
 #list-edit-modal,#share-board-modal{
-    padding: 8% 25%;
+    padding: 5% 25%;
 }
 .link-add-box {
     padding: 2% 5%;
@@ -682,7 +680,6 @@ body{
 }
 #board-search-keyword{
     width:20%;
-    height:28px;
 }
 #search-btn{
     padding: 3px 0;
@@ -943,9 +940,3 @@ body{
     }
 }
 //
-
-@tailwind base;
-
-@tailwind components;
-
-@tailwind utilities;

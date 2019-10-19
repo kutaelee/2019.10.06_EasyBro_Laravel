@@ -18,6 +18,14 @@ class UserController extends Controller
         ]);
     }
     public function store(Request $request){
+        $id = $request->input('id');
+        $email=$request->input('email');
+        $pw=$request->input('pw');
+        if(empty($id) || empty($email) || empty($pw)){
+            return response()->json([
+                'result'=>false
+            ]);
+        }
         if(DB::table('USERS')->where('USER_ID',$request->input('id'))->exists()){
             return response()->json([
                 'result'=>false
@@ -31,7 +39,7 @@ class UserController extends Controller
             ]);
            
             });
-            $id = $request->input('id');
+            
         
             $userNo=DB::select('SELECT USER_NO FROM USERS WHERE USER_ID = ? ',[$id]);
             Redis::set('userNo',$userNo[0]->USER_NO);

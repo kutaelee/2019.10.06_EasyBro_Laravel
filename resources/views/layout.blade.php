@@ -8,9 +8,9 @@
   <link rel="stylesheet" href="{{mix('css/tailwind.css')}}">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css">
-  <link rel="stylesheet" href="css/index.css?ver=30">
+  <link rel="stylesheet" href="css/app.css">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <script src="js/index.js?ver=32"></script>
+  <script src="js/app.js"></script>
   <title>@yield('title','EasyBro')</title>
   <div class="modal" id="login-modal">
     <div class="w-full max-w-xs" id="login-box">

@@ -73,7 +73,6 @@ class LinkController extends Controller
         
         if(!empty($owner)){
             if($owner[0]->LIST_OWNER==Redis::get('userNo')){
-                Log::info(Redis::get('userNo'));
                 DB::transaction(function () use($request) {
                     DB::delete('DELETE FROM LINKS WHERE LINK_NO= ? ', [$request->input('linkNo')]);
                 });
