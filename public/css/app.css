@@ -949,7 +949,8 @@ body{
         font-size: 14px;
     }
     .infobackground {
-        height: 180vh;
+        min-height: 100vh;
+        height: auto;
     }
 }
 //

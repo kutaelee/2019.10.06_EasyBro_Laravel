@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="{{mix('css/tailwind.css')}}">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css">
-  <link rel="stylesheet" href="css/app.css?ver=1">
+  <link rel="stylesheet" href="css/app.css?ver=2">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script src="js/app.js?ver=4"></script>
   <title>@yield('title','EasyBro')</title>
