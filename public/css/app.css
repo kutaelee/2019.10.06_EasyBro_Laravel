@@ -4,7 +4,11 @@ a,p,label,div,section,li,button{
 h1,h2{
     font-family: 'Iropke Batang', serif;
 }
-
+#navi{
+    position: fixed;
+    position: sticky;
+    width:100%;
+}
 .info{
     min-height:100vh;
 }
@@ -258,7 +262,7 @@ body{
 }
 .board-section{
     width:100%;
-    height:99vh;
+    height:110vh;
     background:#00305A;
 }
 .board{
@@ -922,6 +926,9 @@ body{
     #change-modal{
         padding: 10% 20%;
     }
+    .infobackground{
+        height: 150vh;
+    }
 }
 @media(max-width:500px){
     #join-box ,  #login-box{
@@ -940,6 +947,9 @@ body{
     #board-search-keyword{
         width: 50%;
         font-size: 14px;
+    }
+    .infobackground {
+        height: 170vh;
     }
 }
 //

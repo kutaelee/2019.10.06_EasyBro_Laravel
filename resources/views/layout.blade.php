@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="{{mix('css/tailwind.css')}}">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css">
-  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/app.css?ver=1">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script src="js/app.js"></script>
   <title>@yield('title','EasyBro')</title>
@@ -286,7 +286,7 @@
   @yield('success-alert')
 
 <body>
-  <nav class="flex items-center justify-between flex-wrap bg-blue-600 p-6 sticky top-0 z-50" id="navi">
+  <nav class="flex items-center justify-between flex-wrap bg-blue-600 p-6 top-0 z-50" id="navi">
     <div class="flex items-center flex-shrink-0 text-white mr-6">
       <img class="logo-img" src="/img/logo-white.png">
       <h1 class="font-semibold text-xl tracking-tight cursor-pointer" id="home-move-btn">Easy Bro</h1>
