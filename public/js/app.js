@@ -22078,6 +22078,7 @@ $(document).ready(function () {
     }
   });
   $(document).on('click', '.list-edit-icon', function (e) {
+    loadingOn();
     var listNo = $(this).parent().attr('number');
     var listName = $(this).parent().attr('content');
     $('.list-edit-box').attr('num', listNo);
@@ -22126,8 +22127,10 @@ $(document).ready(function () {
         $('#list-edit-modal').fadeIn('fast');
         $('body').css('overflow-y', 'hidden');
         $('#list-edit-listName').focus();
+        loadingOff();
       },
       error: function error(e) {
+        loadingOff();
         alert('danger', '리스트 수정', '리스트를 가져오는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');
       }
     });
@@ -22715,7 +22718,6 @@ function linkListBind(userData) {
       });
     } else {
       boardInit();
-      loadingOff();
     }
   });
 }
