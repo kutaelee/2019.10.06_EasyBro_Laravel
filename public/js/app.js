@@ -22136,6 +22136,7 @@ $(document).ready(function () {
     });
   });
   $(document).on('click', '#list-edit-btn', function (e) {
+    loadingOn();
     var listName = $('#list-edit-listName').val();
     var listNo = $('.list-edit-box').attr('num');
     var linkNums = new Array();
@@ -22175,14 +22176,17 @@ $(document).ready(function () {
             $('body').css('overflow-y', 'scroll');
             linkListBind(data).then(linkBind);
           } else {
+            loadingOff();
             alert('danger', '리스트 수정', '리스트를 수정하는 도중 문제가 발생했습니다 다시 로그인 후 시도해주세요.');
           }
         },
         error: function error(e) {
+          loadingOff();
           alert('danger', '리스트 수정', '리스트를 수정하는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');
         }
       });
     } else {
+      loadingOff();
       alert('danger', '리스트 수정', '수정한 URL 중 형식이 잘못된 부분이 있습니다.');
     }
   });
