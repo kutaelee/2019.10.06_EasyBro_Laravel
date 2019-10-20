@@ -851,6 +851,7 @@ function linkListBind(userData) {
                 }
             });
         } else {
+            boardInit();
             loadingOff();
         }
     });
