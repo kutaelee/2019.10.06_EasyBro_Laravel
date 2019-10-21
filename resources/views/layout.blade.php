@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="css/app.css?ver=2">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script src="js/app.js?ver=11"></script>
+  <meta name="naver-site-verification" content="6a4d03b2bf76c4a2342bce431a663a586fd62fba"/>
   <title>@yield('title','EasyBro')</title>
   <div class="modal" id="login-modal">
     <div class="w-full max-w-xs" id="login-box">
