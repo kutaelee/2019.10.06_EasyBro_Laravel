@@ -39,6 +39,7 @@ Route::get('/boards','BoardController@index');
 Route::get('/boards/{document}','BoardController@show');
 Route::post('/boards','BoardController@store');
 Route::get('/boardCount','BoardController@count');
+Route::patch('/boards/{document}','BoardController@update');
 
 /* Auth */
 Route::post('/auth/send','AuthController@send');

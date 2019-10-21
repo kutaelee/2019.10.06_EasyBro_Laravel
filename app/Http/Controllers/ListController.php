@@ -32,7 +32,7 @@ class ListController extends Controller
                     'LIST_NAME'=>htmlspecialchars($request->input('name')),
                     'LIST_OWNER'=> Redis::get('userNo')
                 ]);
-            });       
+            });             
             return response()->json([ 
             'userNo'=> Redis::get('userNo')
             ]);

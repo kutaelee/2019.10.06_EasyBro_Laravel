@@ -61,4 +61,11 @@ class BoardController extends Controller
         return $lists;
     }
 
+    public function update(Request $request){
+        Log::info($request->input('docNo'));
+        DB::transaction(function () use($request) {
+            DB::update('UPDATE BOARD SET SHARE_COUNT = SHARE_COUNT + 1 WHERE DOC_NO = ?',[$request->input('docNo')]);
+        });
+    }
+
 }

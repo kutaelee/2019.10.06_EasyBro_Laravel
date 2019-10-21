@@ -22913,7 +22913,8 @@ function storeLinks(data) {
         $('body').css('overflow-y', 'scroll');
         linkListBind(data).then(linkBind);
       },
-      error: function error(e) {
+      error: function error(e) {      
+        loadingOff();
         alert('danger', '리스트 담기', '공유된 리스트 저장 중 문제가 발생했습니다 관리자에게 문의해주세요.');
       }
     });
@@ -22937,6 +22938,7 @@ function getListNo(result) {
         resolve(data[0]);
       },
       error: function error(e) {
+        loadingOff();
         alert('danger', '리스트 담기', '공유 리스트를 복사한 후 가져오는 중 문제가 발생했습니다 관리자에게 문의해주세요.');
       }
     });
@@ -22965,6 +22967,7 @@ function storeList(listName) {
         }
       },
       error: function error(e) {
+        loadingOff();
         alert('danger', '리스트 담기', '공유 리스트를 담는중에 문제가 발생했습니다 관리자에게 문의해주세요.');
       }
     });
@@ -22974,14 +22977,23 @@ function storeList(listName) {
 
 
 function bringList(userData) {
+  loadingOn();
   if (userData.userNo) {
     var listName = $('.share-board-name').attr('content');
+    var docNo = $('.share-board-name').attr('docnum');
+    $.ajax({
+      type:'PATCH',
+      url:'/boards/'+docNo,
+      data:{'docNo':docNo},
+      error:function(e){
+        console.log(e);
+      }
+    });
     storeList(listName).then(getListNo).then(storeLinks);
   } else {
     alert('danger', '리스트 담기', '로그인 후 이용해주세요.');
   }
 
-  loadingOff();
 }
 /* 공유게시판 바인딩 */
 

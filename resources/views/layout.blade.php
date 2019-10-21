@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css">
   <link rel="stylesheet" href="css/app.css?ver=2">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <script src="js/app.js?ver=4"></script>
+  <script src="js/app.js?ver=7"></script>
   <title>@yield('title','EasyBro')</title>
   <div class="modal" id="login-modal">
     <div class="w-full max-w-xs" id="login-box">
