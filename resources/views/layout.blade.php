@@ -11,13 +11,26 @@
   <link rel="stylesheet" href="css/app.css?ver=2">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script src="js/app.js?ver=11"></script>
-  <meta name="naver-site-verification" content="6a4d03b2bf76c4a2342bce431a663a586fd62fba"/>
+  <meta name="naver-site-verification" content="6a4d03b2bf76c4a2342bce431a663a586fd62fba" />
+  <link rel="canonical" href="http://easybro.kr/">
+  <meta name="robots" content="index,nofollow">
+  <meta name="description" content="즐겨찾기,북마크를 관리하고 공유할 수 있는 사이트 입니다.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="EASYBRO">
+  <meta property="og:description" content="즐겨찾기,북마크를 관리하고 공유할 수 있는 사이트 입니다.">
+  <meta property="og:image" content="http://easybro.kr/img/logo-white.png/">
+  <meta property="og:url" content="http://easybro.kr/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="EASYBRO">
+  <meta name="twitter:description" content="즐겨찾기,북마크를 관리하고 공유할 수 있는 사이트 입니다.">
+  <meta name="twitter:image" content="http://easybro.kr/img/logo-white.png/">
+  <meta name="twitter:domain" content="http://easybro.kr/">
   <title>@yield('title','EasyBro')</title>
   <div class="modal" id="login-modal">
     <div class="w-full max-w-xs" id="login-box">
-   
+
       <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-          <img src="/img/delete.png" class="modal-close-btn">
+        <img src="/img/delete.png" class="modal-close-btn">
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="login-username">
             아이디
@@ -41,7 +54,8 @@
             type="button" id="login-btn">
             로그인
           </button>
-          <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 cursor-pointer" id="forget-modal-btn">
+          <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 cursor-pointer"
+            id="forget-modal-btn">
             비밀번호를 잊으셨나요?
           </a>
         </div>
@@ -55,7 +69,7 @@
   <div class="modal" id="join-modal">
     <div class="max-w-xs" id="join-box">
       <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-          <img src="/img/delete.png" class="modal-close-btn">
+        <img src="/img/delete.png" class="modal-close-btn">
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="join-username">
             아이디
@@ -106,7 +120,7 @@
   <div class="modal" id="forget-modal">
     <div id="forget-box">
       <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" action="" onsubmit="return false">
-          <img src="/img/delete.png" class="modal-close-btn">
+        <img src="/img/delete.png" class="modal-close-btn">
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="forget-username">
             아이디
@@ -130,8 +144,12 @@
         </div>
         <h2 class="mt-2">이메일 인증을 완료한 후 확인버튼을 눌러주세요.</h2>
         <div id="forget-btn-box">
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-3 mt-2 rounded focus:outline-none focus:shadow-outline" id="auth-btn">확인</button>
-        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" id="auth-cancel-btn">취소</button>
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-3 mt-2 rounded focus:outline-none focus:shadow-outline"
+            id="auth-btn">확인</button>
+          <button
+            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            id="auth-cancel-btn">취소</button>
         </div>
       </form>
       <p class="text-center text-gray-500 text-xs">
@@ -141,61 +159,65 @@
   </div>
   @yield('forget')
   <div class="modal" id="change-modal">
-      <div id="change-box">
-        <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" action="" onsubmit="return false">
-            <img src="/img/delete.png" class="modal-close-btn">
-          <div class="mb-4">
-              <label class="block text-gray-700 text-sm font-bold mb-2" id="change-id">              
-                </label>
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="change-email">
-                    이메일(변경을 원치 않으시면 빈값)
-                  </label>
-                  <input
-                  class="shadow appearance-none border rounded w-full py-2 mr-1 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                  id="change-email" type="email" placeholder="YourEmail@Example.com" maxlength="50">
-              <label class="block text-gray-700 text-sm font-bold mb-2" for="change-password">
-                  새로운 패스워드(변경을 원치 않으시면 기존값)
-                </label>
-                <input
-                  class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                  id="change-password" type="password" placeholder="****" maxlength="50">
-                <p class="text-red-500 text-xs italic mb-2" id="change-password-info">패스워드를 입력해주세요.</p>
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="change-password-check">
-                  패스워드 확인
-                </label>
-                <input
-                  class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                  id="change-password-check" type="password" placeholder="****" maxlength="50">
-                <p class="text-red-500 text-xs italic mb-3" id="change-password-check-info">패스워드가 같지 않습니다.</p>
-        
-              </div>
-              <div id="change-btn-box">
-                  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-3 mt-2 rounded focus:outline-none focus:shadow-outline" id="change-btn">확인</button>
-                  <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" id="change-cancel-btn">취소</button>
-              </div>
-          </div>
-        </form>
-        <p class="text-center text-gray-500 text-xs">
-          &copy;2019 Acme Corp. All rights reserved.
-        </p>
-      </div>
-    </div>
-    @yield('change')
-    <div class="modal" id="loading-modal">
-        <div id="loading-box">
-          <ul>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <ul>
+    <div id="change-box">
+      <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" action="" onsubmit="return false">
+        <img src="/img/delete.png" class="modal-close-btn">
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" id="change-id">
+          </label>
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="change-email">
+            이메일(변경을 원치 않으시면 빈값)
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 mr-1 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+            id="change-email" type="email" placeholder="YourEmail@Example.com" maxlength="50">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="change-password">
+            새로운 패스워드(변경을 원치 않으시면 기존값)
+          </label>
+          <input
+            class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+            id="change-password" type="password" placeholder="****" maxlength="50">
+          <p class="text-red-500 text-xs italic mb-2" id="change-password-info">패스워드를 입력해주세요.</p>
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="change-password-check">
+            패스워드 확인
+          </label>
+          <input
+            class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+            id="change-password-check" type="password" placeholder="****" maxlength="50">
+          <p class="text-red-500 text-xs italic mb-3" id="change-password-check-info">패스워드가 같지 않습니다.</p>
+
         </div>
-      </div>
+        <div id="change-btn-box">
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-3 mt-2 rounded focus:outline-none focus:shadow-outline"
+            id="change-btn">확인</button>
+          <button
+            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            id="change-cancel-btn">취소</button>
+        </div>
+    </div>
+    </form>
+    <p class="text-center text-gray-500 text-xs">
+      &copy;2019 Acme Corp. All rights reserved.
+    </p>
+  </div>
+  </div>
+  @yield('change')
+  <div class="modal" id="loading-modal">
+    <div id="loading-box">
+      <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <ul>
+    </div>
+  </div>
   <div class="modal" id="list-add-modal">
     <div class="list-add-box">
-        <img src="/img/delete.png" class="modal-close-btn">
+      <img src="/img/delete.png" class="modal-close-btn">
       <h1> 리스트 추가 </h1>
       <label for="list-name">추가할 리스트 이름</label>
       <input type="text" class="list-name" id="list-name" maxlength="50">
@@ -205,7 +227,7 @@
   @yield('list-add')
   <div class="modal" id="link-add-modal">
     <div class="link-add-box">
-        <img src="/img/delete.png" class="modal-close-btn">
+      <img src="/img/delete.png" class="modal-close-btn">
       <h1> 링크 추가 </h1>
       <label for="link-name">이름</label>
       <input type="text" class="link-name" id="link-name" maxlength="50" placeholder="구글">
@@ -217,7 +239,7 @@
   @yield('link-add')
   <div class="modal" id="list-destroy-modal">
     <div class="list-destroy-box">
-        <img src="/img/delete.png" class="modal-close-btn">
+      <img src="/img/delete.png" class="modal-close-btn">
       <h1 class="list-destroy-name"></h1>
       <h2>리스트를 삭제하시면 포함된 링크도 모두 삭제되며 복구 할 수없습니다.</h2>
       <h2>정말로 삭제하시겠습니까?</h2>
@@ -227,7 +249,7 @@
   @yield('list-destroy')
   <div class="modal" id="link-destroy-modal">
     <div class="link-destroy-box">
-        <img src="/img/delete.png" class="modal-close-btn">
+      <img src="/img/delete.png" class="modal-close-btn">
       <h1 class="link-destroy-name"></h1>
       <h2>링크를 삭제하시면 복구 할 수없습니다.</h2>
       <h2>정말로 삭제하시겠습니까?</h2>
@@ -237,7 +259,7 @@
   @yield('link-destroy')
   <div class="modal" id="list-edit-modal">
     <div class="list-edit-box">
-        <img src="/img/delete.png" class="modal-close-btn">
+      <img src="/img/delete.png" class="modal-close-btn">
       <h1>리스트 수정</h1>
       <label for="list-edit-listName">리스트 : </label>
       <input type="text" maxlength="50" id="list-edit-listName">
@@ -249,7 +271,7 @@
   @yield('list-edit')
   <div class="modal" id="list-share-modal">
     <div class="list-share-box">
-        <img src="/img/delete.png" class="modal-close-btn">
+      <img src="/img/delete.png" class="modal-close-btn">
       <h1 class="list-share-name">리스트 공유</h1>
       <select class="my-list" name="my-list"></select>
       <button class="list-btn" id="list-share-btn">확인</button>
@@ -258,7 +280,7 @@
   @yield('list-share')
   <div class="modal" id="share-board-modal">
     <div class="share-board-box">
-        <img src="/img/delete.png" class="modal-close-btn">
+      <img src="/img/delete.png" class="modal-close-btn">
       <h1 class="share-board-name"></h1>
       <table class="share-board-table">
 
@@ -462,7 +484,7 @@
       <button id="search-btn">검색</button>
       <div class="board-paging">
       </div>
-        <br/><button class="list-btn" id="list-share-modal-btn">공유하기</button>
+      <br /><button class="list-btn" id="list-share-modal-btn">공유하기</button>
     </div>
 
   </section>
