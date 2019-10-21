@@ -23,8 +23,8 @@ class AuthController extends Controller
                     srand(time());
                     $key=rand();
                     Redis::set('key',$key);
-                    $key=Crypt::encryptString($key);
-                
+                    Log::info($key);
+                    $key=Crypt::encryptString($key);        
                     Mail::send('authMail', ['key'=>$key], function($message) use ($user) {
                         $message->to($user['email']);
                         $message->subject('[EASY BRO] 비밀번호변경 인증메일');
@@ -49,9 +49,11 @@ class AuthController extends Controller
     public function auth(Request $request){
         $auth=Redis::get('auth');
         $param=$request->query('key');
+
         if(isset($auth) && isset($param)){     
             try{
                 $param=Crypt::decryptString($param);
+               
             }catch(DecryptException  $e){
                 return '키값이 잘못되었습니다. 다시 인증해주세요.';
             }
