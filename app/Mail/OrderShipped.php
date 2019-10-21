@@ -30,6 +30,6 @@ class OrderShipped extends Mailable
      */
     public function build()
     {
-        return $this->from('servercheckbot@gmail.com')->view('authMail');
+        return $this->view('authMail');
     }
 }

@@ -28,7 +28,8 @@ class AuthController extends Controller
                     Mail::send('authMail', ['key'=>$key], function($message) use ($user) {
                         $message->to($user['email']);
                         $message->subject('[EASY BRO] 비밀번호변경 인증메일');
-                        $message-> sender('servercheckbot@gmail.com', 'EASY BRO');
+                        $message->sender('kutaelee@mx.easybro.kr', 'EASY BRO');
+                        $message->from('EASYBRO <kutaelee@mx.easybro.kr>');
                     });
                     return response()->json([ 
                         'msg'=> '인증메일이 전송되었습니다.'
