@@ -22032,6 +22032,7 @@ $(document).ready(function () {
     $('#link-name').attr('num', listNo);
   });
   $(document).on('click', '#link-add-btn', function () {
+    loadingOn();
     var listNo = $('#link-name').attr('num');
     var linkName = $('#link-name').val();
     var linkUrl = $('#link-url').val();
@@ -22056,7 +22057,8 @@ $(document).ready(function () {
               linkListBind(data).then(linkBind);
             } else {
               alert('danger', '링크 추가', '이미 등록된 링크 입니다.');
-            }
+              loadingOff();
+            }        
           },
           error: function error(e) {
             alert('danger', '링크 추가', '링크를 추가하는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');
@@ -22068,6 +22070,7 @@ $(document).ready(function () {
     } else {
       alert('danger', '링크 추가', '링크 이름을 입력해주세요.');
     }
+    loadingOff();
   });
   $(document).on('click', '.link-item', function (e) {
     var name = e.target.className;
