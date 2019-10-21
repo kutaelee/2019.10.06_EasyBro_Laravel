@@ -22061,16 +22061,18 @@ $(document).ready(function () {
             }        
           },
           error: function error(e) {
+            loadingOff();
             alert('danger', '링크 추가', '링크를 추가하는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');
           }
         });
       } else {
+        loadingOff();
         alert('danger', '링크 추가', 'URL 형식이 잘못되었습니다.');
       }
     } else {
+      loadingOff();
       alert('danger', '링크 추가', '링크 이름을 입력해주세요.');
-    }
-    loadingOff();
+    } 
   });
   $(document).on('click', '.link-item', function (e) {
     var name = e.target.className;
@@ -22202,6 +22204,7 @@ $(document).ready(function () {
     $('body').css('overflow-y', 'hidden');
   });
   $(document).on('click', '#link-destroy-btn', function () {
+    loadingOn();
     var linkNo = $('.link-destroy-name').attr('num');
     $.ajax({
       type: 'DELETE',
@@ -22216,10 +22219,12 @@ $(document).ready(function () {
           $('body').css('overflow-y', 'scroll');
           linkListBind(data).then(linkBind);
         } else {
+          loadingOff();
           alert('danger', '링크 삭제', '링크를 삭제하는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');
         }
       },
       error: function error(e) {
+        loadingOff();
         alert('danger', '링크 삭제', '링크를 삭제하는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');
       }
     });
@@ -22228,6 +22233,7 @@ $(document).ready(function () {
     sessionCheck().then(getShareLists);
   });
   $(document).on('click', '#list-share-btn', function () {
+    loadingOn();
     var listNo = $('.my-list option:selected').val();
     $.ajax({
       type: 'POST',
@@ -22243,14 +22249,17 @@ $(document).ready(function () {
           $('body').css('overflow-y', 'scroll');
         } else {
           alert('danger', '리스트 공유', '이미 공유된 리스트입니다.');
+          loadingOff();
         }
       },
       error: function error(e) {
+        loadingOff();
         alert('danger', '리스트 공유', '리스트를 공유하는중에 문제가 발생했습니다 관리자에게 문의해주세요.');
       }
     });
   });
   $(document).on('click', '.share-item', function () {
+    loadingOn();
     var docNo = $(this).attr('num');
     var listName = $(this).children('.share-item-name').text();
     $('.share-board-name').attr('content', listName);
@@ -22289,11 +22298,12 @@ $(document).ready(function () {
             }
           }
         }
-
+        loadingOff();
         $('#share-board-modal').fadeIn('fast');
-        $('body').css('overflow-y', 'hidden');
+        $('body').css('overflow-y', 'hidden');   
       },
       error: function error(e) {
+        loadingOff();
         alert('danger', '공유 리스트', '공유 리스트를 가져오는중에 문제가 발생했습니다 관리자에게 문의해주세요.');
       }
     });
