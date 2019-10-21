@@ -11,6 +11,7 @@ class ListController extends Controller
 {
     public function index(Request $request){
         $userNo=$request->session()->get('userNo');
+        Log::info($userNo);
         if(!empty($request->input('keyword'))){
             $keyword='%'.htmlspecialchars($request->input('keyword')).'%';
             $lists=DB::select('SELECT DISTINCT LL.LIST_NO,LL.LIST_NAME FROM LINK_LIST AS LL JOIN LINKS AS LS ON LL.LIST_NO = LS.LIST_NO WHERE (LIST_OWNER = ?) AND (LINK_NAME LIKE ? OR LIST_NAME LIKE ?)', [$userNo,$keyword,$keyword]);

@@ -21866,6 +21866,7 @@ $(document).ready(function () {
         alert('success', '로그아웃', '로그아웃이 완료되었습니다.');
         $('.list-box-ul').text('');
         loadingOff();
+        window.location.reload();
       },
       error: function error(e) {
         console.log(e);
@@ -22907,7 +22908,6 @@ function storeLinks(data) {
         'linkUrls': linkUrls
       },
       success: function success(data) {
-        console.log(data);
         alert('success', '리스트 담기', '리스트 담기를 완료하였습니다.');
         $('#share-board-modal').fadeOut('fast');
         $('body').css('overflow-y', 'scroll');

@@ -71,19 +71,19 @@ class UserController extends Controller
         ]);
     }
     public function sessionDestroy(Request $request){
-        $request->session()->forget('userNo');
-        $request->session()->forget('username');
+        $request->session()->flush();
     }
 
     public function login(Request $request){
- 
         $pwCheck=DB::select('SELECT USER_PW FROM USERS WHERE USER_ID = ? ',[$request->input('id')]);
         
         if($pwCheck!=null){   
             if(Hash::check($request->input('pw'), $pwCheck[0]->USER_PW)){
                 $userNo=DB::select('SELECT USER_NO FROM USERS WHERE USER_ID = ? ',[$request->input('id')]);
-                $request->session()->push('userNo',$userNo[0]->USER_NO);
-                $request->session()->push('username',$request->input('id'));
+                session(['userNo'=>$userNo[0]->USER_NO]);
+                //$request->session()->push('userNo',$userNo[0]->USER_NO);
+                //$request->session()->push('username',$request->input('id'));
+                session(['username'=>$request->input('id')]);
                 return $this->sessionUser($request);
             }else{
                 return response()->json([
