@@ -22991,6 +22991,7 @@ function bringList(userData) {
     });
     storeList(listName).then(getListNo).then(storeLinks);
   } else {
+    loadingOff();
     alert('danger', '리스트 담기', '로그인 후 이용해주세요.');
   }
 

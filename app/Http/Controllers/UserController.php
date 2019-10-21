@@ -81,8 +81,6 @@ class UserController extends Controller
             if(Hash::check($request->input('pw'), $pwCheck[0]->USER_PW)){
                 $userNo=DB::select('SELECT USER_NO FROM USERS WHERE USER_ID = ? ',[$request->input('id')]);
                 session(['userNo'=>$userNo[0]->USER_NO]);
-                //$request->session()->push('userNo',$userNo[0]->USER_NO);
-                //$request->session()->push('username',$request->input('id'));
                 session(['username'=>$request->input('id')]);
                 return $this->sessionUser($request);
             }else{
