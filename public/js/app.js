@@ -22896,7 +22896,6 @@ function storeLinks(data) {
       linkUrls.push($(this).text());
     }
   });
-
   if (urlCheck) {
     $.ajax({
       type: 'POST',
@@ -22908,6 +22907,7 @@ function storeLinks(data) {
         'linkUrls': linkUrls
       },
       success: function success(data) {
+        console.log(data);
         alert('success', '리스트 담기', '리스트 담기를 완료하였습니다.');
         $('#share-board-modal').fadeOut('fast');
         $('body').css('overflow-y', 'scroll');

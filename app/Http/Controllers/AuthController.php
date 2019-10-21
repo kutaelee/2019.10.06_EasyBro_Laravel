@@ -18,11 +18,11 @@ class AuthController extends Controller
             if(!strcmp(Crypt::decryptString($email[0]->USER_EMAIL),$request->input('email'))){
                 try{
                     $user=array('email'=>$request->input('email'));
-                    Redis::set('auth',false);
-                    Redis::set('changeId',htmlspecialchars($request->input('id')));
+                    $request->session()->put('auth','false');
+                    $request->session()->put('changeId',htmlspecialchars($request->input('id')));
                     srand(time());
                     $key=rand();
-                    Redis::set('key',$key);
+                    $request->session()->put('key',$key);
                     $key=Crypt::encryptString($key);        
                     Mail::send('authMail', ['key'=>$key], function($message) use ($user) {
                         $message->to($user['email']);
@@ -46,39 +46,35 @@ class AuthController extends Controller
     }
 
     public function auth(Request $request){
-        $auth=Redis::get('auth');
+        $auth=$request->session()->get('auth');
         $param=$request->query('key');
-
         if(isset($auth) && isset($param)){     
             try{
                 $param=Crypt::decryptString($param);
-               
             }catch(DecryptException  $e){
                 return '키값이 잘못되었습니다. 다시 인증해주세요.';
             } 
-            $key=Redis::get('key');
+            $key=$request->session()->get('key');
         if(!strcmp($param,$key)){
-            if(!$auth ){
-                Redis::set('auth',true);
-                Redis::del('key');
+                $request->session()->forget('auth');
+                $request->session()->put('auth',true);
+                $request->session()->forget('key');
                 return '인증이 완료되었습니다.';
-           }else {
-                return '인증이 이미 완료되었습니다.';
-           }
         }else{
             return '키값이 틀립니다 다시 인증을 시도해주세요.';
         }
     
         }else{
-            return '인증정보가 없습니다.';
+            return '인증정보가 없습니다. 다시 진행해주세요.';
         }
     }
 
-    public function check(){
-        $auth=Redis::get('auth');
-        if(isset($auth)){
+    public function check(Request $request){
+        
+        $auth=$request->session()->get('auth');
+        if($auth===true){
             if($auth){
-                 Redis::del('auth');
+                $request->session()->forget('auth');
                  return response()->json([
                     'msg'=> '인증이 완료되었습니다. 새로운 비밀번호를 입력해주세요.',
                     'auth'=> true

@@ -42,8 +42,8 @@ class UserController extends Controller
             
         
             $userNo=DB::select('SELECT USER_NO FROM USERS WHERE USER_ID = ? ',[$id]);
-            Redis::set('userNo',$userNo[0]->USER_NO);
-            Redis::set('username',$id);
+            $request->session()->put('userNo',$userNo[0]->USER_NO);
+            $request->session()->put('username',$id);
             if($userNo!=null){
                 return response()->json([
                     'result'=>true,
@@ -59,17 +59,20 @@ class UserController extends Controller
         }
         
     }
-    public function sessionUser(){
-        Redis::del('changeId');
-        Redis::del('auth');
+    public function sessionUser(Request $request){
+        if ($request->session()->has('changeId') && $request->session()->has('auth')) {
+            $request->session()->forget('changeId');
+            $request->session()->forget('auth');
+        } 
+
         return response()->json([
-            'userNo'=>   Redis::get('userNo'),
-            'username'=> Redis::get('username')
+            'userNo'=>  $request->session()->get('userNo'),
+            'username'=> $request->session()->get('username')
         ]);
     }
-    public function sessionDestroy(){
-        Redis::del('userNo');
-        Redis::del('username');
+    public function sessionDestroy(Request $request){
+        $request->session()->forget('userNo');
+        $request->session()->forget('username');
     }
 
     public function login(Request $request){
@@ -79,9 +82,9 @@ class UserController extends Controller
         if($pwCheck!=null){   
             if(Hash::check($request->input('pw'), $pwCheck[0]->USER_PW)){
                 $userNo=DB::select('SELECT USER_NO FROM USERS WHERE USER_ID = ? ',[$request->input('id')]);
-                Redis::set('userNo',$userNo[0]->USER_NO);
-                Redis::set('username',$request->input('id'));
-                return $this->sessionUser();
+                $request->session()->push('userNo',$userNo[0]->USER_NO);
+                $request->session()->push('username',$request->input('id'));
+                return $this->sessionUser($request);
             }else{
                 return response()->json([
                     'msg'=>'비밀번호가 틀렸습니다.'
@@ -98,11 +101,11 @@ class UserController extends Controller
     public function update(Request $request){
         $pw=$request->input('pw');
         $email=$request->input('email');
-        $id=Redis::get('changeId');
+        $id=$request->session()->get('changeId');
         $action='auth';
         if(empty($id)){
             $action='mypage';
-            $id=Redis::get('username');
+            $id=$request->session()->get('username')[0];
         }
         if(empty($id)){
             return response()->json([
@@ -114,7 +117,7 @@ class UserController extends Controller
                     DB::update('UPDATE USERS SET USER_PW = ? , USER_EMAIL = ? WHERE USER_ID = ?',[Hash::make($pw), Crypt::encryptString($email) , $id]);
                 }else{
                     DB::update('UPDATE USERS SET USER_PW = ? WHERE USER_ID = ?',[Hash::make($pw) , $id]);
-                    Redis::del('changeId');
+                    $request->session()->forget('changeId');
                 }
                 return response()->json([
                     'msg'=>'변경이 완료되었습니다.',
