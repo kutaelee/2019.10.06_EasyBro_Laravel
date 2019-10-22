@@ -22919,6 +22919,7 @@ function storeLinks(data) {
       }
     });
   } else {
+    loadingOff();
     alert('danger', '리스트 담기', '공유된 리스트 URL에 문제가 있습니다 관리자에게 문의해주세요.');
   }
 }
@@ -22963,6 +22964,7 @@ function storeList(listName) {
           };
           resolve(result);
         } else {
+          loadingOff();
           alert('danger', '리스트 담기', '중복된 이름의 리스트가 있거나 이미 담긴 리스트입니다.');
         }
       },

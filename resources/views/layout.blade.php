@@ -486,7 +486,6 @@
       </div>
       <br /><button class="list-btn" id="list-share-modal-btn">공유하기</button>
     </div>
-
   </section>
   @yield('board')
 
