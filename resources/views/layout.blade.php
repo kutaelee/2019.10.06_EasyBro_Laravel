@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css">
   <link rel="stylesheet" href="css/app.css?ver=2">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <script src="js/app.js?ver=11"></script>
+  <script src="js/app.js?ver=12"></script>
   <meta name="naver-site-verification" content="6a4d03b2bf76c4a2342bce431a663a586fd62fba" />
   <link rel="canonical" href="http://easybro.kr/">
   <meta name="robots" content="index,nofollow">
