@@ -298,6 +298,7 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '#link-add-btn', function () {
+        loadingOn();
         const listNo = $('#link-name').attr('num');
         const linkName = $('#link-name').val();
         const linkUrl = $('#link-url').val();
@@ -316,16 +317,20 @@ $(document).ready(function () {
                             $('#link-add-modal input').val('');
                             linkListBind(data).then(linkBind);
                         } else {
+                            loadingOff();
                             alert('danger', '링크 추가', '이미 등록된 링크 입니다.');
                         }
                     }, error: function (e) {
+                        loadingOff();
                         alert('danger', '링크 추가', '링크를 추가하는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');
                     }
                 });
             } else {
+                loadingOff();
                 alert('danger', '링크 추가', 'URL 형식이 잘못되었습니다.');
             }
         } else {
+            loadingOff();
             alert('danger', '링크 추가', '링크 이름을 입력해주세요.');
         }
 
@@ -370,6 +375,7 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '#list-edit-btn', function (e) {
+        loadingOn();
         const listName = $('#list-edit-listName').val();
         const listNo = $('.list-edit-box').attr('num');
         let linkNums = new Array();
@@ -403,13 +409,16 @@ $(document).ready(function () {
                         $('body').css('overflow-y', 'scroll');
                         linkListBind(data).then(linkBind);
                     } else {
+                        loadingOff();
                         alert('danger', '리스트 수정', '리스트를 수정하는 도중 문제가 발생했습니다 다시 로그인 후 시도해주세요.');
                     }
                 }, error: function (e) {
+                    loadingOff();
                     alert('danger', '리스트 수정', '리스트를 수정하는 도중 문제가 발생했습니다 관리자에게 문의해주세요.');
                 }
             });
         } else {
+            loadingOff();
             alert('danger', '리스트 수정', '수정한 URL 중 형식이 잘못된 부분이 있습니다.');
         }
 
@@ -551,14 +560,14 @@ $(document).ready(function () {
 
     $('.link-search').keyup(function (e) {
         linkKeyword = $(this).val();
-        if (e.keyCode === 13 || !linkKeyword) {
+        if (e.keyCode === 13) {
             sessionCheck().then(linkListBind).then(linkBind);
         }
     });
 
     $('#board-search-keyword').keyup(function (e) {
         keyword = $('#board-search-keyword').val();
-        if (e.keyCode === 13 || !keyword) {
+        if (e.keyCode === 13) {
             selected = $('#board-search-select option:selected').val();
             boardInit(1, keyword, selected);
         }
@@ -951,10 +960,12 @@ function storeLinks(data) {
                 $('body').css('overflow-y', 'scroll');
                 linkListBind(data).then(linkBind);
             }, error: function (e) {
+                loadingOff();
                 alert('danger', '리스트 담기', '공유된 리스트 저장 중 문제가 발생했습니다 관리자에게 문의해주세요.');
             }
         })
     } else {
+        loadingOff();
         alert('danger', '리스트 담기', '공유된 리스트 URL에 문제가 있습니다 관리자에게 문의해주세요.');
     }
 
@@ -971,6 +982,7 @@ function getListNo(result) {
             success: function (data) {
                 resolve(data[0]);
             }, error: function (e) {
+                loadingOff();
                 alert('danger', '리스트 담기', '공유 리스트를 복사한 후 가져오는 중 문제가 발생했습니다 관리자에게 문의해주세요.');
             }
         })
@@ -989,9 +1001,11 @@ function storeList(listName) {
                     let result = { 'userNo': data.userNo, 'listName': listName };
                     resolve(result);
                 } else {
+                    loadingOff();
                     alert('danger', '리스트 담기', '중복된 이름의 리스트가 있거나 이미 담긴 리스트입니다.');
                 }
             }, error: function (e) {
+                loadingOff();
                 alert('danger', '리스트 담기', '공유 리스트를 담는중에 문제가 발생했습니다 관리자에게 문의해주세요.');
             }
         });
@@ -1000,13 +1014,23 @@ function storeList(listName) {
 
 /* 리스트 담기 기능 */
 function bringList(userData) {
+    loadingOn();
     if (userData.userNo) {
         const listName = $('.share-board-name').attr('content');
+        const docNo = $('.share-board-name').attr('docnum');
+        $.ajax({
+          type:'PATCH',
+          url:'/boards/'+docNo,
+          data:{'docNo':docNo},
+          error:function(e){
+            console.log(e);
+          }
+        });
         storeList(listName).then(getListNo).then(storeLinks);
     } else {
+        loadingOff();
         alert('danger', '리스트 담기', '로그인 후 이용해주세요.');
     }
-    loadingOff();
 }
 
 /* 공유게시판 바인딩 */
